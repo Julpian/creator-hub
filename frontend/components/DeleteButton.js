@@ -12,9 +12,19 @@ export default function DeleteButton({ id }) {
       return;
     }
 
+    const token = localStorage.getItem('authToken'); // Ambil token dari localStorage
+    if (!token) {
+      alert("Anda tidak terautentikasi. Silakan login kembali.");
+      return;
+    }
+
     try {
       const res = await fetch(`http://localhost:8080/api/admin/influencers/${id}`, {
         method: 'DELETE',
+        headers: {
+          // Sertakan token di header Authorization
+          'Authorization': `Bearer ${token}`,
+        },
       });
 
       if (res.ok) {

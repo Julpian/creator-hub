@@ -6,121 +6,147 @@ import { useRouter, useParams } from "next/navigation";
 
 export default function EditPage() {
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [currentImageUrl, setCurrentImageUrl] = useState("");
+  const [newImage, setNewImage] = useState(null);
+  
+  // State baru untuk kategori
+  const [allCategories, setAllCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  
+  const [loading, setLoading] = useState(true); // State untuk loading
+  
   const router = useRouter();
   const params = useParams();
   const { id } = params;
 
+  // useEffect untuk mengambil SEMUA data yang dibutuhkan saat halaman dimuat
   useEffect(() => {
     if (id) {
-      const fetchInfluencer = async () => {
-        try {
-          const res = await fetch(`http://localhost:8080/api/influencers/${id}`);
-          if (!res.ok) throw new Error("Gagal mengambil data");
-          const data = await res.json();
-          setName(data.name);
-          setCategory(data.category);
-        } catch (error) {
-          alert("Gagal memuat data influencer.");
-        } finally {
-          setLoading(false);
+      const fetchData = async () => {
+        // 1. Ambil daftar semua kategori
+        const categoriesRes = await fetch("http://localhost:8080/api/categories");
+        const categoriesData = await categoriesRes.json();
+        setAllCategories(categoriesData);
+
+        // 2. Ambil data influencer yang spesifik
+        const influencerRes = await fetch(`http://localhost:8080/api/influencers/${id}`);
+        if (influencerRes.ok) {
+          const influencerData = await influencerRes.json();
+          setName(influencerData.name);
+          setCurrentImageUrl(influencerData.imageUrl);
+          
+          // 3. Set checkbox yang aktif berdasarkan data influencer
+          // Kita ambil ID dari setiap kategori yang dimiliki influencer
+          const initialSelectedIds = influencerData.categories.map(cat => cat.ID);
+          setSelectedCategories(initialSelectedIds);
         }
+        setLoading(false); // Selesai loading
       };
-      fetchInfluencer();
+      fetchData();
     }
   }, [id]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch(`http://localhost:8080/api/admin/influencers/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, category }),
-      });
-
-      if (res.ok) {
-        alert("✅ Data berhasil diperbarui!");
-        router.push("/dashboard");
-        router.refresh();
+  // Fungsi ini sama persis seperti di halaman "Tambah"
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategories((prevSelected) => {
+      if (prevSelected.includes(categoryId)) {
+        return prevSelected.filter((id) => id !== categoryId);
       } else {
-        alert("❌ Gagal memperbarui data.");
+        return [...prevSelected, categoryId];
       }
-    } catch (error) {
-      alert("⚠️ Terjadi kesalahan saat memperbarui data.");
+    });
+  };
+  
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setNewImage(e.target.files[0]);
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Langkah 1: Update data teks (nama & kategori)
+    const resText = await fetch(`http://localhost:8080/api/admin/influencers/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      // Kirim payload yang baru
+      body: JSON.stringify({ name, category_ids: selectedCategories }),
+    });
+
+    if (!resText.ok) {
+      alert("Gagal memperbarui data teks.");
+      return;
+    }
+
+    // Langkah 2: Unggah gambar baru jika ada
+    if (newImage) {
+      const formData = new FormData();
+      formData.append("image", newImage);
+      await fetch(`http://localhost:8080/api/admin/influencers/${id}/upload`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
+        body: formData,
+      });
+    }
+
+    alert("Data berhasil diperbarui!");
+    router.push("/dashboard");
+    router.refresh();
+  };
+  
   if (loading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center text-gray-700 text-lg">
-        ⏳ Memuat data...
-      </div>
-    );
+    return <p>Loading data...</p>
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 py-10 px-6 flex justify-center items-center">
-      <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl transition-transform hover:scale-[1.01]">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-          ✏️ Edit Data Influencer
-        </h1>
-
-        <form onSubmit={handleSubmit} className="space-y-5 text-gray-900">
-          {/* Nama */}
+    <div>
+      <h1 className="text-3xl font-bold mb-6">Edit Influencer</h1>
+      <div className="bg-white p-8 rounded-lg shadow-md">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {currentImageUrl && (
+            <div className="mb-4">
+              <p className="block text-sm font-medium text-gray-700 mb-2">Gambar Saat Ini:</p>
+              <img src={`http://localhost:8080${currentImageUrl}`} alt="Current" className="w-32 h-32 object-cover rounded"/>
+            </div>
+          )}
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-semibold text-gray-900 mb-1"
-            >
-              Nama Influencer
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Masukkan nama influencer"
-              className="w-full px-4 py-2 border border-gray-400 rounded-lg shadow-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-            />
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nama Influencer</label>
+            <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"/>
           </div>
 
-          {/* Kategori */}
+          {/* Daftar Checkbox Kategori */}
           <div>
-            <label
-              htmlFor="category"
-              className="block text-sm font-semibold text-gray-900 mb-1"
-            >
-              Kategori
-            </label>
-            <input
-              type="text"
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="Masukkan kategori influencer"
-              className="w-full px-4 py-2 border border-gray-400 rounded-lg shadow-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-            />
+            <label className="block text-sm font-medium text-gray-700">Kategori</label>
+            <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {allCategories.map((category) => (
+                <div key={category.ID} className="flex items-center">
+                  <input
+                    id={`category-${category.ID}`}
+                    type="checkbox"
+                    value={category.ID}
+                    checked={selectedCategories.includes(category.ID)}
+                    onChange={() => handleCategoryChange(category.ID)}
+                    className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                  />
+                  <label htmlFor={`category-${category.ID}`} className="ml-2 block text-sm text-gray-900">
+                    {category.name}
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Tombol Simpan */}
-          <button
-            type="submit"
-            className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition transform hover:-translate-y-[1px]"
-          >
-            💾 Simpan Perubahan
-          </button>
+          <div>
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700">Ubah Gambar Profil</label>
+            <input type="file" id="image" accept="image/*" onChange={handleImageChange} className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold"/>
+          </div>
 
-          {/* Tombol Kembali */}
-          <button
-            type="button"
-            onClick={() => router.push("/dashboard")}
-            className="w-full py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-lg transition"
-          >
-            ⬅️ Kembali ke Dashboard
+          <button type="submit" className="w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg">
+            Update Data
           </button>
         </form>
       </div>
