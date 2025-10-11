@@ -22,9 +22,16 @@ var jwtSecret = []byte("kunci_rahasia_anda_yang_sangat_panjang_dan_unik")
 
 type Influencer struct {
 	gorm.Model
-	Name       string     `json:"name"`
-	ImageURL   string     `json:"imageUrl"`
-	Categories []Category `gorm:"many2many:influencer_categories;" json:"categories"`
+	Name               string     `json:"name"`
+	ImageURL           string     `json:"imageUrl"`
+	Categories         []Category `gorm:"many2many:influencer_categories;" json:"categories"`
+	Bio                string     `json:"bio"`
+	InstagramURL       string     `json:"instagramUrl"`
+	TiktokURL          string     `json:"tiktokUrl"`
+	YoutubeURL         string     `json:"youtubeUrl"`
+	InstagramFollowers int        `json:"instagramFollowers"`
+	TiktokFollowers    int        `json:"tiktokFollowers"`
+	YoutubeSubscribers int        `json:"youtubeSubscribers"`
 }
 
 type Admin struct {
@@ -243,8 +250,15 @@ func main() {
 		adminRoutes.POST("/influencers", func(c *gin.Context) {
 			// Struct baru untuk menampung payload dari frontend
 			type CreateInfluencerPayload struct {
-				Name        string `json:"name" binding:"required"`
-				CategoryIDs []uint `json:"category_ids"` // Menerima array of integer
+				Name               string `json:"name" binding:"required"`
+				Bio                string `json:"bio"`
+				InstagramURL       string `json:"instagramUrl"`
+				TiktokURL          string `json:"tiktokUrl"`
+				YoutubeURL         string `json:"youtubeUrl"`
+				InstagramFollowers int    `json:"instagramFollowers"`
+				TiktokFollowers    int    `json:"tiktokFollowers"`
+				YoutubeSubscribers int    `json:"youtubeSubscribers"`
+				CategoryIDs        []uint `json:"category_ids"`
 			}
 
 			var payload CreateInfluencerPayload
@@ -254,40 +268,50 @@ func main() {
 			}
 
 			// 1. Buat influencer baru hanya dengan nama
-			newInfluencer := Influencer{Name: payload.Name}
+			newInfluencer := Influencer{
+				Name:               payload.Name,
+				Bio:                payload.Bio,
+				InstagramURL:       payload.InstagramURL,
+				TiktokURL:          payload.TiktokURL,
+				YoutubeURL:         payload.YoutubeURL,
+				InstagramFollowers: payload.InstagramFollowers,
+				TiktokFollowers:    payload.TiktokFollowers,
+				YoutubeSubscribers: payload.YoutubeSubscribers,
+			}
 			if err := DB.Create(&newInfluencer).Error; err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan influencer"})
 				return
 			}
 
-			// 2. Jika ada category_ids yang dikirim, hubungkan relasinya
+			// Hubungkan relasi kategori (logika ini tidak berubah)
 			if len(payload.CategoryIDs) > 0 {
 				var categories []Category
-				// Cari semua kategori berdasarkan ID yang dikirim
 				DB.Find(&categories, payload.CategoryIDs)
-
-				// Gunakan GORM Association untuk menghubungkan influencer dengan kategori
 				DB.Model(&newInfluencer).Association("Categories").Replace(categories)
 			}
 
-			// Ambil kembali data influencer yang sudah lengkap dengan kategorinya
 			DB.Preload("Categories").First(&newInfluencer, newInfluencer.ID)
-
 			c.JSON(http.StatusCreated, newInfluencer)
 		})
 
 		adminRoutes.PUT("/influencers/:id", func(c *gin.Context) {
-			// Cari influencer yang akan di-update
 			var influencer Influencer
 			if err := DB.First(&influencer, c.Param("id")).Error; err != nil {
 				c.JSON(http.StatusNotFound, gin.H{"error": "Data tidak ditemukan"})
 				return
 			}
 
-			// Struct untuk payload update
+			// Struct payload sekarang juga berisi semua field baru
 			type UpdateInfluencerPayload struct {
-				Name        string `json:"name" binding:"required"`
-				CategoryIDs []uint `json:"category_ids"`
+				Name               string `json:"name" binding:"required"`
+				Bio                string `json:"bio"`
+				InstagramURL       string `json:"instagramUrl"`
+				TiktokURL          string `json:"tiktokUrl"`
+				YoutubeURL         string `json:"youtubeUrl"`
+				InstagramFollowers int    `json:"instagramFollowers"`
+				TiktokFollowers    int    `json:"tiktokFollowers"`
+				YoutubeSubscribers int    `json:"youtubeSubscribers"`
+				CategoryIDs        []uint `json:"category_ids"`
 			}
 
 			var payload UpdateInfluencerPayload
@@ -296,21 +320,27 @@ func main() {
 				return
 			}
 
-			// 1. Update nama influencer
+			// Update semua field pada model influencer yang sudah ada
 			influencer.Name = payload.Name
+			influencer.Bio = payload.Bio
+			influencer.InstagramURL = payload.InstagramURL
+			influencer.TiktokURL = payload.TiktokURL
+			influencer.YoutubeURL = payload.YoutubeURL
+			influencer.InstagramFollowers = payload.InstagramFollowers
+			influencer.TiktokFollowers = payload.TiktokFollowers
+			influencer.YoutubeSubscribers = payload.YoutubeSubscribers
+
+			// Simpan perubahan data teks
 			DB.Save(&influencer)
 
-			// 2. Ganti (replace) semua relasi kategori yang lama dengan yang baru
+			// Ganti relasi kategori (logika ini tidak berubah)
 			var categories []Category
 			if len(payload.CategoryIDs) > 0 {
 				DB.Find(&categories, payload.CategoryIDs)
 			}
-			// Replace akan otomatis menghapus yang lama dan menambah yang baru
 			DB.Model(&influencer).Association("Categories").Replace(categories)
 
-			// Ambil kembali data yang sudah lengkap
 			DB.Preload("Categories").First(&influencer, influencer.ID)
-
 			c.JSON(http.StatusOK, influencer)
 		})
 

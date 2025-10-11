@@ -1,4 +1,3 @@
-// File: app/(admin)/dashboard/tambah/page.js
 "use client";
 
 import { useState, useEffect } from "react";
@@ -6,16 +5,20 @@ import { useRouter } from "next/navigation";
 
 export default function TambahPage() {
   const [name, setName] = useState("");
-  // State baru untuk menyimpan daftar semua kategori dari API
+  const [bio, setBio] = useState("");
+  const [instagramUrl, setInstagramUrl] = useState("");
+  const [tiktokUrl, setTiktokUrl] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [instagramFollowers, setInstagramFollowers] = useState("");
+  const [tiktokFollowers, setTiktokFollowers] = useState("");
+  const [youtubeSubscribers, setYoutubeSubscribers] = useState("");
   const [allCategories, setAllCategories] = useState([]);
-  // State baru untuk menyimpan ID kategori yang dicentang
-  const [selectedCategories, setSelectedCategories] = useState([]); 
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [image, setImage] = useState(null);
   const router = useRouter();
 
-  // useEffect akan berjalan saat komponen pertama kali dimuat
+  // Ambil kategori
   useEffect(() => {
-    // Fungsi untuk mengambil daftar kategori dari backend
     const fetchCategories = async () => {
       const res = await fetch("http://localhost:8080/api/categories");
       if (res.ok) {
@@ -23,22 +26,16 @@ export default function TambahPage() {
         setAllCategories(data);
       }
     };
-
     fetchCategories();
-  }, []); // Array kosong berarti ini hanya berjalan sekali
+  }, []);
 
-  // Fungsi yang dijalankan setiap kali checkbox diubah
+  // Checkbox kategori
   const handleCategoryChange = (categoryId) => {
-    setSelectedCategories((prevSelected) => {
-      // Jika ID sudah ada di dalam array, hapus (uncheck)
-      if (prevSelected.includes(categoryId)) {
-        return prevSelected.filter((id) => id !== categoryId);
-      }
-      // Jika tidak ada, tambahkan (check)
-      else {
-        return [...prevSelected, categoryId];
-      }
-    });
+    setSelectedCategories((prevSelected) =>
+      prevSelected.includes(categoryId)
+        ? prevSelected.filter((id) => id !== categoryId)
+        : [...prevSelected, categoryId]
+    );
   };
 
   const handleImageChange = (e) => {
@@ -47,6 +44,7 @@ export default function TambahPage() {
     }
   };
 
+  // Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name) {
@@ -54,13 +52,18 @@ export default function TambahPage() {
       return;
     }
 
-    // Ubah payload untuk mengirim category_ids
     const textPayload = {
       name,
+      bio,
+      instagramUrl,
+      tiktokUrl,
+      youtubeUrl,
+      instagramFollowers: Number(instagramFollowers) || 0,
+      tiktokFollowers: Number(tiktokFollowers) || 0,
+      youtubeSubscribers: Number(youtubeSubscribers) || 0,
       category_ids: selectedCategories,
     };
 
-    // Langkah 1: Kirim data teks terlebih dahulu
     const resText = await fetch("http://localhost:8080/api/admin/influencers", {
       method: "POST",
       headers: {
@@ -74,17 +77,22 @@ export default function TambahPage() {
       alert("Gagal menambahkan data influencer.");
       return;
     }
+
     const newInfluencer = await resText.json();
 
-    // Langkah 2: Unggah gambar jika ada
     if (image) {
       const formData = new FormData();
       formData.append("image", image);
-      await fetch(`http://localhost:8080/api/admin/influencers/${newInfluencer.ID}/upload`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
-        body: formData,
-      });
+      await fetch(
+        `http://localhost:8080/api/admin/influencers/${newInfluencer.ID}/upload`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+          body: formData,
+        }
+      );
     }
 
     alert("Influencer baru berhasil ditambahkan!");
@@ -97,12 +105,108 @@ export default function TambahPage() {
       <h1 className="text-3xl font-bold mb-6">Tambah Influencer Baru</h1>
       <div className="bg-white p-8 rounded-lg shadow-md">
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Nama */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nama Influencer</label>
-            <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"/>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Nama Influencer
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+            />
           </div>
 
-          {/* Ganti input teks kategori dengan daftar checkbox */}
+          {/* Bio */}
+          <div>
+            <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
+              Bio
+            </label>
+            <textarea
+              id="bio"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              rows={3}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              placeholder="Tulis deskripsi singkat tentang influencer..."
+            />
+          </div>
+
+          {/* URL Sosial Media */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Instagram URL</label>
+              <input
+                type="text"
+                value={instagramUrl}
+                onChange={(e) => setInstagramUrl(e.target.value)}
+                placeholder="https://instagram.com/username"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">TikTok URL</label>
+              <input
+                type="text"
+                value={tiktokUrl}
+                onChange={(e) => setTiktokUrl(e.target.value)}
+                placeholder="https://tiktok.com/@username"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">YouTube URL</label>
+              <input
+                type="text"
+                value={youtubeUrl}
+                onChange={(e) => setYoutubeUrl(e.target.value)}
+                placeholder="https://youtube.com/@username"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+          </div>
+
+          {/* Followers */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Instagram Followers</label>
+              <input
+                type="number"
+                value={instagramFollowers}
+                onChange={(e) => setInstagramFollowers(e.target.value)}
+                placeholder="0"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">TikTok Followers</label>
+              <input
+                type="number"
+                value={tiktokFollowers}
+                onChange={(e) => setTiktokFollowers(e.target.value)}
+                placeholder="0"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">YouTube Subscribers</label>
+              <input
+                type="number"
+                value={youtubeSubscribers}
+                onChange={(e) => setYoutubeSubscribers(e.target.value)}
+                placeholder="0"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+          </div>
+
+          {/* Kategori */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Kategori</label>
             <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -124,12 +228,26 @@ export default function TambahPage() {
             </div>
           </div>
 
+          {/* Upload Gambar */}
           <div>
-            <label htmlFor="image" className="block text-sm font-medium text-gray-700">Gambar Profil</label>
-            <input type="file" id="image" accept="image/*" onChange={handleImageChange} className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold"/>
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+              Gambar Profil
+            </label>
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 
+                file:rounded-full file:border-0 file:text-sm file:font-semibold 
+                file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            />
           </div>
 
-          <button type="submit" className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md">
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md"
+          >
             Simpan
           </button>
         </form>
