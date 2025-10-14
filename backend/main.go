@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	config.LoadEnv()
 	config.ConnectDatabase()
 
 	// Pastikan folder uploads ada

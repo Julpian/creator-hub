@@ -9,7 +9,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/julpian/creator-hub/models" // <-- SESUAIKAN DENGAN NAMA MODUL ANDA
+	"github.com/go-playground/validator/v10" // <-- SESUAIKAN DENGAN NAMA MODUL ANDA
+	"github.com/julpian/creator-hub/models"
 )
 
 func GetInfluencers(c *gin.Context) {
@@ -104,18 +105,30 @@ func CreateInfluencer(c *gin.Context) {
 		Name               string `json:"name" binding:"required"`
 		Bio                string `json:"bio"`
 		Location           string `json:"location"`
-		InstagramURL       string `json:"instagramUrl"`
-		TiktokURL          string `json:"tiktokUrl"`
-		YoutubeURL         string `json:"youtubeUrl"`
-		InstagramFollowers int    `json:"instagramFollowers"`
-		TiktokFollowers    int    `json:"tiktokFollowers"`
-		YoutubeSubscribers int    `json:"youtubeSubscribers"`
+		InstagramURL       string `json:"instagramUrl" binding:"omitempty,url"`
+		TiktokURL          string `json:"tiktokUrl" binding:"omitempty,url"`
+		YoutubeURL         string `json:"youtubeUrl" binding:"omitempty,url"`
+		InstagramFollowers int    `json:"instagramFollowers" binding:"gte=0"`
+		TiktokFollowers    int    `json:"tiktokFollowers" binding:"gte=0"`
+		YoutubeSubscribers int    `json:"youtubeSubscribers" binding:"gte=0"`
 		CategoryIDs        []uint `json:"category_ids"`
 	}
 
 	var payload CreateInfluencerPayload
 	if err := c.ShouldBindJSON(&payload); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		// Cek apakah error ini adalah error validasi
+		if validationErrs, ok := err.(validator.ValidationErrors); ok {
+			// Buat pesan error yang lebih mudah dibaca
+			errorMessages := make(map[string]string)
+			for _, e := range validationErrs {
+				// Memberikan pesan error spesifik per field
+				errorMessages[e.Field()] = fmt.Sprintf("Field %s gagal validasi, aturan: %s", e.Field(), e.Tag())
+			}
+			c.JSON(http.StatusBadRequest, gin.H{"errors": errorMessages})
+			return
+		}
+		// Jika errornya bukan karena validasi (misal: JSON tidak valid)
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Payload JSON tidak valid"})
 		return
 	}
 
@@ -156,12 +169,12 @@ func UpdateInfluencer(c *gin.Context) {
 		Name               string `json:"name" binding:"required"`
 		Bio                string `json:"bio"`
 		Location           string `json:"location"`
-		InstagramURL       string `json:"instagramUrl"`
-		TiktokURL          string `json:"tiktokUrl"`
-		YoutubeURL         string `json:"youtubeUrl"`
-		InstagramFollowers int    `json:"instagramFollowers"`
-		TiktokFollowers    int    `json:"tiktokFollowers"`
-		YoutubeSubscribers int    `json:"youtubeSubscribers"`
+		InstagramURL       string `json:"instagramUrl" binding:"omitempty,url"`
+		TiktokURL          string `json:"tiktokUrl" binding:"omitempty,url"`
+		YoutubeURL         string `json:"youtubeUrl" binding:"omitempty,url"`
+		InstagramFollowers int    `json:"instagramFollowers" binding:"gte=0"`
+		TiktokFollowers    int    `json:"tiktokFollowers" binding:"gte=0"`
+		YoutubeSubscribers int    `json:"youtubeSubscribers" binding:"gte=0"`
 		CategoryIDs        []uint `json:"category_ids"`
 	}
 

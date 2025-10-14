@@ -9,10 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
-var jwtSecret = []byte("kunci_rahasia_anda_yang_sangat_panjang_dan_unik")
-
 func ConnectDatabase() {
-	dsn := "host=localhost user=postgres password=postgres dbname=creator_hub_db port=5432 sslmode=disable TimeZone=Asia/Jakarta"
+	dsn := Env("DB_DSN")
 	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Gagal terhubung ke database!", err)
@@ -23,5 +21,5 @@ func ConnectDatabase() {
 }
 
 func GetJWTSecret() []byte {
-	return jwtSecret
+	return []byte(Env("JWT_SECRET"))
 }
