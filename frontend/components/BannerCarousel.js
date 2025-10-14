@@ -10,7 +10,7 @@ const banners = [
     title: "Mau Konten Kamu Dibayar?",
     description: "Join sekarang di Gen Creator Hub dan mulai hasilkan uang dari kreativitasmu!",
     imageUrl:
-      "https://images.unsplash.com/photo-1759928222798-63e73f690563?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://raw.githubusercontent.com/Julpian/aset-GCH/refs/heads/main/headear-1.png",
   },
   {
     title: "Temukan Influencer Terbaik",
