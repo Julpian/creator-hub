@@ -1,6 +1,6 @@
 // File: components/InfluencerCard.js
 import Link from "next/link";
-import { IoLogoInstagram, IoLogoYoutube, IoLocationOutline } from "react-icons/io5";
+import { IoLogoInstagram, IoLogoYoutube, IoLocationOutline, IoStar } from "react-icons/io5";
 import { FaTiktok } from "react-icons/fa";
 
 // Fungsi formatNumber bisa kita letakkan di sini juga
@@ -21,6 +21,14 @@ export default function InfluencerCard({ influencer }) {
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1">
       <div className="relative w-full aspect-[3/2.5] overflow-hidden bg-gray-50">
+
+      {/* 3. TAMBAHKAN LENCANA REKOMENDASI DI SINI */}
+      {influencer.isRecommended && (
+        <div className="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 z-10">
+          <IoStar size={12} />
+          <span>Rekomendasi</span>
+        </div>
+      )}
         {influencer.imageUrl ? (
           <img src={`http://127.0.0.1:8080${influencer.imageUrl}`} alt={influencer.name} className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"/>
         ) : (

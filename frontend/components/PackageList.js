@@ -6,13 +6,12 @@ async function getPackages() {
   return res.json();
 }
 
-const formatPrice = (price) => {
-  return new Intl.NumberFormat("id-ID", {
+const formatPrice = (price) =>
+  new Intl.NumberFormat("id-ID", {
     style: "currency",
     currency: "IDR",
     minimumFractionDigits: 0,
   }).format(price);
-};
 
 const tierStyles = {
   micro: "border-cyan-500",
@@ -32,9 +31,12 @@ export default async function PackageList() {
   const packages = (await getPackages()) || [];
 
   return (
-    <section className="py-10">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Package Influencer</h2>
+    <section className="py-6 sm:py-10 px-1 sm:px-0">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-3xl font-bold text-gray-800">
+          Package Influencer
+        </h2>
         <Link
           href="/packages"
           className="text-xs sm:text-sm font-medium text-indigo-600 hover:underline"
@@ -43,17 +45,17 @@ export default async function PackageList() {
         </Link>
       </div>
 
-      {/* 🔹 Ukuran grid sudah disesuaikan: 2 mobile, 3 tablet, 4 desktop */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-6">
+      {/* Grid Paket */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {packages.map((pkg) => (
           <div
             key={pkg.ID}
             className={`bg-white rounded-xl shadow-md border-t-4 ${
               tierStyles[pkg.tier] || "border-gray-300"
-            } p-4 flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}
+            } p-3 sm:p-4 flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}
           >
             {/* Gambar Paket */}
-            <div className="mb-3">
+            <div className="mb-3 sm:mb-4">
               {pkg.imageUrl ? (
                 <img
                   src={`http://127.0.0.1:8080${pkg.imageUrl}`}
@@ -67,6 +69,7 @@ export default async function PackageList() {
               )}
             </div>
 
+            {/* Informasi Paket */}
             <div className="flex-grow text-center sm:text-left">
               <span className="font-semibold text-indigo-600 uppercase text-[10px] sm:text-xs tracking-wide">
                 {pkg.tier}
@@ -88,7 +91,8 @@ export default async function PackageList() {
               </ul>
             </div>
 
-            <div className="mt-4">
+            {/* Tombol Detail */}
+            <div className="mt-3 sm:mt-4">
               <Link
                 href={`/package/${pkg.ID}`}
                 className="block w-full text-center bg-indigo-600 text-white py-1.5 sm:py-2 rounded-lg font-medium hover:bg-indigo-700 text-xs sm:text-sm"

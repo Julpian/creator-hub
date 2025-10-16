@@ -1,4 +1,3 @@
-// File: components/TopNav.js
 "use client";
 
 import Link from "next/link";
@@ -8,45 +7,46 @@ import Image from "next/image";
 import {
   IoSearchOutline,
   IoMenuOutline,
-  IoLogoWhatsapp, // <-- 1. Impor ikon WhatsApp
+  IoLogoWhatsapp,
 } from "react-icons/io5";
 
 export default function TopNav() {
   const [query, setQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false); // 🔹 Tambahan untuk toggle search di mobile
   const router = useRouter();
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (query.trim()) {
-      router.push(`/?q=${query}`);
+      router.push(`/pencarian?q=${query}`);
+      setShowSearch(false); // Tutup setelah pencarian di mobile
     }
   };
 
-  // Ganti dengan nomor WhatsApp admin Anda
   const adminWhatsAppNumber = "6281234567890";
-  const waMessage = encodeURIComponent("Halo Admin Gen Creator Hub, saya ingin bertanya sesuatu.");
+  const waMessage = encodeURIComponent(
+    "Halo Admin Gen Creator Hub, saya ingin bertanya sesuatu."
+  );
 
   return (
-    // PERUBAHAN: Ganti warna header menjadi putih dengan shadow
-    <header className="fixed top-0 left-0 z-50 w-full h-16 bg-gradient-to-r from-[#1E90FF]/90 via-[#1986DF]/90 to-[#00B4FF]/90 backdrop-blur-sm shadow-md px-4">
-      <div className="flex items-center justify-between h-full max-w-6xl mx-auto">
-        
-        {/* PERUBAHAN: Sesuaikan ukuran Logo agar lebih proporsional */}
+    <header className="fixed top-0 left-0 z-50 w-full bg-gradient-to-r from-[#1E90FF] via-[#1986DF] to-[#00B4FF] shadow-md">
+      <div className="flex items-center justify-between h-16 px-4 max-w-6xl mx-auto">
+        {/* Logo */}
         <Link href="/" className="flex items-center">
           <Image
-            src="/logo.svg" // Pastikan file ada di /public/logo.svg
+            src="/logo.svg"
             alt="GenCreator Logo"
-            width={120} // Ukuran lebih pas untuk header
+            width={120}
             height={40}
             priority
             className="object-contain"
           />
         </Link>
 
-        {/* Search Bar untuk layar medium ke atas */}
+        {/* 🔹 Search bar untuk layar besar */}
         <form
           onSubmit={handleSearch}
-          className="flex-1 mx-4 max-w-md hidden sm:flex" // Tampil di layar sm ke atas
+          className="hidden sm:flex flex-1 mx-4 max-w-md"
         >
           <div className="relative w-full">
             <IoSearchOutline className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -60,14 +60,18 @@ export default function TopNav() {
           </div>
         </form>
 
-        {/* Icon Buttons */}
+        {/* 🔹 Ikon kanan */}
         <div className="flex items-center space-x-2">
-          {/* PERUBAHAN: Ikon Search khusus untuk mobile */}
-          <button className="p-2 rounded-full sm:hidden hover:bg-gray-100 transition-colors text-gray-600" title="Cari">
-            <IoSearchOutline size={24} />
+          {/* Tombol Search untuk mobile */}
+          <button
+            className="p-2 rounded-full sm:hidden hover:bg-white/20 transition-colors text-white"
+            title="Cari"
+            onClick={() => setShowSearch(!showSearch)}
+          >
+            <IoSearchOutline size={22} />
           </button>
 
-          {/* PERUBAHAN: Ganti ikon Pesan dengan WhatsApp */}
+          {/* WhatsApp */}
           <a
             href={`https://wa.me/${adminWhatsAppNumber}?text=${waMessage}`}
             target="_blank"
@@ -75,19 +79,34 @@ export default function TopNav() {
             className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-all"
             title="Hubungi via WhatsApp"
           >
-            <IoLogoWhatsapp size={24} className="text-white" />
+            <IoLogoWhatsapp size={22} className="text-white" />
           </a>
+
+          {/* Menu */}
           <button
-            className="p-2 rounded-full hover:bg-white/10 transition-all"
+            className="p-2 rounded-full hover:bg-white/20 transition-all text-white"
             title="Menu"
           >
-            <IoMenuOutline
-              size={26}
-              className="text-white drop-shadow-[0_0_3px_rgba(255,255,255,0.6)]"
-            />
+            <IoMenuOutline size={24} />
           </button>
         </div>
       </div>
+
+      {/* 🔹 Search bar muncul di bawah navbar ketika di mobile */}
+      {showSearch && (
+        <div className="px-4 pb-3 bg-[#f8fafc] sm:hidden border-t border-gray-100">
+          <form onSubmit={handleSearch} className="relative w-full mt-2">
+            <IoSearchOutline className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Cari kreator..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-2 text-sm text-gray-800 placeholder-gray-500 border border-gray-200 rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+            />
+          </form>
+        </div>
+      )}
     </header>
   );
 }

@@ -16,7 +16,7 @@ func ConnectDatabase() {
 		log.Fatal("Gagal terhubung ke database!", err)
 	}
 
-	database.AutoMigrate(&models.Influencer{}, &models.Admin{}, &models.Category{}, &models.Package{})
+	database.AutoMigrate(&models.Influencer{}, &models.Admin{}, &models.Category{}, &models.Package{}, &models.PortfolioImage{})
 	models.DB = database
 }
 

@@ -4,6 +4,7 @@ package controllers
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 	"time"
@@ -31,6 +32,9 @@ func GetInfluencers(c *gin.Context) {
 	var influencers []models.Influencer
 	var totalInfluencers int64
 
+	recommended := c.Query("recommended") // "true" atau "false"
+	platform := c.Query("platform")       // "instagram", "tiktok", dll.
+
 	queryBuilder := models.DB.Model(&models.Influencer{})
 
 	if categoryIDStr != "" {
@@ -39,8 +43,30 @@ func GetInfluencers(c *gin.Context) {
 			Where("influencer_categories.category_id = ?", categoryIDStr)
 	}
 
+	// --- TAMBAHKAN LOGIKA FILTER BARU ---
+	if recommended == "true" {
+		queryBuilder = queryBuilder.Where("is_recommended = ?", true)
+	}
+
+	if platform != "" {
+		switch platform {
+		case "instagram":
+			queryBuilder = queryBuilder.Where("instagram_url != '' AND instagram_url IS NOT NULL")
+		case "tiktok":
+			queryBuilder = queryBuilder.Where("tiktok_url != '' AND tiktok_url IS NOT NULL")
+		case "youtube":
+			queryBuilder = queryBuilder.Where("youtube_url != '' AND youtube_url IS NOT NULL")
+		case "facebook":
+			queryBuilder = queryBuilder.Where("facebook_url != '' AND facebook_url IS NOT NULL")
+		}
+	}
+
 	queryBuilder.Count(&totalInfluencers)
 	queryBuilder.Preload("Categories").Limit(limit).Offset(offset).Order("created_at desc").Find(&influencers)
+
+	for i := range influencers {
+		influencers[i].Age = calculateAge(influencers[i].DateOfBirth)
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"data":       influencers,
@@ -50,8 +76,21 @@ func GetInfluencers(c *gin.Context) {
 	})
 }
 
+func calculateAge(birthDate time.Time) int {
+	if birthDate.IsZero() {
+		return 0
+	}
+	today := time.Now()
+	age := today.Year() - birthDate.Year()
+	if today.YearDay() < birthDate.YearDay() {
+		age--
+	}
+	return age
+}
+
 func SearchInfluencers(c *gin.Context) {
 	query := c.Query("q")
+	location := c.Query("location")
 	pageStr := c.DefaultQuery("page", "1")
 	limitStr := c.DefaultQuery("limit", "9")
 
@@ -73,6 +112,11 @@ func SearchInfluencers(c *gin.Context) {
 		queryBuilder = queryBuilder.Where("name ILIKE ?", "%"+query+"%")
 	}
 
+	// Tambahkan filter untuk lokasi (jika ada)
+	if location != "" {
+		queryBuilder = queryBuilder.Where("location ILIKE ?", "%"+location+"%")
+	}
+
 	queryBuilder.Count(&totalInfluencers)
 	queryBuilder.Preload("Categories").Limit(limit).Offset(offset).Order("created_at desc").Find(&influencers)
 
@@ -82,15 +126,19 @@ func SearchInfluencers(c *gin.Context) {
 		"page":       page,
 		"limit":      limit,
 		"query":      query,
+		"location":   location,
 	})
 }
 
 func GetInfluencerByID(c *gin.Context) {
 	var influencer models.Influencer
-	if err := models.DB.Preload("Categories").First(&influencer, c.Param("id")).Error; err != nil {
+	if err := models.DB.Preload("Categories").Preload("PortfolioImages").First(&influencer, c.Param("id")).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Influencer tidak ditemukan"})
 		return
 	}
+
+	influencer.Age = calculateAge(influencer.DateOfBirth)
+
 	c.JSON(http.StatusOK, influencer)
 }
 
@@ -105,12 +153,15 @@ func CreateInfluencer(c *gin.Context) {
 		Name               string `json:"name" binding:"required"`
 		Bio                string `json:"bio"`
 		Location           string `json:"location"`
+		IsRecommended      bool   `json:"isRecommended"`
 		InstagramURL       string `json:"instagramUrl" binding:"omitempty,url"`
 		TiktokURL          string `json:"tiktokUrl" binding:"omitempty,url"`
 		YoutubeURL         string `json:"youtubeUrl" binding:"omitempty,url"`
 		InstagramFollowers int    `json:"instagramFollowers" binding:"gte=0"`
 		TiktokFollowers    int    `json:"tiktokFollowers" binding:"gte=0"`
 		YoutubeSubscribers int    `json:"youtubeSubscribers" binding:"gte=0"`
+		Gender             string `json:"gender"`
+		DateOfBirth        string `json:"dateOfBirth"`
 		CategoryIDs        []uint `json:"category_ids"`
 	}
 
@@ -132,16 +183,21 @@ func CreateInfluencer(c *gin.Context) {
 		return
 	}
 
+	dob, _ := time.Parse("2006-01-02", payload.DateOfBirth)
+
 	newInfluencer := models.Influencer{
 		Name:               payload.Name,
 		Bio:                payload.Bio,
 		Location:           payload.Location,
+		IsRecommended:      payload.IsRecommended,
 		InstagramURL:       payload.InstagramURL,
 		TiktokURL:          payload.TiktokURL,
 		YoutubeURL:         payload.YoutubeURL,
 		InstagramFollowers: payload.InstagramFollowers,
 		TiktokFollowers:    payload.TiktokFollowers,
 		YoutubeSubscribers: payload.YoutubeSubscribers,
+		Gender:             payload.Gender,
+		DateOfBirth:        dob,
 	}
 	if err := models.DB.Create(&newInfluencer).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan influencer"})
@@ -169,12 +225,15 @@ func UpdateInfluencer(c *gin.Context) {
 		Name               string `json:"name" binding:"required"`
 		Bio                string `json:"bio"`
 		Location           string `json:"location"`
-		InstagramURL       string `json:"instagramUrl" binding:"omitempty,url"`
-		TiktokURL          string `json:"tiktokUrl" binding:"omitempty,url"`
-		YoutubeURL         string `json:"youtubeUrl" binding:"omitempty,url"`
+		IsRecommended      bool   `json:"isRecommended"`
+		InstagramURL       string `json:"instagramUrl" binding:"omitempty"`
+		TiktokURL          string `json:"tiktokUrl" binding:"omitempty"`
+		YoutubeURL         string `json:"youtubeUrl" binding:"omitempty"`
 		InstagramFollowers int    `json:"instagramFollowers" binding:"gte=0"`
 		TiktokFollowers    int    `json:"tiktokFollowers" binding:"gte=0"`
 		YoutubeSubscribers int    `json:"youtubeSubscribers" binding:"gte=0"`
+		Gender             string `json:"gender"`
+		DateOfBirth        string `json:"dateOfBirth"`
 		CategoryIDs        []uint `json:"category_ids"`
 	}
 
@@ -184,15 +243,20 @@ func UpdateInfluencer(c *gin.Context) {
 		return
 	}
 
+	dob, _ := time.Parse("2006-01-02", payload.DateOfBirth)
+
 	influencer.Name = payload.Name
 	influencer.Bio = payload.Bio
 	influencer.Location = payload.Location
+	influencer.IsRecommended = payload.IsRecommended
 	influencer.InstagramURL = payload.InstagramURL
 	influencer.TiktokURL = payload.TiktokURL
 	influencer.YoutubeURL = payload.YoutubeURL
 	influencer.InstagramFollowers = payload.InstagramFollowers
 	influencer.TiktokFollowers = payload.TiktokFollowers
 	influencer.YoutubeSubscribers = payload.YoutubeSubscribers
+	influencer.Gender = payload.Gender
+	influencer.DateOfBirth = dob
 
 	models.DB.Save(&influencer)
 
@@ -243,4 +307,66 @@ func UploadImage(c *gin.Context) {
 	models.DB.Save(&influencer)
 
 	c.JSON(http.StatusOK, gin.H{"message": "Gambar berhasil diunggah!", "data": influencer})
+}
+
+func UploadPortfolioImage(c *gin.Context) {
+	influencerID := c.Param("id")
+
+	// Cek apakah influencer ada
+	var influencer models.Influencer
+	if err := models.DB.First(&influencer, influencerID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Influencer tidak ditemukan"})
+		return
+	}
+
+	// Ambil file dari form
+	file, err := c.FormFile("image")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Gambar tidak ditemukan"})
+		return
+	}
+
+	// Ambil deskripsi opsional dari form
+	description := c.PostForm("description")
+
+	// Buat nama file unik
+	filename := fmt.Sprintf("portfolio-%d-%s", time.Now().Unix(), file.Filename)
+	dst := filepath.Join("./uploads", filename)
+
+	// Simpan file
+	if err := c.SaveUploadedFile(file, dst); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan gambar"})
+		return
+	}
+
+	// Buat record baru di tabel portfolio_images
+	portfolioImage := models.PortfolioImage{
+		InfluencerID: influencer.ID,
+		ImageURL:     "/uploads/" + filename,
+		Description:  description,
+	}
+	models.DB.Create(&portfolioImage)
+
+	c.JSON(http.StatusCreated, portfolioImage)
+}
+
+func DeletePortfolioImage(c *gin.Context) {
+	imageID := c.Param("imageId")
+	var portfolioImage models.PortfolioImage
+
+	// Cari gambar portofolio berdasarkan ID-nya
+	if err := models.DB.First(&portfolioImage, imageID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Gambar portofolio tidak ditemukan"})
+		return
+	}
+
+	// Hapus record dari database
+	models.DB.Unscoped().Delete(&portfolioImage)
+
+	// Hapus file fisik dari folder 'uploads'
+	// Hapus awalan '/uploads/' untuk mendapatkan nama file
+	filePath := filepath.Join(".", portfolioImage.ImageURL)
+	os.Remove(filePath)
+
+	c.JSON(http.StatusOK, gin.H{"message": "Gambar portofolio berhasil dihapus"})
 }

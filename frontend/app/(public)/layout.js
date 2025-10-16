@@ -3,6 +3,7 @@
 import { Inter } from "next/font/google";
 import TopNav from "@/components/TopNav";
 import BottomNav from "@/components/BottomNav";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,10 @@ export default function PublicLayout({ children }) {
       <main className="pt-16 pb-16">
         {children}
       </main>
+      <Footer />
+      {/* Tambahan padding bawah untuk scroll */}
+      <div className="h-6" />
+      {/* Bottom Navigation untuk mobile */}
       <BottomNav />
     </>
   );

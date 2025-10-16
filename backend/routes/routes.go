@@ -45,12 +45,15 @@ func SetupRouter() *gin.Engine {
 		adminRoutes.PUT("/influencers/:id", controllers.UpdateInfluencer)
 		adminRoutes.DELETE("/influencers/:id", controllers.DeleteInfluencer)
 		adminRoutes.POST("/influencers/:id/upload", controllers.UploadImage)
+		adminRoutes.POST("/influencers/:id/portfolio", controllers.UploadPortfolioImage)
+		adminRoutes.DELETE("/portfolio/:imageId", controllers.DeletePortfolioImage)
 
 		// Package Admin
 		adminRoutes.POST("/packages", controllers.CreatePackage)
 		adminRoutes.PUT("/packages/:id", controllers.UpdatePackage)
 		adminRoutes.DELETE("/packages/:id", controllers.DeletePackage)
 		adminRoutes.POST("/packages/:id/upload", controllers.UploadPackageImage)
+
 	}
 
 	return router

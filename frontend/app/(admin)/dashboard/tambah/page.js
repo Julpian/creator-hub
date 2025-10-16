@@ -7,6 +7,8 @@ export default function TambahPage() {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
+  const [gender, setGender] = useState(""); // 🔹 Jenis Kelamin
+  const [dateOfBirth, setDateOfBirth] = useState(""); // 🔹 Tanggal Lahir
   const [instagramUrl, setInstagramUrl] = useState("");
   const [tiktokUrl, setTiktokUrl] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
@@ -54,6 +56,8 @@ export default function TambahPage() {
       name,
       bio,
       location,
+      gender, // ✅ tambahkan gender
+      dateOfBirth, // ✅ tambahkan dateOfBirth
       instagramUrl,
       tiktokUrl,
       youtubeUrl,
@@ -123,6 +127,40 @@ export default function TambahPage() {
           />
         </div>
 
+        {/* 🔹 Jenis Kelamin & Tanggal Lahir */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Jenis Kelamin */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Jenis Kelamin
+            </label>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            >
+              <option value="">Pilih Jenis Kelamin</option>
+              <option value="Pria">Pria</option>
+              <option value="Wanita">Wanita</option>
+            </select>
+          </div>
+
+          {/* Tanggal Lahir */}
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              Tanggal Lahir
+            </label>
+            <input
+              type="date"
+              value={dateOfBirth}
+              onChange={(e) => setDateOfBirth(e.target.value)}
+              min="1950-01-01"
+              max={new Date().toISOString().split("T")[0]} // 🔹 Batas: 1950 - sekarang
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+        </div>
+
         {/* Lokasi */}
         <div>
           <label className="block text-gray-700 font-semibold mb-2">
@@ -155,30 +193,13 @@ export default function TambahPage() {
             Akun Sosial Media
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              {
-                label: "Instagram URL",
-                value: instagramUrl,
-                setValue: setInstagramUrl,
-                placeholder: "https://instagram.com/username",
-              },
-              {
-                label: "TikTok URL",
-                value: tiktokUrl,
-                setValue: setTiktokUrl,
-                placeholder: "https://tiktok.com/@username",
-              },
-              {
-                label: "YouTube URL",
-                value: youtubeUrl,
-                setValue: setYoutubeUrl,
-                placeholder: "https://youtube.com/@username",
-              },
+            {[ 
+              { label: "Instagram URL", value: instagramUrl, setValue: setInstagramUrl, placeholder: "https://instagram.com/username" },
+              { label: "TikTok URL", value: tiktokUrl, setValue: setTiktokUrl, placeholder: "https://tiktok.com/@username" },
+              { label: "YouTube URL", value: youtubeUrl, setValue: setYoutubeUrl, placeholder: "https://youtube.com/@username" },
             ].map(({ label, value, setValue, placeholder }) => (
               <div key={label}>
-                <label className="block text-gray-700 text-sm mb-1">
-                  {label}
-                </label>
+                <label className="block text-gray-700 text-sm mb-1">{label}</label>
                 <input
                   type="text"
                   value={value}
@@ -197,27 +218,13 @@ export default function TambahPage() {
             Statistik Pengikut
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              {
-                label: "Instagram Followers",
-                value: instagramFollowers,
-                setValue: setInstagramFollowers,
-              },
-              {
-                label: "TikTok Followers",
-                value: tiktokFollowers,
-                setValue: setTiktokFollowers,
-              },
-              {
-                label: "YouTube Subscribers",
-                value: youtubeSubscribers,
-                setValue: setYoutubeSubscribers,
-              },
+            {[ 
+              { label: "Instagram Followers", value: instagramFollowers, setValue: setInstagramFollowers },
+              { label: "TikTok Followers", value: tiktokFollowers, setValue: setTiktokFollowers },
+              { label: "YouTube Subscribers", value: youtubeSubscribers, setValue: setYoutubeSubscribers },
             ].map(({ label, value, setValue }) => (
               <div key={label}>
-                <label className="block text-gray-700 text-sm mb-1">
-                  {label}
-                </label>
+                <label className="block text-gray-700 text-sm mb-1">{label}</label>
                 <input
                   type="number"
                   value={value}
@@ -261,11 +268,11 @@ export default function TambahPage() {
             accept="image/*"
             onChange={handleImageChange}
             className="block w-full text-sm text-gray-500
-            file:mr-4 file:py-2 file:px-4
-            file:rounded-full file:border-0
-            file:text-sm file:font-semibold
-            file:bg-blue-50 file:text-blue-700
-            hover:file:bg-blue-100"
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-blue-50 file:text-blue-700
+              hover:file:bg-blue-100"
           />
         </div>
 

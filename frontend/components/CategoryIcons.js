@@ -41,14 +41,14 @@ export default function CategoryList() {
   };
 
   return (
-    <div className="w-full px-4 py-4">
+    <div className="w-full px-1 py-1 sm:px-3 sm:py-3">
       {/* 🔹 Judul di atas kategori */}
       <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3">
         Kategori KOL
       </h2>
 
-      <div className="overflow-x-auto scrollbar-hide">
-        <div className="flex gap-2 sm:gap-3 min-w-max">
+      <div className="overflow-x-auto no-scrollbar">
+        <div className="flex gap-1 sm:gap-2 min-w-max">
           {/* Tombol Semua */}
           <Link
             href={createCategoryUrl(null)}

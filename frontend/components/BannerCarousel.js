@@ -59,7 +59,7 @@ export default function BannerCarousel() {
   }, [emblaApi]);
 
   return (
-    <div className="embla relative w-full max-w-6xl mx-auto mt-20">
+    <div className="embla relative w-full max-w-6xl mx-auto mt-1 mb-1">
       <div className="embla__viewport overflow-hidden rounded-xl" ref={emblaRef}>
         <div className="embla__container flex">
           {banners.map((banner, index) => (
