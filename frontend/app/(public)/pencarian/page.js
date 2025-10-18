@@ -11,6 +11,7 @@ import {
   IoLocation,
   IoSend,
   IoMenu,
+  IoLogoWhatsapp,
 } from "react-icons/io5";
 import InfluencerCard from "@/components/InfluencerCard";
 
@@ -23,6 +24,12 @@ function SearchPageContent() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [headerTitle, setHeaderTitle] = useState("Rekomendasi Untuk Anda");
+
+  const adminWhatsAppNumber = "6281234567890";
+  const waMessage = encodeURIComponent(
+    "Halo Admin Gen Creator Hub, saya ingin bertanya sesuatu."
+  );
+
 
   useEffect(() => {
     const queryFromUrl = searchParams.get("q") || "";
@@ -77,24 +84,34 @@ function SearchPageContent() {
   return (
     <main className="min-h-screen bg-gray-50 text-gray-800">
       {/* HEADER */}
-      <header className="bg-blue-600 text-white py-4 px-6 flex items-center justify-between fixed top-0 left-0 w-full z-50 shadow-md">
-        <Link
-          href="/"
-          className="p-2 rounded-full hover:bg-blue-700 transition-colors duration-200"
-        >
-          <IoArrowBack size={24} />
-        </Link>
+      <header className="fixed top-0 left-0 z-50 w-full bg-gradient-to-r from-[#1E90FF] via-[#1986DF] to-[#00B4FF] shadow-md text-white backdrop-blur-md">
+        <div className="flex items-center justify-between h-16 px-4 sm:px-8 max-w-5xl mx-auto">
+          <Link
+            href="/"
+            className="hover:text-blue-200 transition-transform active:scale-95"
+          >
+            <IoArrowBack size={26} />
+          </Link>
 
-        <h1 className="text-lg sm:text-xl font-semibold">Cari Influencer</h1>
+          <h1 className="text-base sm:text-lg font-semibold tracking-wide text-center flex-1">
+            Cari Influencer
+          </h1>
 
-        <div className="flex items-center gap-3">
-          <IoSend size={22} className="cursor-pointer hover:text-blue-200 transition" />
-          <IoMenu size={26} className="cursor-pointer hover:text-blue-200 transition" />
+          {/* WhatsApp */}
+          <a
+            href={`https://wa.me/${adminWhatsAppNumber}?text=${waMessage}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-all"
+            title="Hubungi via WhatsApp"
+          >
+            <IoLogoWhatsapp size={22} className="text-white" />
+          </a>
         </div>
       </header>
 
       {/* MAIN CONTENT */}
-      <div className="pt-28 pb-16 px-6 sm:px-10 w-full max-w-6xl mx-auto">
+      <div className="pt-5 pb-16 px-6 sm:px-10 w-full max-w-6xl mx-auto">
         {/* FORM PENCARIAN */}
         <form
           onSubmit={handleSearch}

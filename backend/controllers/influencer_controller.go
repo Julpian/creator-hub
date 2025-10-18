@@ -120,6 +120,15 @@ func SearchInfluencers(c *gin.Context) {
 	queryBuilder.Count(&totalInfluencers)
 	queryBuilder.Preload("Categories").Limit(limit).Offset(offset).Order("created_at desc").Find(&influencers)
 
+	// ✅ Tambahkan perhitungan umur di sini
+	for i := range influencers {
+		if !influencers[i].DateOfBirth.IsZero() {
+			influencers[i].Age = calculateAge(influencers[i].DateOfBirth)
+		} else {
+			influencers[i].Age = 0
+		}
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"data":       influencers,
 		"total_data": totalInfluencers,

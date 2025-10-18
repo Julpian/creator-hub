@@ -6,49 +6,48 @@ import { useRouter } from "next/navigation";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const res = await fetch("http://localhost:8080/api/admin/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-
+      const data = await res.json();
 
       if (res.ok) {
-          // --- TAMBAHKAN LOGIKA INI ---
-          const data = await res.json(); // Ambil body respons
-          localStorage.setItem('authToken', data.token); // Simpan token ke localStorage
-
-        alert("Login ke backend berhasil!");
-        router.push("/dashboard");
+        localStorage.setItem("authToken", data.token);
+        router.push("/dashboard"); // Langsung masuk tanpa alert
       } else {
-        const data = await res.json();
-        alert(`Login gagal: ${data.error || "Terjadi kesalahan"}`);
+        alert(`Login gagal: ${data.error || "Terjadi kesalahan."}`);
       }
     } catch (error) {
       console.error("Tidak bisa terhubung ke server:", error);
       alert("Login gagal: Tidak bisa terhubung ke server.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
       <div className="backdrop-blur-xl bg-white/20 border border-white/30 shadow-2xl rounded-2xl p-8 w-full max-w-sm">
-        <h1 className="text-3xl font-extrabold text-center text-white mb-2 drop-shadow-md">
-          Creator Hub
-        </h1>
-        <p className="text-center text-gray-200 mb-6 text-sm">
-          Admin Login Panel
-        </p>
+        {/* Header */}
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-extrabold text-white drop-shadow-md">
+            Creator Hub
+          </h1>
+          <p className="text-gray-200 text-sm mt-1">Admin Login Panel</p>
+        </div>
 
+        {/* Form */}
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
             <label
@@ -88,12 +87,18 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="w-full py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
+            disabled={loading}
+            className={`w-full py-2 font-semibold rounded-lg shadow-md text-white transform transition-all duration-200 ${
+              loading
+                ? "bg-indigo-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 hover:shadow-lg hover:scale-[1.02]"
+            }`}
           >
-            Login
+            {loading ? "Memproses..." : "Login"}
           </button>
         </form>
 
+        {/* Footer */}
         <p className="text-center text-xs text-gray-200 mt-6">
           © 2025 Creator Hub Admin
         </p>

@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 
-// Data testimoni
 const testimonials = [
   {
     name: "Maysa Aulia R",
@@ -30,7 +29,6 @@ const testimonials = [
   },
 ];
 
-// Komponen rating bintang
 const StarRating = ({ count }) => (
   <div className="flex text-yellow-400">
     {[...Array(count)].map((_, i) => (
@@ -39,7 +37,7 @@ const StarRating = ({ count }) => (
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
-        className="w-5 h-5"
+        className="w-4 h-4"
       >
         <path
           fillRule="evenodd"
@@ -53,27 +51,27 @@ const StarRating = ({ count }) => (
 
 export default function Testimonials() {
   return (
-    <section className="py-1 bg-gray-50 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 text-center">
+    <section className="py-14 bg-gray-50 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto px-4 text-center">
         {/* Judul */}
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4">
           Apa Kata Mereka Tentang <br />
           <span className="text-green-600">Gen Creator Hub?</span>
         </h2>
-        <p className="text-gray-500 max-w-2xl mx-auto mb-14">
-          Beberapa cerita nyata dari para kreator dan brand partner yang telah
-          bekerja sama dengan kami 💬
+        <p className="text-gray-500 max-w-2xl mx-auto mb-10">
+          Cerita nyata dari para kreator dan brand partner yang sudah bekerja sama 💬
         </p>
 
-        {/* Grid Testimoni */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* Carousel satu per satu */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 scrollbar-hide">
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl border border-gray-100 transition-all duration-300"
+              className="flex-shrink-0 w-full max-w-[700px] mx-auto snap-center bg-white p-10 rounded-2xl 
+                         shadow-lg hover:shadow-xl border border-gray-100 transition-all duration-300"
             >
               {/* Header */}
-              <div className="flex items-center mb-5">
+              <div className="flex items-center mb-5 justify-center md:justify-start">
                 <Image
                   src={t.imageUrl}
                   alt={t.name}
@@ -89,7 +87,7 @@ export default function Testimonials() {
               </div>
 
               {/* Isi Testimoni */}
-              <p className="text-gray-600 leading-relaxed italic">
+              <p className="text-gray-600 leading-relaxed italic text-center md:text-left">
                 “{t.quote}”
               </p>
             </div>
@@ -97,7 +95,7 @@ export default function Testimonials() {
         </div>
       </div>
 
-      {/* Hiasan Background (opsional) */}
+      {/* Latar belakang lembut */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-white/60 to-white pointer-events-none" />
     </section>
   );
