@@ -10,7 +10,7 @@ import {
 import { MdOutlineRecommend } from "react-icons/md";
 
 const navItems = [
-  { href: "/", icon: IoHomeOutline, label: "Home" },
+  { href: "/home", icon: IoHomeOutline, label: "Home" },
   { href: "/rekomendasi", icon: MdOutlineRecommend, label: "Rekomendasi" },
   { href: "/pencarian", icon: IoSearchOutline, label: "Pencarian" },
   { href: "/tentang-kami", icon: IoPeopleOutline, label: "About Us" },

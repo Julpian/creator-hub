@@ -32,7 +32,7 @@ export default function TopNav() {
     <header className="fixed top-0 left-0 z-50 w-full bg-gradient-to-r from-[#1E90FF] via-[#1986DF] to-[#00B4FF] shadow-md">
       <div className="flex items-center justify-between h-16 px-4 max-w-6xl mx-auto">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/home" className="flex items-center">
           <Image
             src="/logo.svg"
             alt="GenCreator Logo"
