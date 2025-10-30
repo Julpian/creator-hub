@@ -63,7 +63,7 @@ export default async function PackageDetailPage({ params }) {
       <div className="max-w-3xl mx-auto space-y-6 sm:space-y-8">
         {/* Tombol Kembali */}
         <Link
-          href="/"
+          href="/home"
           className="inline-flex items-center gap-2 text-gray-600 hover:text-indigo-600 transition font-medium text-sm sm:text-base"
         >
           <IoArrowBack size={18} />

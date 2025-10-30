@@ -67,7 +67,7 @@ function RekomendasiContent() {
       <header className="fixed top-0 left-0 z-50 w-full bg-gradient-to-r from-[#1E90FF] via-[#1986DF] to-[#00B4FF] shadow-md text-white backdrop-blur-md">
         <div className="flex items-center justify-between h-16 px-4 sm:px-8 max-w-5xl mx-auto">
           <Link
-            href="/"
+            href="/home"
             className="hover:text-blue-200 transition-transform active:scale-95"
           >
             <IoArrowBack size={26} />

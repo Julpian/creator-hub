@@ -93,6 +93,9 @@ func SearchInfluencers(c *gin.Context) {
 	location := c.Query("location")
 	pageStr := c.DefaultQuery("page", "1")
 	limitStr := c.DefaultQuery("limit", "9")
+	gender := c.Query("gender")     // "Pria" atau "Wanita"
+	minAgeStr := c.Query("min_age") // Angka
+	maxAgeStr := c.Query("max_age") // Angka
 
 	page, _ := strconv.Atoi(pageStr)
 	if page < 1 {
@@ -112,9 +115,38 @@ func SearchInfluencers(c *gin.Context) {
 		queryBuilder = queryBuilder.Where("name ILIKE ?", "%"+query+"%")
 	}
 
+	if query != "" {
+		queryBuilder = queryBuilder.Where("name ILIKE ?", "%"+query+"%")
+	}
+
 	// Tambahkan filter untuk lokasi (jika ada)
 	if location != "" {
 		queryBuilder = queryBuilder.Where("location ILIKE ?", "%"+location+"%")
+	}
+
+	// Tambahkan filter untuk jenis kelamin (jika ada)
+	if gender != "" {
+		queryBuilder = queryBuilder.Where("gender = ?", gender)
+	}
+
+	// Tambahkan filter untuk rentang umur (jika ada)
+	// Kita perlu menghitung tanggal lahir berdasarkan umur
+	today := time.Now()
+	if minAgeStr != "" {
+		minAge, err := strconv.Atoi(minAgeStr)
+		if err == nil && minAge > 0 {
+			// Tanggal lahir maksimal untuk usia minimal
+			maxBirthDate := today.AddDate(-minAge, 0, 0)
+			queryBuilder = queryBuilder.Where("date_of_birth <= ?", maxBirthDate.Format("2006-01-02"))
+		}
+	}
+	if maxAgeStr != "" {
+		maxAge, err := strconv.Atoi(maxAgeStr)
+		if err == nil && maxAge > 0 {
+			// Tanggal lahir minimal untuk usia maksimal (+1 tahun karena batas inklusif)
+			minBirthDate := today.AddDate(-(maxAge + 1), 0, 1)
+			queryBuilder = queryBuilder.Where("date_of_birth >= ?", minBirthDate.Format("2006-01-02"))
+		}
 	}
 
 	queryBuilder.Count(&totalInfluencers)
@@ -136,6 +168,9 @@ func SearchInfluencers(c *gin.Context) {
 		"limit":      limit,
 		"query":      query,
 		"location":   location,
+		"gender":     gender,
+		"min_age":    minAgeStr,
+		"max_age":    maxAgeStr,
 	})
 }
 

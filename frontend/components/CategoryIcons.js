@@ -37,7 +37,7 @@ export default function CategoryList() {
       params.delete('category_id');
     }
     params.delete('page');
-    return `/?${params.toString()}`;
+    return `/home?${params.toString()}`;
   };
 
   return (

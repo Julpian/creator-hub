@@ -16,7 +16,7 @@ export default function PaginationClient({
     query.set("page", page);
     if (searchQuery) query.set("q", searchQuery);
     if (categoryId) query.set("category_id", categoryId);
-    router.push(`/?${query.toString()}`, { scroll: false });
+    router.push(`/home?${query.toString()}`, { scroll: false });
   };
 
   return (

@@ -56,7 +56,7 @@ export default function InfluencerDetailPage() {
         {/* Tombol Kembali */}
         <div className="mb-4">
           <Link
-            href="/"
+            href="/home"
             className="inline-flex items-center gap-2 text-gray-600 hover:text-indigo-600 font-medium transition-colors"
           >
             <IoArrowBack size={20} />

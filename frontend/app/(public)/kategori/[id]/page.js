@@ -30,7 +30,7 @@ export default async function CategoryPage({ params }) {
       <div className="w-full max-w-6xl">
         {/* Tombol Back dan Judul Halaman */}
         <header className="relative text-center mb-10">
-          <Link href="/" className="absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-100">
+          <Link href="/home" className="absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-100">
             <IoArrowBack size={24} />
           </Link>
           <h1 className="text-3xl font-bold text-gray-800">
