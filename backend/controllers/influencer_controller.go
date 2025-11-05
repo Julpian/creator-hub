@@ -89,13 +89,16 @@ func calculateAge(birthDate time.Time) int {
 }
 
 func SearchInfluencers(c *gin.Context) {
+	// Ambil semua parameter
 	query := c.Query("q")
 	location := c.Query("location")
+	categoryIDStr := c.Query("category_id")
+	gender := c.Query("gender")
+	minAgeStr := c.Query("min_age")
+	maxAgeStr := c.Query("max_age")
+
 	pageStr := c.DefaultQuery("page", "1")
-	limitStr := c.DefaultQuery("limit", "9")
-	gender := c.Query("gender")     // "Pria" atau "Wanita"
-	minAgeStr := c.Query("min_age") // Angka
-	maxAgeStr := c.Query("max_age") // Angka
+	limitStr := c.DefaultQuery("limit", "9") // Anda bisa ubah ini ke 10 atau 12
 
 	page, _ := strconv.Atoi(pageStr)
 	if page < 1 {
@@ -104,38 +107,37 @@ func SearchInfluencers(c *gin.Context) {
 	limit, _ := strconv.Atoi(limitStr)
 	if limit < 1 {
 		limit = 9
-	}
+	} // Sesuaikan default limit
 	offset := (page - 1) * limit
 
 	var influencers []models.Influencer
 	var totalInfluencers int64
 
 	queryBuilder := models.DB.Model(&models.Influencer{})
+
+	// --- Mulai membangun query ---
 	if query != "" {
 		queryBuilder = queryBuilder.Where("name ILIKE ?", "%"+query+"%")
 	}
 
-	if query != "" {
-		queryBuilder = queryBuilder.Where("name ILIKE ?", "%"+query+"%")
-	}
-
-	// Tambahkan filter untuk lokasi (jika ada)
 	if location != "" {
 		queryBuilder = queryBuilder.Where("location ILIKE ?", "%"+location+"%")
 	}
 
-	// Tambahkan filter untuk jenis kelamin (jika ada)
+	if categoryIDStr != "" {
+		queryBuilder = queryBuilder.
+			Joins("JOIN influencer_categories ON influencer_categories.influencer_id = influencers.id").
+			Where("influencer_categories.category_id = ?", categoryIDStr)
+	}
+
 	if gender != "" {
 		queryBuilder = queryBuilder.Where("gender = ?", gender)
 	}
 
-	// Tambahkan filter untuk rentang umur (jika ada)
-	// Kita perlu menghitung tanggal lahir berdasarkan umur
 	today := time.Now()
 	if minAgeStr != "" {
 		minAge, err := strconv.Atoi(minAgeStr)
 		if err == nil && minAge > 0 {
-			// Tanggal lahir maksimal untuk usia minimal
 			maxBirthDate := today.AddDate(-minAge, 0, 0)
 			queryBuilder = queryBuilder.Where("date_of_birth <= ?", maxBirthDate.Format("2006-01-02"))
 		}
@@ -143,34 +145,35 @@ func SearchInfluencers(c *gin.Context) {
 	if maxAgeStr != "" {
 		maxAge, err := strconv.Atoi(maxAgeStr)
 		if err == nil && maxAge > 0 {
-			// Tanggal lahir minimal untuk usia maksimal (+1 tahun karena batas inklusif)
 			minBirthDate := today.AddDate(-(maxAge + 1), 0, 1)
 			queryBuilder = queryBuilder.Where("date_of_birth >= ?", minBirthDate.Format("2006-01-02"))
 		}
 	}
+	// --- Selesai membangun query ---
 
+	// Hitung total data SETELAH semua filter diterapkan
 	queryBuilder.Count(&totalInfluencers)
+
+	// Ambil data dengan pagination DARI hasil yang sudah difilter
+	// HANYA ADA SATU PANGGILAN .Find()
 	queryBuilder.Preload("Categories").Limit(limit).Offset(offset).Order("created_at desc").Find(&influencers)
 
-	// ✅ Tambahkan perhitungan umur di sini
+	// Hitung umur untuk hasil yang ditemukan
 	for i := range influencers {
-		if !influencers[i].DateOfBirth.IsZero() {
-			influencers[i].Age = calculateAge(influencers[i].DateOfBirth)
-		} else {
-			influencers[i].Age = 0
-		}
+		influencers[i].Age = calculateAge(influencers[i].DateOfBirth)
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"data":       influencers,
-		"total_data": totalInfluencers,
-		"page":       page,
-		"limit":      limit,
-		"query":      query,
-		"location":   location,
-		"gender":     gender,
-		"min_age":    minAgeStr,
-		"max_age":    maxAgeStr,
+		"data":        influencers,
+		"total_data":  totalInfluencers,
+		"page":        page,
+		"limit":       limit,
+		"query":       query,
+		"location":    location,
+		"category_id": categoryIDStr,
+		"gender":      gender,
+		"min_age":     minAgeStr,
+		"max_age":     maxAgeStr,
 	})
 }
 

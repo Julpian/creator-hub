@@ -48,7 +48,7 @@ export default function TopNav() {
       external: true, // penanda link eksternal
     },
     { title: "Terms & Conditions", href: "#", icon: IoDocumentTextOutline },
-    { title: "FAQ", href: "#", icon: IoChatbubbleEllipsesOutline },
+    { title: "FAQ", href: "/faq", icon: IoChatbubbleEllipsesOutline },
   ];
 
   return (

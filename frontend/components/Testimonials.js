@@ -30,14 +30,14 @@ const testimonials = [
 ];
 
 const StarRating = ({ count }) => (
-  <div className="flex text-yellow-400">
+  <div className="flex text-yellow-400 mt-1">
     {[...Array(count)].map((_, i) => (
       <svg
         key={i}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
-        className="w-4 h-4"
+        className="w-5 h-5"
       >
         <path
           fillRule="evenodd"
@@ -51,43 +51,44 @@ const StarRating = ({ count }) => (
 
 export default function Testimonials() {
   return (
-    <section className="py-14 bg-gray-50 relative overflow-hidden">
-      <div className="max-w-4xl mx-auto px-4 text-center">
+    <section className="py-20 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
+      <div className="max-w-6xl mx-auto px-6 text-center">
         {/* Judul */}
-        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-4">
-          Apa Kata Mereka Tentang <br />
+        <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 leading-tight">
+          Apa Kata Mereka Tentang{" "}
           <span className="text-green-600">Gen Creator Hub?</span>
         </h2>
-        <p className="text-gray-500 max-w-2xl mx-auto mb-10">
+        <p className="text-gray-500 max-w-2xl mx-auto mb-14 text-lg">
           Cerita nyata dari para kreator dan brand partner yang sudah bekerja sama 💬
         </p>
 
-        {/* Carousel satu per satu */}
-        <div className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 scrollbar-hide">
+        {/* Carousel */}
+        <div className="flex overflow-x-auto gap-8 snap-x snap-mandatory scroll-smooth pb-8 scrollbar-hide px-2">
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="flex-shrink-0 w-full max-w-[700px] mx-auto snap-center bg-white p-10 rounded-2xl 
-                         shadow-lg hover:shadow-xl border border-gray-100 transition-all duration-300"
+              className="flex-shrink-0 w-full md:w-[600px] lg:w-[700px] mx-auto snap-center 
+                         bg-white p-10 rounded-3xl shadow-lg border border-gray-100 
+                         transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]"
             >
               {/* Header */}
-              <div className="flex items-center mb-5 justify-center md:justify-start">
+              <div className="flex flex-col items-center md:flex-row md:items-center mb-6 gap-4">
                 <Image
                   src={t.imageUrl}
                   alt={t.name}
-                  width={56}
-                  height={56}
-                  className="w-14 h-14 rounded-full object-cover"
+                  width={72}
+                  height={72}
+                  className="w-20 h-20 rounded-full object-cover shadow-md"
                 />
-                <div className="ml-4 text-left">
-                  <StarRating count={t.stars} />
-                  <p className="font-bold text-gray-800 mt-1">{t.name}</p>
+                <div className="text-center md:text-left">
+                  <p className="font-bold text-gray-800 text-lg">{t.name}</p>
                   <p className="text-sm text-gray-500">{t.role}</p>
+                  <StarRating count={t.stars} />
                 </div>
               </div>
 
               {/* Isi Testimoni */}
-              <p className="text-gray-600 leading-relaxed italic text-center md:text-left">
+              <p className="text-gray-600 leading-relaxed italic text-lg text-center md:text-left">
                 “{t.quote}”
               </p>
             </div>
@@ -96,7 +97,7 @@ export default function Testimonials() {
       </div>
 
       {/* Latar belakang lembut */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-white/60 to-white pointer-events-none" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-white/70 to-white pointer-events-none" />
     </section>
   );
 }

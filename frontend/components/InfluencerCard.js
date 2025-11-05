@@ -125,8 +125,8 @@ export default function InfluencerCard({ influencer }) {
           <a
             href={`https://wa.me/${adminWhatsAppNumber}?text=${waMessage}`}
             target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 text-center bg-[#C8FF6F] text-gray-900 font-semibold py-2 rounded-xl hover:bg-[#B6F95D] transition-all shadow-sm text-sm sm:text-base"
+            rel="noopener noreferrer" 
+            className="inline-flex items-center justify-center px-6 py-3 rounded-xl shadow-md shadow-amber-500 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold hover:scale-[1.03] transition-transform duration-200"
           >
             Kolaborasi
           </a>

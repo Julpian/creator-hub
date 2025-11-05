@@ -12,8 +12,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-black text-gray-300 w-full border-t border-white/10 backdrop-blur-md">
-      {/* Pusatkan dan samakan ukuran dengan BottomNav */}
+    <footer className="bg-white text-gray-700 w-full border-t border-gray-200">
       <div className="max-w-lg md:max-w-6xl mx-auto px-5 sm:px-6 py-10 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 text-center md:text-left">
 
@@ -26,17 +25,17 @@ export default function Footer() {
               height={60}
               className="object-contain mb-4"
             />
-            <p className="text-sm leading-6">
-              <span className="font-semibold text-white">Gen Creator Hub</span> adalah platform martech yang menyediakan solusi lengkap untuk pemasaran KOL di Instagram, TikTok, dan YouTube — terintegrasi dalam satu sistem cerdas.
+            <p className="text-sm leading-6 text-gray-600">
+              <span className="font-semibold text-gray-900">Gen Creator Hub</span> adalah platform martech yang menyediakan solusi lengkap untuk pemasaran KOL di Instagram, TikTok, dan YouTube — terintegrasi dalam satu sistem cerdas.
             </p>
           </div>
 
           {/* Kolom 2: Info Perusahaan */}
           <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-white font-medium text-base mb-3">
+            <h3 className="text-gray-900 font-semibold text-base mb-3">
               PT Gentra Media Utama
             </h3>
-            <p className="text-sm leading-6">
+            <p className="text-sm leading-6 text-gray-600">
               Ruko Jl. Permata Regency Blok C 15,<br />
               Tugujaya, Kec. Cihideung, Kab. Tasikmalaya,<br />
               Jawa Barat 46115
@@ -45,14 +44,14 @@ export default function Footer() {
 
           {/* Kolom 3: Kontak */}
           <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-white font-medium text-base mb-3">
+            <h4 className="text-gray-900 font-semibold text-base mb-3">
               Hubungi Kami
             </h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a
                   href="mailto:support@GCH.id"
-                  className="flex items-center justify-center md:justify-start gap-2 hover:text-white transition-colors"
+                  className="flex items-center justify-center md:justify-start gap-2 hover:text-blue-600 transition-colors"
                 >
                   <Mail size={20} strokeWidth={1.5} /> support@GCH.id
                 </a>
@@ -62,7 +61,7 @@ export default function Footer() {
                   href="https://wa.me/6281234567890"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center md:justify-start gap-2 hover:text-white transition-colors"
+                  className="flex items-center justify-center md:justify-start gap-2 hover:text-blue-600 transition-colors"
                 >
                   <MessageCircle size={20} strokeWidth={1.5} /> Chat via WhatsApp
                 </a>
@@ -72,7 +71,7 @@ export default function Footer() {
 
           {/* Kolom 4: Media Sosial */}
           <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-white font-medium text-base mb-3">
+            <h4 className="text-gray-900 font-semibold text-base mb-3">
               Temukan Kami di
             </h4>
             <div className="flex justify-center md:justify-start gap-3">
@@ -82,7 +81,7 @@ export default function Footer() {
                   href={sosmed.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 rounded-full hover:bg-gray-800 transition-all duration-300"
+                  className="p-2 rounded-full hover:bg-gray-100 text-gray-600 hover:text-blue-600 transition-all duration-300"
                 >
                   {sosmed.icon}
                 </a>
@@ -92,9 +91,9 @@ export default function Footer() {
         </div>
 
         {/* Garis bawah dan copyright */}
-        <div className="border-t border-gray-800 mt-8 pt-4 text-center text-xs text-gray-500">
+        <div className="border-t border-gray-200 mt-8 pt-4 text-center text-xs text-gray-500">
           © {new Date().getFullYear()}{" "}
-          <span className="text-white">Gen Creator Hub</span>. All rights reserved.
+          <span className="text-gray-900 font-medium">Gen Creator Hub</span>. All rights reserved.
         </div>
       </div>
     </footer>
