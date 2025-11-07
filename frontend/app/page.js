@@ -438,7 +438,7 @@ export default function LandingPage() {
 
               {/* Logo partner */}
               <div className="flex items-center space-x-2 mt-1">
-                <p className="text-xs text-gray-500">Partnered by</p>
+                <p className="text-xs text-gray-500">Power by</p>
                 <Image
                   src="/gentra.id.png"
                   alt="Gentra.id Logo"

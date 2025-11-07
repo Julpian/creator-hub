@@ -40,14 +40,14 @@ export default function TopNav() {
     { title: "Home", href: "/home", icon: IoHomeOutline },
     { title: "About", href: "/tentang-kami", icon: IoPersonOutline },
     { title: "Influencer", href: "/pencarian", icon: IoFlashOutline },
-    { title: "Package", href: "/#paket", icon: IoBriefcaseOutline },
+    { title: "Package", href: "/package", icon: IoBriefcaseOutline },
     {
       title: "Join Influencer",
       href: "https://docs.google.com/forms/d/e/1FAIpQLSfLt9f0bH_dOhJEJlD7LUuOHZ-ourA6IlZbJCLPuoENzPp99A/viewform",
       icon: IoAddCircleOutline,
       external: true, // penanda link eksternal
     },
-    { title: "Terms & Conditions", href: "#", icon: IoDocumentTextOutline },
+    { title: "Terms & Conditions", href: "/terms", icon: IoDocumentTextOutline },
     { title: "FAQ", href: "/faq", icon: IoChatbubbleEllipsesOutline },
   ];
 
