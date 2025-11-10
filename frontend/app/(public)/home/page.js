@@ -8,19 +8,23 @@ import InfluencerCard from "@/components/InfluencerCard";
 import BrandCarousel from "@/components/BrandCarousel";
 import Testimonials from '@/components/Testimonials';
 import PaginationClient from "@/components/PaginationClient";
-import HomeSearchForm from "@/components/HomeSearchForm"; // <-- Pastikan ini di-impor
+import HomeSearchForm from "@/components/HomeSearchForm";
+import { IoLogoInstagram, IoLogoYoutube } from "react-icons/io5";
+import { FaTiktok } from "react-icons/fa";
 
-// Fungsi getInfluencers
-async function getInfluencers(searchParams) {
-  const page = searchParams.page || "1";
+// 1. UBAH FUNGSI INI:
+// Sekarang menerima nilai-nilai sederhana, BUKAN objek searchParams
+async function getInfluencers(page, query, categoryId, location) {
   const limit = "10";
-  const query = searchParams.q || "";
-  const categoryId = searchParams.category_id || "";
-  const location = searchParams.location || "";
+  
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit,
+  });
 
-  const params = new URLSearchParams({ page, limit });
   let endpoint = "influencers"; 
 
+  // Jika ada filter, gunakan endpoint search
   if (query || location || categoryId) {
     endpoint = "influencers/search";
     if (query) params.set("q", query);
@@ -36,20 +40,31 @@ async function getInfluencers(searchParams) {
 }
 
 export default async function HomePage({ searchParams }) {
-  const currentPage = parseInt(searchParams.page) || 1;
-  const { data: influencers, total_data, limit } = await getInfluencers(searchParams);
+  // Tambahkan "await" di sini
+  const params = await searchParams;
+
+  const currentPage = parseInt(params.page) || 1;
+  const searchQuery = params.q || "";
+  const categoryId = params.category_id || "";
+  const locationQuery = params.location || "";
+
+  // 3. KIRIM NILAI (bukan objek) ke getInfluencers
+  const { data: influencers, total_data, limit } = await getInfluencers(
+    currentPage,
+    searchQuery,
+    categoryId,
+    locationQuery
+  );
+
   const totalPages = Math.ceil(total_data / limit);
 
   return (
-    // Gunakan space-y-8 atau space-y-10 untuk memberi jarak antar section
     <main className="min-h-screen bg-gradient-to-b from-indigo-50 to-white flex flex-col items-center py-6 px-4 sm:px-6">
-      <div className="w-full max-w-7xl space-y-10"> 
-        
+      <div className="w-full max-w-7xl space-y-10">
         <section>
           <BannerCarousel />
         </section>
 
-        {/* PASTIKAN BAGIAN INI ADA */}
         <section>
           <HomeSearchForm />
         </section>
@@ -57,8 +72,7 @@ export default async function HomePage({ searchParams }) {
         <section>
           <CategoryIcons />
         </section>
-        
-        {/* Sisa Halaman */}
+
         {influencers.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500">😕 Tidak ada influencer yang ditemukan.</p>
@@ -71,16 +85,18 @@ export default async function HomePage({ searchParams }) {
               ))}
             </section>
 
-            <PaginationClient
-              totalPages={totalPages}
-              currentPage={currentPage}
-              searchQuery={searchParams.q || ""}
-              categoryId={searchParams.category_id || ""}
-              locationQuery={searchParams.location || ""}
-            />
+            {total_data > 0 && (
+              <PaginationClient
+                totalPages={totalPages}
+                currentPage={currentPage}
+                searchQuery={searchQuery}
+                categoryId={categoryId}
+                locationQuery={locationQuery}
+              />
+            )}
           </>
         )}
-        
+
         <section>
           <CtaCard />
         </section>
