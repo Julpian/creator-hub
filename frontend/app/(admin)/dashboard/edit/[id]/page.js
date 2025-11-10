@@ -276,6 +276,7 @@ export default function EditPage() {
       youtubeUrl: influencer.youtubeUrl,
       gender: influencer.gender,
       dateOfBirth: influencer.dateOfBirth,
+      phoneNumber: influencer.phoneNumber,
       instagramFollowers: Number(influencer.instagramFollowers) || 0,
       tiktokFollowers: Number(influencer.tiktokFollowers) || 0,
       youtubeSubscribers: Number(influencer.youtubeSubscribers) || 0,
@@ -289,6 +290,7 @@ export default function EditPage() {
     if (!payload.youtubeUrl) delete payload.youtubeUrl;
     if (influencer.dateOfBirth) payload.dateOfBirth = influencer.dateOfBirth;
     if (influencer.gender) payload.gender = influencer.gender;
+    if (!payload.phoneNumber) delete payload.phoneNumber;
     // --- BATAS PERUBAHAN ---
 
     const res = await fetch(`http://127.0.0.1:8080/api/admin/influencers/${id}`, {
@@ -385,6 +387,17 @@ export default function EditPage() {
             onChange={handleInputChange}
             placeholder="Contoh: Jakarta"
           />
+        </div>
+
+        <div>
+            <Input 
+                label="Nomor WhatsApp" 
+                name="phoneNumber" 
+                value={influencer.phoneNumber} 
+                onChange={handleInputChange}
+                placeholder="Contoh: 628123456789"
+            />
+            <p className="text-xs text-gray-500 mt-1">Awali dengan 62 (tanpa +) untuk link &#39;Book Now&#39; di publik.</p>
         </div>
 
         {/* Jenis Kelamin & Tanggal Lahir */}

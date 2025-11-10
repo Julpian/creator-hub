@@ -209,6 +209,7 @@ func CreateInfluencer(c *gin.Context) {
 		YoutubeSubscribers int    `json:"youtubeSubscribers" binding:"gte=0"`
 		Gender             string `json:"gender"`
 		DateOfBirth        string `json:"dateOfBirth"`
+		PhoneNumber        string `json:"phoneNumber"`
 		CategoryIDs        []uint `json:"category_ids"`
 	}
 
@@ -245,6 +246,7 @@ func CreateInfluencer(c *gin.Context) {
 		YoutubeSubscribers: payload.YoutubeSubscribers,
 		Gender:             payload.Gender,
 		DateOfBirth:        dob,
+		PhoneNumber:        payload.PhoneNumber,
 	}
 	if err := models.DB.Create(&newInfluencer).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menyimpan influencer"})
@@ -281,6 +283,7 @@ func UpdateInfluencer(c *gin.Context) {
 		YoutubeSubscribers int    `json:"youtubeSubscribers" binding:"gte=0"`
 		Gender             string `json:"gender"`
 		DateOfBirth        string `json:"dateOfBirth"`
+		PhoneNumber        string `json:"phoneNumber"`
 		CategoryIDs        []uint `json:"category_ids"`
 	}
 
@@ -304,6 +307,7 @@ func UpdateInfluencer(c *gin.Context) {
 	influencer.YoutubeSubscribers = payload.YoutubeSubscribers
 	influencer.Gender = payload.Gender
 	influencer.DateOfBirth = dob
+	influencer.PhoneNumber = payload.PhoneNumber
 
 	models.DB.Save(&influencer)
 

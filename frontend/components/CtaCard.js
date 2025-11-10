@@ -2,12 +2,12 @@
 
 import { IoChatbubblesOutline, IoPersonAddOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function CtaCard() {
   const adminWhatsAppNumber = "6281234567890";
 
   const messageTanya = encodeURIComponent("Halo Admin Gen Creator Hub, saya ingin bertanya sesuatu.");
-  const messageGabung = encodeURIComponent("Halo Admin, saya tertarik untuk bergabung sebagai influencer di Gen Creator Hub.");
 
   return (
     <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 text-white my-10 shadow-lg">
@@ -61,15 +61,13 @@ export default function CtaCard() {
           </a>
 
           {/* Tombol Gabung */}
-          <a
-            href={`https://wa.me/${adminWhatsAppNumber}?text=${messageGabung}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group w-full sm:w-auto flex items-center justify-center gap-2 bg-[#1986DF] text-white px-6 py-2.5 rounded-full font-semibold shadow-md hover:bg-[#1475C4] hover:scale-105 transition-transform duration-200"
+          <Link
+            href="/gabung" // <-- UBAH DI SINI
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/20 text-white px-6 py-3 rounded-full font-bold hover:bg-white/30 transition"
           >
-            <IoPersonAddOutline size={20} className="group-hover:rotate-12 transition-transform" />
+            <IoPersonAddOutline size={20} />
             <span>Gabung Sekarang</span>
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>

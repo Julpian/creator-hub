@@ -45,6 +45,27 @@ type Influencer struct {
 	PortfolioImages    []PortfolioImage `json:"portfolioImages"` // Sekarang tidak akan error
 }
 
+type InfluencerSubmission struct {
+	gorm.Model
+	Status             string    `json:"status" gorm:"default:'pending'"`
+	Name               string    `json:"name"`
+	Email              string    `json:"email" gorm:"unique"`
+	PhoneNumber        string    `json:"phoneNumber"`
+	Bio                string    `json:"bio"`
+	Location           string    `json:"location"`
+	Gender             string    `json:"gender"`
+	DateOfBirth        time.Time `json:"dateOfBirth"`
+	InstagramURL       string    `json:"instagramUrl"`
+	TiktokURL          string    `json:"tiktokUrl"`
+	YoutubeURL         string    `json:"youtubeUrl"`
+	FacebookURL        string    `json:"facebookUrl"`
+	InstagramFollowers int       `json:"instagramFollowers"`
+	TiktokFollowers    int       `json:"tiktokFollowers"`
+	YoutubeSubscribers int       `json:"youtubeSubscribers"`
+	ProfileImageURL    string    `json:"profileImageUrl"`
+	StatsImageURL      string    `json:"statsImageUrl"`
+}
+
 type Admin struct {
 	gorm.Model
 	Email        string `gorm:"unique"`

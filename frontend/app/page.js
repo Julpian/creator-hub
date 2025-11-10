@@ -297,24 +297,42 @@ export default function LandingPage() {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="bg-gray-50 border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center text-center"
-              >
-                <Image
-                  src={service.icon}
-                  alt={service.title}
-                  width={60}
-                  height={60}
-                  className="mb-4"
-                />
-                <h3 className="text-lg font-semibold mb-2">{service.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {service.desc}
-                </p>
-              </div>
-            ))}
+            {services.map((service, index) => {
+              // Buat konten kartu di dalam sebuah variabel
+              const cardContent = (
+                <div
+                  className="bg-gray-50 border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col items-center text-center h-full" // Tambahkan h-full
+                >
+                  <Image
+                    src={service.icon}
+                    alt={service.title}
+                    width={60}
+                    height={60}
+                    className="mb-4"
+                  />
+                  <h3 className="text-lg font-semibold mb-2">{service.title}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {service.desc}
+                  </p>
+                </div>
+              );
+
+              // Jika judulnya "Influencer Summit", bungkus dengan Link
+              if (service.title === "Influencer Summit") {
+                return (
+                  <Link href="/event/summit" key={index} className="block">
+                    {cardContent}
+                  </Link>
+                );
+              }
+
+              // Jika bukan, tampilkan div biasa
+              return (
+                <div key={index}>
+                  {cardContent}
+                </div>
+              );
+            })}
           </div>
         </section>
 

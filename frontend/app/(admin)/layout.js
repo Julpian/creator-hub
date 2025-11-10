@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LogOut, LayoutDashboard, Package } from "lucide-react";
+import { LogOut, LayoutDashboard, Package, UserCheck } from "lucide-react";
 
 export default function AdminLayout({ children }) {
   const router = useRouter();
@@ -36,9 +36,11 @@ export default function AdminLayout({ children }) {
     );
   }
 
+  // 🟦 Tambahkan item navigasi baru di sini
   const navItems = [
     { href: "/dashboard", icon: <LayoutDashboard size={18} />, label: "Dashboard" },
     { href: "/dashboard/packages", icon: <Package size={18} />, label: "Kelola Paket" },
+    { href: "/dashboard/verifikasi", icon: <UserCheck size={18} />, label: "Verifikasi Influencer" }, // ✅ Ditambahkan
   ];
 
   return (
@@ -52,6 +54,7 @@ export default function AdminLayout({ children }) {
           <p className="text-xs text-gray-400 mt-1">Admin Dashboard</p>
         </div>
 
+        {/* Navigasi Sidebar */}
         <nav className="flex-1 p-4 space-y-2">
           {navItems.map((item) => (
             <SidebarLink
@@ -64,6 +67,7 @@ export default function AdminLayout({ children }) {
           ))}
         </nav>
 
+        {/* Tombol Logout */}
         <div className="p-4 border-t border-gray-800">
           <button
             onClick={handleLogout}
@@ -77,13 +81,15 @@ export default function AdminLayout({ children }) {
 
       {/* Konten Utama */}
       <main className="flex-1 flex flex-col">
-        {/* Header Atas */}
+        {/* Header */}
         <header className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm flex items-center justify-between px-6 py-3">
           <h1 className="text-lg font-semibold text-gray-800">
             {pathname === "/dashboard"
               ? "Dashboard"
               : pathname.includes("packages")
               ? "Kelola Paket"
+              : pathname.includes("verifikasi")
+              ? "Verifikasi Influencer"
               : "Admin"}
           </h1>
           <div className="text-sm text-gray-500">
@@ -107,6 +113,7 @@ export default function AdminLayout({ children }) {
   );
 }
 
+// 🔹 Komponen Sidebar Link
 function SidebarLink({ href, icon, label, active }) {
   return (
     <Link

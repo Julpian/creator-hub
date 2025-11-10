@@ -174,6 +174,7 @@ export default function DashboardPage() {
                   <th className="p-4 text-left">Nama</th>
                   <th className="p-4 text-left">Umur</th>
                   <th className="p-4 text-left">Kategori</th>
+                  <th className="p-4 text-left">Kontak (WA)</th>
                   <th className="p-4 text-center">Aksi</th>
                 </tr>
               </thead>
@@ -233,6 +234,10 @@ export default function DashboardPage() {
                             </span>
                           )}
                         </div>
+                      </td>
+                      
+                      <td className="p-4 text-gray-600">
+                          {influencer.phoneNumber || '-'}
                       </td>
 
                       {/* ⚙️ Aksi */}

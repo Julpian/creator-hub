@@ -34,6 +34,9 @@ func SetupRouter() *gin.Engine {
 
 		// Admin
 		api.POST("/admin/login", controllers.Login)
+
+		// Submission (Gabung)
+		api.POST("/join", controllers.SubmitForReview)
 	}
 
 	// Rute Admin yang Dilindungi
@@ -54,6 +57,14 @@ func SetupRouter() *gin.Engine {
 		adminRoutes.DELETE("/packages/:id", controllers.DeletePackage)
 		adminRoutes.POST("/packages/:id/upload", controllers.UploadPackageImage)
 
+		// Submission Admin
+		adminRoutes.GET("/submissions", controllers.GetSubmissions)
+		adminRoutes.POST("/submissions/:id/approve", controllers.ApproveSubmission)
+		adminRoutes.DELETE("/submissions/:id/reject", controllers.RejectSubmission)
+
+		// --- TAMBAHKAN RUTE UPLOAD BARU DI SINI ---
+		api.POST("/join/:id/upload/:type", controllers.UploadSubmissionImage)
+		// :type akan berisi "profile" atau "stats"
 	}
 
 	return router
