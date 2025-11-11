@@ -25,7 +25,7 @@ export default function DashboardPage() {
       if (query) params.set("q", query);
 
       const res = await fetch(
-        `http://localhost:8080/api/influencers/search?${params.toString()}`
+        `http://127.0.0.1:8080/api/influencers/search?${params.toString()}`
       );
       const data = await res.json();
 
@@ -195,7 +195,7 @@ export default function DashboardPage() {
                       <td className="p-4">
                         {influencer.imageUrl ? (
                           <img
-                            src={`http://localhost:8080${influencer.imageUrl}`}
+                            src={`http://127.0.0.1:8080${influencer.imageUrl}`}
                             alt={influencer.name}
                             className="w-14 h-14 object-cover rounded-lg border border-gray-200 shadow-sm"
                           />
