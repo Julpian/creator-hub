@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { IoArrowBack } from "react-icons/io5";
@@ -27,6 +27,20 @@ export default function GabungPage() {
   const [statsImage, setStatsImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState(null);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch("/api/categories"); // Panggil API relatif
+        if (res.ok) {
+          setCategories(await res.json());
+        }
+      } catch (e) {
+        console.error("Gagal mengambil kategori", e);
+      }
+    }
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -150,26 +164,18 @@ export default function GabungPage() {
               </Select>
               <Input label="Tanggal Lahir" name="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={handleChange} />
             </div>
-            <Select label="Kategori Kreator" name="category" value={formData.category} onChange={handleChange}>
-              <option value="">Pilih Kategori...</option>
-              {[
-                "Food & Beverages",
-                "Technology",
-                "Entertainment",
-                "Travel & Lifestyle",
-                "Health & Sport",
-                "Gaming",
-                "Content Creator",
-                "Beauty & Fashion",
-                "Youtuber",
-                "DJ & Musician",
-                "TikToker",
-                "Mom & Kids",
-                "Instagram",
-                "Facebook",
-              ].map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
+            {/* Dropdown Kategori sekarang dinamis */}
+            <Select
+              label="Kategori Kreator"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Pilih kategori...</option>
+              {categories.map((cat) => (
+                <option key={cat.ID} value={cat.name}>
+                  {cat.name}
                 </option>
               ))}
             </Select>
