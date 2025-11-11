@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 
 async function getCategories() {
   const res = await fetch('/api/categories', { cache: 'no-store' });
@@ -9,17 +8,15 @@ async function getCategories() {
   return res.json();
 }
 
-export default function CategoryList() {
+export default function CategoryList({ onCategorySelect }) {
   const [categories, setCategories] = useState([]);
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const activeCategoryId = searchParams.get('category_id');
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
 
   useEffect(() => {
     async function loadCategories() {
       try {
-        const categories = await getCategories();
-        setCategories(categories || []);
+        const data = await getCategories();
+        setCategories(data || []);
       } catch (error) {
         console.error(error);
       }
@@ -28,16 +25,10 @@ export default function CategoryList() {
   }, []);
 
   const handleCategoryClick = (categoryId) => {
-    const params = new URLSearchParams(searchParams);
-    if (categoryId && params.get('category_id') === categoryId.toString()) {
-      params.delete('category_id');
-    } else if (categoryId) {
-      params.set('category_id', categoryId.toString());
-    } else {
-      params.delete('category_id');
+    setActiveCategoryId((prev) => (prev === categoryId ? null : categoryId));
+    if (onCategorySelect) {
+      onCategorySelect(categoryId); // lempar event ke parent kalau kamu mau filter data
     }
-    params.delete('page');
-    router.push(`/home?${params.toString()}`, { scroll: false }); // ⬅️ Tidak scroll ke atas
   };
 
   return (
@@ -64,7 +55,7 @@ export default function CategoryList() {
               key={cat.ID}
               onClick={() => handleCategoryClick(cat.ID)}
               className={`px-4 py-2 whitespace-nowrap rounded-full text-sm font-medium border transition-all shadow-sm ${
-                activeCategoryId === cat.ID.toString()
+                activeCategoryId === cat.ID
                   ? 'bg-[#1986DF] text-white border-[#1986DF]'
                   : 'bg-white hover:bg-gray-50 border-gray-200 text-gray-700'
               }`}
