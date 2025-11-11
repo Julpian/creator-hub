@@ -44,7 +44,8 @@ function PortfolioManager({ influencerId, initialImages = [] }) {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:8080/api/admin/influencers/${influencerId}/portfolio`,
+        //`http://127.0.0.1:8080/api/admin/influencers/${influencerId}/portfolio`,
+        `/api/admin/influencers/${influencerId}/portfolio`,
         {
           method: "POST",
           headers: {
@@ -75,7 +76,8 @@ function PortfolioManager({ influencerId, initialImages = [] }) {
     setDeletingId(imageId);
 
     try {
-      const res = await fetch(`http://127.0.0.1:8080/api/admin/portfolio/${imageId}`, {
+      //const res = await fetch(`http://127.0.0.1:8080/api/admin/portfolio/${imageId}`, {
+      const res = await fetch(`/api/admin/portfolio/${imageId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
       });
@@ -166,7 +168,7 @@ function PortfolioManager({ influencerId, initialImages = [] }) {
               }`}
             >
               <img
-                src={`http://127.0.0.1:8080${img.imageUrl}`}
+                src={img.imageUrl}
                 alt={img.description || "Portfolio"}
                 className="w-full h-full object-cover"
               />
@@ -213,8 +215,10 @@ export default function EditPage() {
     const fetchData = async () => {
       try {
         const [catRes, infRes] = await Promise.all([
-          fetch("http://127.0.0.1:8080/api/categories"),
-          fetch(`http://127.0.0.1:8080/api/influencers/${id}`),
+          //fetch("http://127.0.0.1:8080/api/categories"),
+          //fetch(`http://127.0.0.1:8080/api/influencers/${id}`),
+          fetch("/api/categories"),
+          fetch(`/api/influencers/${id}`),
         ]);
 
         const cats = await catRes.json();
@@ -293,7 +297,8 @@ export default function EditPage() {
     if (!payload.phoneNumber) delete payload.phoneNumber;
     // --- BATAS PERUBAHAN ---
 
-    const res = await fetch(`http://127.0.0.1:8080/api/admin/influencers/${id}`, {
+    //const res = await fetch(`http://127.0.0.1:8080/api/admin/influencers/${id}`, {
+    const res = await fetch(`/api/admin/influencers/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -314,7 +319,8 @@ export default function EditPage() {
     if (newImage) {
       const formData = new FormData();
       formData.append("image", newImage);
-      await fetch(`http://127.0.0.1:8080/api/admin/influencers/${id}/upload`, {
+      //await fetch(`http://127.0.0.1:8080/api/admin/influencers/${id}/upload`, {
+      await fetch(`/api/admin/influencers/${id}/upload`, {
         method: "POST",
         headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
         body: formData,
@@ -352,7 +358,7 @@ export default function EditPage() {
           <div className="flex items-center gap-4">
             {influencer.imageUrl && !imagePreview && (
               <img
-                src={`http://127.0.0.1:8080${influencer.imageUrl}`}
+                src={influencer.imageUrl}
                 alt="Current"
                 className="w-32 h-32 object-cover rounded-lg border shadow-sm"
               />
