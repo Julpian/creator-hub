@@ -41,9 +41,20 @@ export default function CategoryList() {
   };
 
   const handleCategoryClick = (categoryId) => {
-    const url = createCategoryUrl(categoryId);
-    // 🔹 Navigasi tanpa scroll ke atas
-    router.push(url, { scroll: false });
+    const params = new URLSearchParams(searchParams);
+    if (categoryId && params.get('category_id') === categoryId.toString()) {
+      params.delete('category_id');
+    } else if (categoryId) {
+      params.set('category_id', categoryId.toString());
+    } else {
+      params.delete('category_id');
+    }
+    params.delete('page');
+
+    const newUrl = `/home?${params.toString()}`;
+
+    // 🔹 Update URL tanpa reload / re-render halaman
+    window.history.pushState({}, '', newUrl);
   };
 
   return (
