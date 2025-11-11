@@ -22,6 +22,7 @@ func ConnectDatabase() {
 		&models.Category{},
 		&models.Package{},
 		&models.PortfolioImage{},
+		&models.InfluencerSubmission{},
 	)
 	models.DB = database
 }

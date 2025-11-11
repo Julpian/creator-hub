@@ -109,6 +109,15 @@ func ApproveSubmission(c *gin.Context) {
 		IsRecommended:      false,                      // Admin bisa atur ini nanti
 	}
 
+	if submission.Category != "" {
+		var category models.Category
+		// Cari ID kategori berdasarkan nama yang dikirim dari form
+		if err := models.DB.Where("name = ?", submission.Category).First(&category).Error; err == nil {
+			// Jika kategori ditemukan, tambahkan ke influencer baru
+			models.DB.Model(&newInfluencer).Association("Categories").Append(&category)
+		}
+	}
+
 	if err := models.DB.Create(&newInfluencer).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal membuat profil influencer"})
 		return
