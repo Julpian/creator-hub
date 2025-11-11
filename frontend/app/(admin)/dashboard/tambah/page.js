@@ -23,7 +23,8 @@ export default function TambahPage() {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const res = await fetch("http://localhost:8080/api/categories");
+      //const res = await fetch("http://localhost:8080/api/categories");
+      const res = await fetch("/api/categories");
       if (res.ok) {
         const data = await res.json();
         setAllCategories(data);
@@ -69,7 +70,8 @@ export default function TambahPage() {
       category_ids: selectedCategories,
     };
 
-    const resText = await fetch("http://localhost:8080/api/admin/influencers", {
+    //const resText = await fetch("http://localhost:8080/api/admin/influencers", {
+    const resText = await fetch("/api/admin/influencers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,8 +90,11 @@ export default function TambahPage() {
     if (image) {
       const formData = new FormData();
       formData.append("image", image);
-      await fetch(
-        `http://localhost:8080/api/admin/influencers/${newInfluencer.ID}/upload`,
+      //await fetch(
+        //`http://localhost:8080/api/admin/influencers/${newInfluencer.ID}/upload`,
+        //{
+       await fetch(
+        `/api/admin/influencers/${newInfluencer.ID}/upload`,
         {
           method: "POST",
           headers: {
