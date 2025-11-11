@@ -11,7 +11,7 @@ export default function GabungPage() {
   const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     name: "", email: "", phoneNumber: "", bio: "", location: "",
-    gender: "", dateOfBirth: "", category: "",
+    gender: "", dateOfBirth: "", category: [],
     instagramUrl: "", tiktokUrl: "", youtubeUrl: "", facebookUrl: "",
   });
   const [profileImage, setProfileImage] = useState(null);
@@ -41,10 +41,21 @@ export default function GabungPage() {
     }
   }, [message]);
 
-  // 🔹 Handle input
+  // 🔹 Handle input biasa
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // 🔹 Handle checkbox kategori
+  const handleCategoryChange = (e) => {
+    const { value, checked } = e.target;
+    setFormData((prev) => {
+      const newCategories = checked
+        ? [...prev.category, value]
+        : prev.category.filter((cat) => cat !== value);
+      return { ...prev, category: newCategories };
+    });
   };
 
   // 🔹 Upload file
@@ -62,8 +73,8 @@ export default function GabungPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.category) {
-      setMessage({ type: "error", text: "Nama, Email, dan Kategori wajib diisi." });
+    if (!formData.name || !formData.email || formData.category.length === 0) {
+      setMessage({ type: "error", text: "Nama, Email, dan minimal satu Kategori wajib diisi." });
       return;
     }
 
@@ -97,7 +108,7 @@ export default function GabungPage() {
 
       setFormData({
         name: "", email: "", phoneNumber: "", bio: "", location: "", gender: "", dateOfBirth: "",
-        category: "", instagramUrl: "", tiktokUrl: "", youtubeUrl: "", facebookUrl: "",
+        category: [], instagramUrl: "", tiktokUrl: "", youtubeUrl: "", facebookUrl: "",
       });
       document.getElementById("profileImageInput").value = null;
       document.getElementById("statsImageInput").value = null;
@@ -111,7 +122,7 @@ export default function GabungPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-10 px-4">
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-10 px-4 text-black">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
@@ -138,12 +149,26 @@ export default function GabungPage() {
               </Select>
               <Input label="Tanggal Lahir" name="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={handleChange} />
             </div>
-            <Select label="Kategori Utama Anda" name="category" value={formData.category} onChange={handleChange} required>
-              <option value="">Pilih kategori...</option>
-              {categories.map((cat) => (
-                <option key={cat.ID} value={cat.name}>{cat.name}</option>
-              ))}
-            </Select>
+
+            {/* Kategori pakai checkbox */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Kategori Utama Anda</label>
+              <div className="grid sm:grid-cols-2 gap-2">
+                {categories.map((cat) => (
+                  <label key={cat.ID} className="flex items-center gap-2 text-gray-800">
+                    <input
+                      type="checkbox"
+                      value={cat.name}
+                      checked={formData.category.includes(cat.name)}
+                      onChange={handleCategoryChange}
+                      className="accent-indigo-600 w-4 h-4"
+                    />
+                    {cat.name}
+                  </label>
+                ))}
+              </div>
+            </div>
+
             <Textarea label="Bio Singkat" name="bio" value={formData.bio} onChange={handleChange} placeholder="Ceritakan tentang diri dan konten Anda..." />
           </section>
 
@@ -151,38 +176,10 @@ export default function GabungPage() {
           <section className="space-y-4 border-b pb-6">
             <h2 className="text-lg font-semibold text-gray-800 border-b pb-2">Media Sosial Anda</h2>
             <div className="grid sm:grid-cols-2 gap-4">
-              <Input
-                label="URL Instagram"
-                name="instagramUrl"
-                type="url"
-                placeholder="https://instagram.com/username"
-                value={formData.instagramUrl}
-                onChange={handleChange}
-              />
-              <Input
-                label="URL TikTok"
-                name="tiktokUrl"
-                type="url"
-                placeholder="https://tiktok.com/@username"
-                value={formData.tiktokUrl}
-                onChange={handleChange}
-              />
-              <Input
-                label="URL YouTube"
-                name="youtubeUrl"
-                type="url"
-                placeholder="https://youtube.com/@channel"
-                value={formData.youtubeUrl}
-                onChange={handleChange}
-              />
-              <Input
-                label="URL Facebook"
-                name="facebookUrl"
-                type="url"
-                placeholder="https://facebook.com/username"
-                value={formData.facebookUrl}
-                onChange={handleChange}
-              />
+              <Input label="URL Instagram" name="instagramUrl" type="url" placeholder="https://instagram.com/username" value={formData.instagramUrl} onChange={handleChange} />
+              <Input label="URL TikTok" name="tiktokUrl" type="url" placeholder="https://tiktok.com/@username" value={formData.tiktokUrl} onChange={handleChange} />
+              <Input label="URL YouTube" name="youtubeUrl" type="url" placeholder="https://youtube.com/@channel" value={formData.youtubeUrl} onChange={handleChange} />
+              <Input label="URL Facebook" name="facebookUrl" type="url" placeholder="https://facebook.com/username" value={formData.facebookUrl} onChange={handleChange} />
             </div>
           </section>
 
@@ -227,7 +224,7 @@ function Input({ label, ...props }) {
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
       <input
         {...props}
-        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm"
+        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm"
       />
     </div>
   );
@@ -238,7 +235,7 @@ function Select({ label, children, ...props }) {
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
       <select
         {...props}
-        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm bg-white"
+        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm bg-white"
       >
         {children}
       </select>
@@ -252,7 +249,7 @@ function Textarea({ label, ...props }) {
       <textarea
         {...props}
         rows={3}
-        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm"
+        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-black focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm"
       />
     </div>
   );
