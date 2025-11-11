@@ -1,12 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 async function getCategories() {
-  //const res = await fetch('http://127.0.0.1:8080/api/categories', { cache: 'no-store' });
-  const res = await fetch('api/categories', { cache: 'no-store' });
+  const res = await fetch('/api/categories', { cache: 'no-store' });
   if (!res.ok) throw new Error('Gagal mengambil kategori');
   return res.json();
 }
@@ -14,6 +12,7 @@ async function getCategories() {
 export default function CategoryList() {
   const [categories, setCategories] = useState([]);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const activeCategoryId = searchParams.get('category_id');
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function CategoryList() {
     loadCategories();
   }, []);
 
-  const createCategoryUrl = (categoryId) => {
+  const handleCategoryClick = (categoryId) => {
     const params = new URLSearchParams(searchParams);
     if (categoryId && params.get('category_id') === categoryId.toString()) {
       params.delete('category_id');
@@ -38,22 +37,19 @@ export default function CategoryList() {
       params.delete('category_id');
     }
     params.delete('page');
-    return `/home?${params.toString()}`;
+    router.push(`/home?${params.toString()}`, { scroll: false }); // ⬅️ Tidak scroll ke atas
   };
 
   return (
     <div className="w-full px-1 py-1 sm:px-3 sm:py-3">
-      {/* 🔹 Judul di atas kategori */}
       <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3">
         Kategori KOL
       </h2>
 
       <div className="overflow-x-auto no-scrollbar">
         <div className="flex gap-1 sm:gap-2 min-w-max">
-          {/* Tombol Semua */}
-          <Link
-            href={createCategoryUrl(null)}
-            scroll={false}
+          <button
+            onClick={() => handleCategoryClick(null)}
             className={`px-4 py-2 whitespace-nowrap rounded-full text-sm font-medium border transition-all shadow-sm ${
               !activeCategoryId
                 ? 'bg-[#1986DF] text-white border-[#1986DF]'
@@ -61,14 +57,12 @@ export default function CategoryList() {
             }`}
           >
             All
-          </Link>
+          </button>
 
-          {/* Tombol kategori dari API */}
           {categories.map((cat) => (
-            <Link
+            <button
               key={cat.ID}
-              href={createCategoryUrl(cat.ID)}
-              scroll={false}
+              onClick={() => handleCategoryClick(cat.ID)}
               className={`px-4 py-2 whitespace-nowrap rounded-full text-sm font-medium border transition-all shadow-sm ${
                 activeCategoryId === cat.ID.toString()
                   ? 'bg-[#1986DF] text-white border-[#1986DF]'
@@ -76,7 +70,7 @@ export default function CategoryList() {
               }`}
             >
               {cat.name}
-            </Link>
+            </button>
           ))}
         </div>
       </div>
