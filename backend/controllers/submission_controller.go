@@ -25,10 +25,10 @@ func SubmitForReview(c *gin.Context) {
 		Gender       string `json:"gender"`
 		DateOfBirth  string `json:"dateOfBirth"`
 		Category     string `json:"category"`
-		InstagramURL string `json:"instagramUrl" binding:"omitempty,url"`
-		TiktokURL    string `json:"tiktokUrl" binding:"omitempty,url"`
-		YoutubeURL   string `json:"youtubeUrl" binding:"omitempty,url"`
-		FacebookURL  string `json:"facebookUrl" binding:"omitempty,url"`
+		InstagramURL string `json:"instagramUrl" binding:"omitempty"`
+		TiktokURL    string `json:"tiktokUrl" binding:"omitempty"`
+		YoutubeURL   string `json:"youtubeUrl" binding:"omitempty"`
+		FacebookURL  string `json:"facebookUrl" binding:"omitempty"`
 	}
 
 	var payload SubmissionPayload
