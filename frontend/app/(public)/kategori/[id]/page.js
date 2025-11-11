@@ -5,7 +5,7 @@ import { IoArrowBack } from "react-icons/io5";
 // Fungsi untuk mengambil data influencer berdasarkan ID kategori
 async function getInfluencersByCategory(categoryId) {
   // Kita tidak perlu pagination di sini untuk sementara
-  const url = `http://localhost:8080/api/influencers?category_id=${categoryId}&limit=100`;
+  const url = `http://127.0.0.1:8080/api/influencers?category_id=${categoryId}&limit=100`;
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) throw new Error("Gagal mengambil data");
   return res.json();
@@ -13,7 +13,7 @@ async function getInfluencersByCategory(categoryId) {
 
 // Fungsi untuk mengambil detail kategori (untuk mendapatkan namanya)
 async function getCategoryDetail(categoryId) {
-  const res = await fetch(`http://localhost:8080/api/categories`); // Asumsi belum ada endpoint /api/categories/:id
+  const res = await fetch(`http://127.0.0.1:8080/api/categories`); // Asumsi belum ada endpoint /api/categories/:id
   if (!res.ok) return { name: "Kategori" };
   const categories = await res.json();
   const category = categories.find(cat => cat.ID == categoryId);
@@ -46,7 +46,7 @@ export default async function CategoryPage({ params }) {
             {influencers.map((influencer) => (
               <div key={influencer.ID} className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
                 {/* ... (Kode kartu influencer bisa Anda salin dari app/page.js) ... */}
-                <img src={`http://localhost:8080${influencer.imageUrl}`} alt={influencer.name} className="w-full h-56 object-cover"/>
+                <img src={`http://127.0.0.1:8080${influencer.imageUrl}`} alt={influencer.name} className="w-full h-56 object-cover"/>
                 <div className="p-5 text-center">
                   <h3 className="text-xl font-semibold text-gray-800">{influencer.name}</h3>
                   <Link href={`/influencer/${influencer.ID}`} className="inline-block mt-4 px-5 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium">

@@ -19,7 +19,7 @@ export default function DeleteButton({ id }) {
     }
 
     try {
-      const res = await fetch(`http://localhost:8080/api/admin/influencers/${id}`, {
+      const res = await fetch(`http://127.0.0.1:8080/api/admin/influencers/${id}`, {
         method: 'DELETE',
         headers: {
           // Sertakan token di header Authorization
