@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 async function getCategories() {
-  const res = await fetch('http://127.0.0.1:8080/api/categories', { cache: 'no-store' });
+  //const res = await fetch('http://127.0.0.1:8080/api/categories', { cache: 'no-store' });
+  const res = await fetch('api/categories', { cache: 'no-store' });
   if (!res.ok) throw new Error('Gagal mengambil kategori');
   return res.json();
 }
