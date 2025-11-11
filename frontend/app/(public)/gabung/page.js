@@ -33,6 +33,7 @@ export default function GabungPage() {
     fetchCategories();
   }, []);
 
+  // 🔹 Redirect setelah sukses
   useEffect(() => {
     if (message?.type === "success") {
       const timer = setTimeout(() => router.push("/"), 3000);
@@ -40,11 +41,13 @@ export default function GabungPage() {
     }
   }, [message]);
 
+  // 🔹 Handle input
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // 🔹 Upload file
   const uploadFile = async (submissionId, file, type) => {
     const data = new FormData();
     data.append("image", file);
@@ -55,6 +58,7 @@ export default function GabungPage() {
     if (!res.ok) throw new Error(`Gagal upload gambar ${type}`);
   };
 
+  // 🔹 Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -109,6 +113,7 @@ export default function GabungPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-10 px-4">
       <div className="max-w-3xl mx-auto">
+        {/* Header */}
         <div className="flex items-center gap-3 mb-8">
           <Link href="/" className="p-2 rounded-full hover:bg-gray-200 transition">
             <IoArrowBack size={22} className="text-gray-700" />
@@ -116,7 +121,9 @@ export default function GabungPage() {
           <h1 className="text-3xl font-bold text-gray-800">Gabung Menjadi Kreator</h1>
         </div>
 
+        {/* Form */}
         <form onSubmit={handleSubmit} className="bg-white shadow-xl rounded-2xl p-8 space-y-8 border border-gray-100">
+          
           {/* Informasi Dasar */}
           <section className="space-y-4 border-b pb-6">
             <Input label="Nama Lengkap" name="name" value={formData.name} onChange={handleChange} required />
@@ -140,6 +147,45 @@ export default function GabungPage() {
             <Textarea label="Bio Singkat" name="bio" value={formData.bio} onChange={handleChange} placeholder="Ceritakan tentang diri dan konten Anda..." />
           </section>
 
+          {/* Media Sosial */}
+          <section className="space-y-4 border-b pb-6">
+            <h2 className="text-lg font-semibold text-gray-800 border-b pb-2">Media Sosial Anda</h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Input
+                label="URL Instagram"
+                name="instagramUrl"
+                type="url"
+                placeholder="https://instagram.com/username"
+                value={formData.instagramUrl}
+                onChange={handleChange}
+              />
+              <Input
+                label="URL TikTok"
+                name="tiktokUrl"
+                type="url"
+                placeholder="https://tiktok.com/@username"
+                value={formData.tiktokUrl}
+                onChange={handleChange}
+              />
+              <Input
+                label="URL YouTube"
+                name="youtubeUrl"
+                type="url"
+                placeholder="https://youtube.com/@channel"
+                value={formData.youtubeUrl}
+                onChange={handleChange}
+              />
+              <Input
+                label="URL Facebook"
+                name="facebookUrl"
+                type="url"
+                placeholder="https://facebook.com/username"
+                value={formData.facebookUrl}
+                onChange={handleChange}
+              />
+            </div>
+          </section>
+
           {/* Upload */}
           <section className="space-y-4">
             <h2 className="text-lg font-semibold text-gray-800 border-b pb-2">Upload Gambar</h2>
@@ -149,14 +195,22 @@ export default function GabungPage() {
           </section>
 
           {/* Submit */}
-          <button type="submit" disabled={isLoading} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-all shadow-md disabled:bg-indigo-300">
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-all shadow-md disabled:bg-indigo-300"
+          >
             {isLoading ? "Mengirim Data..." : "Kirim Pendaftaran"}
           </button>
 
           {message && (
-            <div className={`p-4 rounded-lg text-sm text-center font-medium transition ${
-              message.type === "success" ? "bg-green-100 text-green-700 border border-green-300" : "bg-red-100 text-red-700 border border-red-300"
-            }`}>
+            <div
+              className={`p-4 rounded-lg text-sm text-center font-medium transition ${
+                message.type === "success"
+                  ? "bg-green-100 text-green-700 border border-green-300"
+                  : "bg-red-100 text-red-700 border border-red-300"
+              }`}
+            >
               {message.text}
             </div>
           )}
@@ -171,7 +225,10 @@ function Input({ label, ...props }) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      <input {...props} className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm" />
+      <input
+        {...props}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm"
+      />
     </div>
   );
 }
@@ -179,7 +236,10 @@ function Select({ label, children, ...props }) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      <select {...props} className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm bg-white">
+      <select
+        {...props}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm bg-white"
+      >
         {children}
       </select>
     </div>
@@ -189,7 +249,11 @@ function Textarea({ label, ...props }) {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      <textarea {...props} rows={3} className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm" />
+      <textarea
+        {...props}
+        rows={3}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition shadow-sm"
+      />
     </div>
   );
 }
