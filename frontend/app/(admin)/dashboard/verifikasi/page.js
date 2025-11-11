@@ -16,7 +16,7 @@ export default function VerifikasiPage() {
     setLoading(true);
     const token = localStorage.getItem("authToken");
     //const res = await fetch("http://127.0.0.1:8080/api/admin/submissions", {
-    const res = await fetch("api/admin/submissions", {
+    const res = await fetch("/api/admin/submissions", {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (res.ok) {
@@ -34,7 +34,7 @@ export default function VerifikasiPage() {
     
     const token = localStorage.getItem("authToken");
     //const res = await fetch(`http://127.0.0.1:8080/api/admin/submissions/${id}/approve`, {
-    const res = await fetch(`api/admin/submissions/${id}/approve`, {
+    const res = await fetch(`/api/admin/submissions/${id}/approve`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
     });
