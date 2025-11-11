@@ -201,7 +201,8 @@ export default function DashboardPage() {
                       <td className="p-4">
                         {influencer.imageUrl ? (
                           <img
-                            src={`http://127.0.0.1:8080${influencer.imageUrl}`}
+                            //src={`http://127.0.0.1:8080${influencer.imageUrl}`}
+                            src={`${influencer.imageUrl}`}
                             alt={influencer.name}
                             className="w-14 h-14 object-cover rounded-lg border border-gray-200 shadow-sm"
                           />
@@ -211,6 +212,7 @@ export default function DashboardPage() {
                           </div>
                         )}
                       </td>
+                      
 
                       {/* 🧍 Nama */}
                       <td className="p-4 font-semibold text-gray-800">
