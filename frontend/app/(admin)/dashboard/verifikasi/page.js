@@ -15,7 +15,8 @@ export default function VerifikasiPage() {
   const fetchSubmissions = async () => {
     setLoading(true);
     const token = localStorage.getItem("authToken");
-    const res = await fetch("http://127.0.0.1:8080/api/admin/submissions", {
+    //const res = await fetch("http://127.0.0.1:8080/api/admin/submissions", {
+    const res = await fetch("api/admin/submissions", {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (res.ok) {
@@ -32,7 +33,8 @@ export default function VerifikasiPage() {
     if (!confirm("Setujui influencer ini? Data akan dipindahkan ke daftar utama.")) return;
     
     const token = localStorage.getItem("authToken");
-    const res = await fetch(`http://127.0.0.1:8080/api/admin/submissions/${id}/approve`, {
+    //const res = await fetch(`http://127.0.0.1:8080/api/admin/submissions/${id}/approve`, {
+    const res = await fetch(`api/admin/submissions/${id}/approve`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -49,7 +51,8 @@ export default function VerifikasiPage() {
     if (!confirm("Tolak dan hapus pendaftaran ini?")) return;
 
     const token = localStorage.getItem("authToken");
-    const res = await fetch(`http://127.0.0.1:8080/api/admin/submissions/${id}/reject`, {
+    //const res = await fetch(`http://127.0.0.1:8080/api/admin/submissions/${id}/reject`, {
+    const res = await fetch(`/api/admin/submissions/${id}/reject`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -110,15 +113,21 @@ export default function VerifikasiPage() {
                 </div>
 
                 {/* Gambar */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
+                <div>
                     <h3 className="font-semibold mb-2">Foto Profil</h3>
-                    <img src={`http://127.0.0.1:8080${sub.profileImageUrl}`} alt="Profil" className="w-full h-auto object-cover rounded-lg border"/>
-                  </div>
-                  <div>
+                    <img 
+                        src={sub.profileImageUrl} 
+                        alt="Profil" 
+                        className="w-full h-auto object-cover rounded-lg border"
+                    />
+                </div>
+                <div>
                     <h3 className="font-semibold mb-2">Screenshot Statistik</h3>
-                    <img src={`http://127.0.0.1:8080${sub.statsImageUrl}`} alt="Statistik" className="w-full h-auto object-cover rounded-lg border"/>
-                  </div>
+                    <img 
+                        src={sub.statsImageUrl} 
+                        alt="Statistik" 
+                        className="w-full h-auto object-cover rounded-lg border"
+                    />
                 </div>
               </div>
             </div>
