@@ -204,6 +204,7 @@ func CreateInfluencer(c *gin.Context) {
 		InstagramURL       string `json:"instagramUrl" binding:"omitempty,url"`
 		TiktokURL          string `json:"tiktokUrl" binding:"omitempty,url"`
 		YoutubeURL         string `json:"youtubeUrl" binding:"omitempty,url"`
+		FacebookURL        string `json:"facebookUrl" binding:"omitempty"` // <-- Tambahkan ini
 		InstagramFollowers int    `json:"instagramFollowers" binding:"gte=0"`
 		TiktokFollowers    int    `json:"tiktokFollowers" binding:"gte=0"`
 		YoutubeSubscribers int    `json:"youtubeSubscribers" binding:"gte=0"`
@@ -240,6 +241,7 @@ func CreateInfluencer(c *gin.Context) {
 		IsRecommended:      payload.IsRecommended,
 		InstagramURL:       payload.InstagramURL,
 		TiktokURL:          payload.TiktokURL,
+		FacebookURL:        payload.FacebookURL,
 		YoutubeURL:         payload.YoutubeURL,
 		InstagramFollowers: payload.InstagramFollowers,
 		TiktokFollowers:    payload.TiktokFollowers,
