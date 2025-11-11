@@ -1,22 +1,25 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 async function getCategories() {
-  const res = await fetch('/api/categories', { cache: 'no-store' });
+  const res = await fetch('api/categories', { cache: 'no-store' });
   if (!res.ok) throw new Error('Gagal mengambil kategori');
   return res.json();
 }
 
-export default function CategoryList({ onCategorySelect }) {
+export default function CategoryList() {
   const [categories, setCategories] = useState([]);
-  const [activeCategoryId, setActiveCategoryId] = useState(null);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeCategoryId = searchParams.get('category_id');
 
   useEffect(() => {
     async function loadCategories() {
       try {
-        const data = await getCategories();
-        setCategories(data || []);
+        const categories = await getCategories();
+        setCategories(categories || []);
       } catch (error) {
         console.error(error);
       }
@@ -24,11 +27,23 @@ export default function CategoryList({ onCategorySelect }) {
     loadCategories();
   }, []);
 
-  const handleCategoryClick = (categoryId) => {
-    setActiveCategoryId((prev) => (prev === categoryId ? null : categoryId));
-    if (onCategorySelect) {
-      onCategorySelect(categoryId); // lempar event ke parent kalau kamu mau filter data
+  const createCategoryUrl = (categoryId) => {
+    const params = new URLSearchParams(searchParams);
+    if (categoryId && params.get('category_id') === categoryId.toString()) {
+      params.delete('category_id');
+    } else if (categoryId) {
+      params.set('category_id', categoryId.toString());
+    } else {
+      params.delete('category_id');
     }
+    params.delete('page');
+    return `/home?${params.toString()}`;
+  };
+
+  const handleCategoryClick = (categoryId) => {
+    const url = createCategoryUrl(categoryId);
+    // 🔹 Navigasi tanpa scroll ke atas
+    router.push(url, { scroll: false });
   };
 
   return (
@@ -39,6 +54,7 @@ export default function CategoryList({ onCategorySelect }) {
 
       <div className="overflow-x-auto no-scrollbar">
         <div className="flex gap-1 sm:gap-2 min-w-max">
+          {/* Tombol Semua */}
           <button
             onClick={() => handleCategoryClick(null)}
             className={`px-4 py-2 whitespace-nowrap rounded-full text-sm font-medium border transition-all shadow-sm ${
@@ -50,12 +66,13 @@ export default function CategoryList({ onCategorySelect }) {
             All
           </button>
 
+          {/* Tombol kategori dari API */}
           {categories.map((cat) => (
             <button
               key={cat.ID}
               onClick={() => handleCategoryClick(cat.ID)}
               className={`px-4 py-2 whitespace-nowrap rounded-full text-sm font-medium border transition-all shadow-sm ${
-                activeCategoryId === cat.ID
+                activeCategoryId === cat.ID.toString()
                   ? 'bg-[#1986DF] text-white border-[#1986DF]'
                   : 'bg-white hover:bg-gray-50 border-gray-200 text-gray-700'
               }`}
