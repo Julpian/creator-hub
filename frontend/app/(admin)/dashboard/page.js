@@ -24,8 +24,13 @@ export default function DashboardPage() {
       });
       if (query) params.set("q", query);
 
+      //const res = await fetch(
+        //`http://127.0.0.1:8080/api/influencers/search?${params.toString()}`
+      //);
+      //const data = await res.json();
+
       const res = await fetch(
-        `http://127.0.0.1:8080/api/influencers/search?${params.toString()}`
+        `/api/influencers/search?${params.toString()}`
       );
       const data = await res.json();
 
@@ -65,7 +70,8 @@ export default function DashboardPage() {
 
     try {
       // PERBAIKAN BUG KRITIS: Panggil rute /api/admin/... dan sertakan token
-      const res = await fetch(`http://127.0.0.1:8080/api/admin/influencers/${id}`, {
+      //const res = await fetch(`http://127.0.0.1:8080/api/admin/influencers/${id}`, {
+      const res = await fetch(`/api/admin/influencers/${id}`, {
         method: "DELETE",
         headers: {
             'Authorization': `Bearer ${token}`
