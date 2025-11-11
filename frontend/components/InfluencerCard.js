@@ -37,7 +37,7 @@ export default function InfluencerCard({ influencer }) {
         <div className="flex flex-col items-center p-5 relative">
           {influencer.imageUrl ? (
             <img
-              src={`http://127.0.0.1:8080${influencer.imageUrl}`}
+              src={influencer.imageUrl}
               alt={influencer.name}
               className="w-50 h-50 sm:w-50 sm:h-50 object-cover rounded-2xl mb-4 transition-transform duration-300 hover:scale-105"
             />
