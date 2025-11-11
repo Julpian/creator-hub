@@ -55,6 +55,7 @@ type InfluencerSubmission struct {
 	Location           string    `json:"location"`
 	Gender             string    `json:"gender"`
 	DateOfBirth        time.Time `json:"dateOfBirth"`
+	Category           string    `json:"category"`
 	InstagramURL       string    `json:"instagramUrl"`
 	TiktokURL          string    `json:"tiktokUrl"`
 	YoutubeURL         string    `json:"youtubeUrl"`

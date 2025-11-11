@@ -24,6 +24,7 @@ func SubmitForReview(c *gin.Context) {
 		Location     string `json:"location"`
 		Gender       string `json:"gender"`
 		DateOfBirth  string `json:"dateOfBirth"`
+		Category     string `json:"category"`
 		InstagramURL string `json:"instagramUrl" binding:"omitempty,url"`
 		TiktokURL    string `json:"tiktokUrl" binding:"omitempty,url"`
 		YoutubeURL   string `json:"youtubeUrl" binding:"omitempty,url"`
@@ -46,6 +47,7 @@ func SubmitForReview(c *gin.Context) {
 		Location:     payload.Location,
 		Gender:       payload.Gender,
 		DateOfBirth:  dob,
+		Category:     payload.Category,
 		InstagramURL: payload.InstagramURL,
 		TiktokURL:    payload.TiktokURL,
 		YoutubeURL:   payload.YoutubeURL,
@@ -89,11 +91,12 @@ func ApproveSubmission(c *gin.Context) {
 
 	// 2. Buat Influencer baru di tabel 'influencers' utama
 	newInfluencer := models.Influencer{
-		Name:               submission.Name,
-		Bio:                submission.Bio,
-		Location:           submission.Location,
-		Gender:             submission.Gender,
-		DateOfBirth:        submission.DateOfBirth,
+		Name:        submission.Name,
+		Bio:         submission.Bio,
+		Location:    submission.Location,
+		Gender:      submission.Gender,
+		DateOfBirth: submission.DateOfBirth,
+
 		PhoneNumber:        submission.PhoneNumber,
 		InstagramURL:       submission.InstagramURL,
 		TiktokURL:          submission.TiktokURL,
