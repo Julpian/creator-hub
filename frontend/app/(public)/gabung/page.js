@@ -36,7 +36,8 @@ export default function GabungPage() {
   const uploadFile = async (submissionId, file, type) => {
     const data = new FormData();
     data.append("image", file);
-    await fetch(`http://127.0.0.1:8080/api/join/${submissionId}/upload/${type}`, {
+   // await fetch(`http://127.0.0.1:8080/api/join/${submissionId}/upload/${type}`, {
+    await fetch(`/api/join/${submissionId}/upload/${type}`, {
       method: "POST",
       body: data,
     });
@@ -54,7 +55,8 @@ export default function GabungPage() {
     setMessage(null);
 
     try {
-      const resJson = await fetch("http://127.0.0.1:8080/api/join", {
+      //const resJson = await fetch("http://127.0.0.1:8080/api/join", {
+      const resJson = await fetch("/api/join", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
