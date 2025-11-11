@@ -33,14 +33,6 @@ export default function GabungPage() {
     fetchCategories();
   }, []);
 
-  // 🔹 Redirect setelah sukses
-  useEffect(() => {
-    if (message?.type === "success") {
-      const timer = setTimeout(() => router.push("/"), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [message]);
-
   // 🔹 Handle input biasa
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -112,7 +104,11 @@ export default function GabungPage() {
       });
       document.getElementById("profileImageInput").value = null;
       document.getElementById("statsImageInput").value = null;
-      setMessage({ type: "success", text: "Pendaftaran Anda telah diterima! Admin akan meninjau data Anda." });
+
+      setMessage({
+        type: "success",
+        text: "Pendaftaran Anda telah kami terima. Data Anda akan diproses dan diverifikasi. Kami akan menghubungi Anda melalui email atau WhatsApp untuk informasi lebih lanjut.",
+      });
     } catch (error) {
       console.error(error);
       setMessage({ type: "error", text: `Terjadi kesalahan: ${error.message}` });
@@ -133,8 +129,10 @@ export default function GabungPage() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white shadow-xl rounded-2xl p-8 space-y-8 border border-gray-100">
-          
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white shadow-xl rounded-2xl p-8 space-y-8 border border-gray-100"
+        >
           {/* Informasi Dasar */}
           <section className="space-y-4 border-b pb-6">
             <Input label="Nama Lengkap" name="name" value={formData.name} onChange={handleChange} required />
@@ -150,7 +148,7 @@ export default function GabungPage() {
               <Input label="Tanggal Lahir" name="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={handleChange} />
             </div>
 
-            {/* Kategori pakai checkbox */}
+            {/* Kategori */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Kategori Utama Anda</label>
               <div className="grid sm:grid-cols-2 gap-2">
@@ -199,20 +197,38 @@ export default function GabungPage() {
           >
             {isLoading ? "Mengirim Data..." : "Kirim Pendaftaran"}
           </button>
-
-          {message && (
-            <div
-              className={`p-4 rounded-lg text-sm text-center font-medium transition ${
-                message.type === "success"
-                  ? "bg-green-100 text-green-700 border border-green-300"
-                  : "bg-red-100 text-red-700 border border-red-300"
-              }`}
-            >
-              {message.text}
-            </div>
-          )}
         </form>
       </div>
+
+      {/* 🔹 Pop-up Notifikasi */}
+      {message && (
+        <div
+          className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+          onClick={() => setMessage(null)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center relative animate-fadeIn"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3
+              className={`text-lg font-semibold mb-2 ${
+                message.type === "success" ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {message.type === "success" ? "Pendaftaran Diterima" : "Terjadi Kesalahan"}
+            </h3>
+
+            <p className="text-gray-700 text-sm mb-4">{message.text}</p>
+
+            <button
+              onClick={() => setMessage(null)}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-md transition"
+            >
+              Tutup
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
