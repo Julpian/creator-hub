@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 async function getCategories() {
   const res = await fetch('/api/categories', { cache: 'no-store' });
@@ -12,8 +12,7 @@ async function getCategories() {
 export default function CategoryList() {
   const [categories, setCategories] = useState([]);
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const activeCategoryId = searchParams.get('category_id');
+  const [activeCategoryId, setActiveCategoryId] = useState(searchParams.get('category_id'));
 
   useEffect(() => {
     async function loadCategories() {
@@ -27,27 +26,33 @@ export default function CategoryList() {
     loadCategories();
   }, []);
 
-  const createCategoryUrl = (categoryId) => {
-    const params = new URLSearchParams(searchParams);
-    if (categoryId && params.get('category_id') === categoryId.toString()) {
-      params.delete('category_id');
-    } else if (categoryId) {
-      params.set('category_id', categoryId.toString());
-    } else {
-      params.delete('category_id');
-    }
-    params.delete('page');
-    return `/home?${params.toString()}`;
+  // 🔹 Update URL tanpa reload atau scroll ke atas
+  const updateUrlWithoutReload = (newParams) => {
+    const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+    window.history.pushState({}, '', newUrl);
   };
 
-  // Fungsi navigasi tanpa reload dan tanpa scroll ke atas
   const handleCategoryClick = (categoryId) => {
-    const newUrl = createCategoryUrl(categoryId);
-    router.push(newUrl, { scroll: false }); // ⛔ tidak scroll ke atas
+    const params = new URLSearchParams(window.location.search);
+
+    if (categoryId && params.get('category_id') === categoryId.toString()) {
+      params.delete('category_id');
+      setActiveCategoryId(null);
+    } else if (categoryId) {
+      params.set('category_id', categoryId.toString());
+      setActiveCategoryId(categoryId.toString());
+    } else {
+      params.delete('category_id');
+      setActiveCategoryId(null);
+    }
+
+    params.delete('page');
+    updateUrlWithoutReload(params);
   };
 
   return (
     <div className="w-full px-1 py-1 sm:px-3 sm:py-3">
+      {/* Judul di atas kategori */}
       <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3">
         Kategori KOL
       </h2>
