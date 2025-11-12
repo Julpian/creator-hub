@@ -58,7 +58,7 @@ export default async function PackageList() {
             <div className="mb-3 sm:mb-4">
               {pkg.imageUrl ? (
                 <img
-                  src={`http://127.0.0.1:8080${pkg.imageUrl}`}
+                  src={pkg.imageUrl}
                   alt={pkg.title}
                   className="w-full h-28 sm:h-32 object-cover rounded-lg"
                 />
