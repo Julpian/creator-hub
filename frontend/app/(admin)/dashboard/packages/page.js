@@ -3,7 +3,8 @@ import Link from 'next/link';
 import DeletePackageButton from '@/components/DeletePackageButton';
 
 async function getPackages() {
-    const res = await fetch('http://127.0.0.1:8080/api/packages', { cache: 'no-store' });
+    //const res = await fetch('http://127.0.0.1:8080/api/packages', { cache: 'no-store' });
+    const res = await fetch('/api/packages', { cache: 'no-store' });
     if (!res.ok) throw new Error("Gagal mengambil data paket");
     return res.json();
 }
@@ -40,7 +41,7 @@ export default async function PackagesDashboard() {
                                 <td className="p-3">
                                     {pkg.imageUrl ? (
                                         <img
-                                            src={`http://127.0.0.1:8080${pkg.imageUrl}`}
+                                            src={pkg.imageUrl}
                                             alt={pkg.title}
                                             className="w-24 h-24 object-cover rounded-lg border"
                                         />
