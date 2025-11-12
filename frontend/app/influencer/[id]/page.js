@@ -16,7 +16,7 @@ import { FaTiktok } from "react-icons/fa";
 // =====================================
 async function getInfluencerDetail(id) {
   //const res = await fetch(`http://127.0.0.1:8080/api/influencers/${id}`, { cache: "no-store" });
-  const res = await fetch(`http://127.0.0.1:8080/api/influencers/${id}`, { cache: "no-store" });
+  const res = await fetch(`/api/influencers/${id}`, { cache: "no-store" });
   if (!res.ok) return null;
   return res.json();
 }
