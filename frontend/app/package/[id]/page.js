@@ -1,7 +1,4 @@
 // File: app/package/[id]/page.js
-"use client";
-
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { IoArrowBack, IoLogoWhatsapp } from "react-icons/io5";
 import { CheckCircle } from "lucide-react";
@@ -31,8 +28,7 @@ const packageFeatures = {
 
 // 🔹 Fetch detail paket
 async function getPackageDetail(id) {
-  //const res = await fetch(`http://127.0.0.1:8080/api/packages/${id}`, {
-  const res = await fetch(`/api/packages/${id}`, {
+  const res = await fetch(`http://127.0.0.1:8080/api/packages/${id}`, {
     cache: "no-store",
   });
   if (!res.ok) return null;
