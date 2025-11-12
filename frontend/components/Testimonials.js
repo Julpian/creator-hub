@@ -1,6 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 const testimonials = [
   {
@@ -9,7 +11,7 @@ const testimonials = [
     imageUrl: "/testimonials/maysa.jpg",
     stars: 5,
     quote:
-      "Parah sih, manajemen ini keren banget! 😍 Job-nya banyak, respon admin cepet, dan yang paling penting ga ada potongan fee! Cairan juga super ngebut, pokoknya recommended banget 🔥🔥",
+      "Parah sih, manajemen ini keren banget! Job-nya banyak, respon admin cepet, dan yang paling penting ga ada potongan fee! Cairan juga super ngebut, pokoknya recommended banget!",
   },
   {
     name: "Brand Skincare XYZ",
@@ -17,7 +19,7 @@ const testimonials = [
     imageUrl: "/testimonials/rozi.png",
     stars: 5,
     quote:
-      "Kerjasama dengan Gen Creator Hub sangat memuaskan. Mereka menyediakan talenta yang sesuai dengan brief kami dan prosesnya sangat transparan. Penjualan kami meningkat 20% selama kampanye!",
+      "Kerjasama dengan Gen Creator Hub sangat memuaskan. Mereka menyediakan talenta yang sesuai dengan brief kami dan prosesnya sangat transparan. Penjualan kami meningkat signifikan selama kampanye.",
   },
   {
     name: "Agung Hapsah",
@@ -25,19 +27,19 @@ const testimonials = [
     imageUrl: "/testimonials/lutfi.jpg",
     stars: 5,
     quote:
-      "Sebagai kreator, menemukan platform yang adil dan mendukung itu langka. Gen Creator Hub adalah salah satunya. Prosesnya mudah dan pembayarannya selalu tepat waktu. Sangat membantu!",
+      "Sebagai kreator, menemukan platform yang adil dan mendukung itu langka. Gen Creator Hub adalah salah satunya. Prosesnya mudah dan pembayarannya selalu tepat waktu.",
   },
 ];
 
 const StarRating = ({ count }) => (
-  <div className="flex text-yellow-400 mt-1">
+  <div className="flex text-gray-800 mt-1">
     {[...Array(count)].map((_, i) => (
       <svg
         key={i}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
-        className="w-5 h-5"
+        className="w-4 h-4"
       >
         <path
           fillRule="evenodd"
@@ -50,54 +52,78 @@ const StarRating = ({ count }) => (
 );
 
 export default function Testimonials() {
+  const [index, setIndex] = useState(0);
+
+  // Ganti testimoni otomatis setiap 5 detik
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <section className="py-20 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6 text-center">
+    <section className="py-24 bg-gradient-to-b from-gray-50 via-white to-gray-100 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto px-6 text-center">
         {/* Judul */}
-        <h2 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 leading-tight">
-          Apa Kata Mereka Tentang{" "}
-          <span className="text-green-600">Gen Creator Hub?</span>
+        <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
+          Apa Kata Mereka Tentang Gen Creator Hub
         </h2>
         <p className="text-gray-500 max-w-2xl mx-auto mb-14 text-lg">
-          Cerita nyata dari para kreator dan brand partner yang sudah bekerja sama 💬
+          Cerita nyata dari para kreator dan brand partner yang sudah bekerja sama.
         </p>
 
-        {/* Carousel */}
-        <div className="flex overflow-x-auto gap-8 snap-x snap-mandatory scroll-smooth pb-8 scrollbar-hide px-2">
-          {testimonials.map((t, i) => (
-            <div
-              key={i}
-              className="flex-shrink-0 w-full md:w-[600px] lg:w-[700px] mx-auto snap-center 
-                         bg-white p-10 rounded-3xl shadow-lg border border-gray-100 
-                         transition-all duration-500 hover:shadow-2xl hover:scale-[1.02]"
+        {/* Slider Testimoni */}
+        <div className="relative min-h-[340px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.7, ease: "easeInOut" }}
+              className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-3xl p-10 shadow-md mx-auto w-full md:w-[600px]"
             >
-              {/* Header */}
-              <div className="flex flex-col items-center md:flex-row md:items-center mb-6 gap-4">
+              <div className="flex flex-col items-center mb-6">
                 <Image
-                  src={t.imageUrl}
-                  alt={t.name}
-                  width={72}
-                  height={72}
-                  className="w-20 h-20 rounded-full object-cover shadow-md"
+                  src={testimonials[index].imageUrl}
+                  alt={testimonials[index].name}
+                  width={80}
+                  height={80}
+                  className="w-20 h-20 rounded-full object-cover shadow-md mb-3"
                 />
-                <div className="text-center md:text-left">
-                  <p className="font-bold text-gray-800 text-lg">{t.name}</p>
-                  <p className="text-sm text-gray-500">{t.role}</p>
-                  <StarRating count={t.stars} />
-                </div>
+                <p className="font-semibold text-gray-900 text-lg">
+                  {testimonials[index].name}
+                </p>
+                <p className="text-sm text-gray-500">
+                  {testimonials[index].role}
+                </p>
+                <StarRating count={testimonials[index].stars} />
               </div>
 
-              {/* Isi Testimoni */}
-              <p className="text-gray-600 leading-relaxed italic text-lg text-center md:text-left">
-                “{t.quote}”
+              <p className="text-gray-700 leading-relaxed italic text-lg">
+                “{testimonials[index].quote}”
               </p>
-            </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Indikator Bawah */}
+        <div className="flex justify-center mt-6 space-x-3">
+          {testimonials.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIndex(i)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                i === index ? "bg-gray-900 scale-110" : "bg-gray-400/40"
+              }`}
+            />
           ))}
         </div>
       </div>
 
-      {/* Latar belakang lembut */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-white/70 to-white pointer-events-none" />
+      {/* Efek background lembut */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[60%] h-[300px] bg-gray-200/30 blur-3xl rounded-full -z-10" />
     </section>
   );
 }
