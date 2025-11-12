@@ -26,8 +26,8 @@ function RekomendasiContent() {
   useEffect(() => {
     async function fetchRecommended() {
       setLoading(true);
-      let url = `http://127.0.0.1:8080/api/influencers?recommended=true&limit=10`;
-
+      //let url = `http://127.0.0.1:8080/api/influencers?recommended=true&limit=10`;
+      let url = `/api/influencers?recommended=true&limit=10`;
       const categoryId = platformCategoryMap[activeFilter];
       if (categoryId) url += `&category_id=${categoryId}`;
 
