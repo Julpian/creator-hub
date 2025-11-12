@@ -1,4 +1,4 @@
-// File: components/InfluencerCard.js
+"use client";
 
 import Link from "next/link";
 import {
@@ -24,10 +24,14 @@ export default function InfluencerCard({ influencer }) {
   );
 
   return (
-    <div className="flex justify-center relative w-full sm:w-auto">
-      <div className="bg-white rounded-3xl shadow-md hover:shadow-xl border border-gray-100 overflow-hidden 
-        w-[90%] sm:max-w-[280px] transition-all duration-300 hover:-translate-y-1 relative">
-        
+    <div
+      className="flex justify-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4 p-2"
+      style={{ boxSizing: "border-box" }}
+    >
+      <div
+        className="bg-white rounded-3xl shadow-md hover:shadow-xl border border-gray-100 overflow-hidden 
+        w-full transition-all duration-300 hover:-translate-y-1 relative flex flex-col"
+      >
         {/* BADGE REKOMENDASI */}
         {influencer.isRecommended && (
           <div className="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-[10px] sm:text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 z-10">
@@ -42,10 +46,10 @@ export default function InfluencerCard({ influencer }) {
             <img
               src={influencer.imageUrl}
               alt={influencer.name}
-              className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-2xl mb-3 sm:mb-4 transition-transform duration-300 hover:scale-105"
+              className="w-28 h-28 xs:w-32 xs:h-32 sm:w-40 sm:h-40 object-cover rounded-2xl mb-3 sm:mb-4 transition-transform duration-300 hover:scale-105"
             />
           ) : (
-            <div className="w-32 h-32 sm:w-40 sm:h-40 bg-gray-100 flex items-center justify-center text-gray-400 rounded-2xl mb-3 sm:mb-4">
+            <div className="w-28 h-28 xs:w-32 xs:h-32 sm:w-40 sm:h-40 bg-gray-100 flex items-center justify-center text-gray-400 rounded-2xl mb-3 sm:mb-4">
               No Image
             </div>
           )}
@@ -70,6 +74,7 @@ export default function InfluencerCard({ influencer }) {
               </span>
             )}
           </h3>
+
           <p className="text-xs text-gray-500 text-center">
             {influencer.location || "Unknown Location"}
           </p>
@@ -122,7 +127,7 @@ export default function InfluencerCard({ influencer }) {
         )}
 
         {/* TOMBOL */}
-        <div className="p-3 sm:p-4 flex items-center justify-between gap-2">
+        <div className="p-3 sm:p-4 flex items-center justify-between gap-2 mt-auto">
           <a
             href={`https://wa.me/${adminWhatsAppNumber}?text=${waMessage}`}
             target="_blank"
