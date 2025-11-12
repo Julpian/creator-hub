@@ -40,9 +40,9 @@ export default async function PackagesDashboard() {
                                 <td className="p-3">
                                     {pkg.imageUrl ? (
                                         <img
-                                            src={`http://127.0.0.1:8080$\{pkg.imageUrl}`}
-                                            alt={pkg.title}
-                                            className="w-24 h-24 object-cover rounded-lg border"
+                                            src={pkg.imageUrl} 
+                                            alt={pkg.title}
+                                            className="w-24 h-24 object-cover rounded-lg border"
                                         />
                                     ) : (
                                         <div className="w-24 h-24 bg-gray-100 flex items-center justify-center text-xs text-gray-400 rounded-lg border">

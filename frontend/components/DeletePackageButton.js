@@ -7,7 +7,7 @@ export default function DeletePackageButton({ id }) {
   const handleDelete = async () => {
     if (!confirm("Yakin ingin menghapus paket ini?")) return;
 
-    const res = await fetch(`http://127.0.0.1:8080/api/admin/packages/${id}`, {
+    const res = await fetch(`/api/admin/packages/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
     });
