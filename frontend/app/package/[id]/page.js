@@ -28,7 +28,8 @@ const packageFeatures = {
 
 // 🔹 Fetch detail paket
 async function getPackageDetail(id) {
-  const res = await fetch(`http://127.0.0.1:8080/api/packages/${id}`, {
+  //const res = await fetch(`http://127.0.0.1:8080/api/packages/${id}`, {
+  const res = await fetch(`/api/packages/${id}`, {
     cache: "no-store",
   });
   if (!res.ok) return null;

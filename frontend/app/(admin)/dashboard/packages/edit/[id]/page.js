@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 async function getPackageDetail(id) {
-    const res = await fetch(`http://127.0.0.1:8080/api/packages/${id}`, { cache: "no-store" });
+    //const res = await fetch(`http://127.0.0.1:8080/api/packages/${id}`, { cache: "no-store" });
+    const res = await fetch(`/api/packages/${id}`, { cache: "no-store" });
     if (!res.ok) return null;
     return res.json();
 }
@@ -38,7 +39,8 @@ export default function EditPackagePage() {
         e.preventDefault();
 
         // 1. Update data teks terlebih dahulu
-        const resText = await fetch(`http://127.0.0.1:8080/api/admin/packages/${id}`, {
+        //const resText = await fetch(`http://127.0.0.1:8080/api/admin/packages/${id}`, {
+        const resText = await fetch(`/api/admin/packages/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,7 +59,8 @@ export default function EditPackagePage() {
             const formData = new FormData();
             formData.append("image", newImage);
 
-            await fetch(`http://127.0.0.1:8080/api/admin/packages/${id}/upload`, {
+            //await fetch(`http://127.0.0.1:8080/api/admin/packages/${id}/upload`, {
+            await fetch(`/api/admin/packages/${id}/upload`, {
                 method: "POST",
                 headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
                 body: formData,
@@ -79,12 +82,11 @@ export default function EditPackagePage() {
                 <div><label>Harga</label><input name="price" type="number" value={pkg.price} onChange={handleChange} className="w-full mt-1 p-2 border rounded" required /></div>
                 <div><label>Tipe (Tier)</label><select name="tier" value={pkg.tier} onChange={handleChange} className="w-full mt-1 p-2 border rounded"><option value="micro">Micro</option><option value="mid-tier">Mid-tier</option><option value="macro">Macro</option><option value="mega">Mega</option></select></div>
 
-                {/* Tampilkan gambar saat ini */}
                 {pkg.imageUrl && (
-                    <div>
-                        <p className="block text-sm font-medium">Gambar Saat Ini:</p>
-                        <img src={`http://127.0.0.1:8080${pkg.imageUrl}`} alt={pkg.title} className="mt-2 w-32 h-32 object-cover rounded"/>
-                    </div>
+                <div>
+                    <p className="block text-sm font-medium">Gambar Saat Ini:</p>
+                    <img src={pkg.imageUrl} alt={pkg.title} className="mt-2 w-32 h-32 object-cover rounded"/>
+                </div>
                 )}
                 
                 {/* Input untuk mengubah gambar */}

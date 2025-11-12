@@ -21,7 +21,8 @@ export default function TambahPackagePage() {
 
     try {
       // 1️⃣ Kirim data teks dulu
-      const resText = await fetch("http://127.0.0.1:8080/api/admin/packages", {
+      //const resText = await fetch("http://127.0.0.1:8080/api/admin/packages", {
+      const resText = await fetch("/api/admin/packages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +51,8 @@ export default function TambahPackagePage() {
         formData.append("image", image);
 
         const resImage = await fetch(
-          `http://127.0.0.1:8080/api/admin/packages/${newPackageId}/upload`,
+          //`http://127.0.0.1:8080/api/admin/packages/${newPackageId}/upload`,
+          `/api/admin/packages/${newPackageId}/upload`,
           {
             method: "POST",
             headers: {
