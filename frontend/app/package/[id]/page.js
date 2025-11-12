@@ -1,4 +1,7 @@
 // File: app/package/[id]/page.js
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { IoArrowBack, IoLogoWhatsapp } from "react-icons/io5";
 import { CheckCircle } from "lucide-react";
