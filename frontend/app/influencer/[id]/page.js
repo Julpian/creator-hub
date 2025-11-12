@@ -15,6 +15,7 @@ import { FaTiktok } from "react-icons/fa";
 // Fetch detail influencer
 // =====================================
 async function getInfluencerDetail(id) {
+  //const res = await fetch(`http://127.0.0.1:8080/api/influencers/${id}`, { cache: "no-store" });
   const res = await fetch(`http://127.0.0.1:8080/api/influencers/${id}`, { cache: "no-store" });
   if (!res.ok) return null;
   return res.json();
@@ -74,7 +75,7 @@ export default function InfluencerDetailPage() {
             <div className="absolute left-1/2 -translate-x-1/2 -mt-20">
               <button onClick={() => setOpen(true)} className="cursor-pointer">
                 <img
-                  src={`http://127.0.0.1:8080${influencer.imageUrl}`}
+                  src={influencer.imageUrl}
                   alt={influencer.name}
                   className="w-36 h-36 rounded-full object-cover border-4 border-white shadow-md"
                 />
@@ -152,7 +153,7 @@ export default function InfluencerDetailPage() {
                   className="relative aspect-square"
                 >
                   <img
-                    src={`http://127.0.0.1:8080${img.imageUrl}`}
+                    src={img.imageUrl}
                     alt={img.description || `Portofolio ${index + 1}`}
                     className="w-full h-full object-cover rounded-lg shadow-md hover:opacity-90 transition"
                   />
@@ -170,9 +171,10 @@ export default function InfluencerDetailPage() {
         open={open}
         close={() => setOpen(false)}
         slides={[
-          { src: `http://127.0.0.1:8080${influencer.imageUrl}` },
+          ...(influencer.imageUrl ? [{ src: influencer.imageUrl }] : []),
           ...(influencer.portfolioImages?.map((img) => ({
-            src: `http://127.0.0.1:8080${img.imageUrl}`,
+            src: img.imageUrl,
+            alt: img.description || undefined,
           })) || []),
         ]}
       />
