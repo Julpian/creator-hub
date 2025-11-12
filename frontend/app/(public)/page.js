@@ -70,14 +70,12 @@ export default async function Home({ searchParams }) {
           <>
             <section
               key={currentPage}
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 
-                        gap-4 sm:gap-5 animate-fadeIn transition-all duration-300 ease-in-out"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6"
             >
               {influencers.map((influencer) => (
                 <InfluencerCard key={influencer.ID} influencer={influencer} />
               ))}
             </section>
-
             {/* Jarak bawah agar pagination tidak mepet */}
             <div className="pb-8" />
           </>
