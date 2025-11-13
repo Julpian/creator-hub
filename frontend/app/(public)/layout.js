@@ -13,7 +13,9 @@ export default function PublicLayout({ children }) {
   return (
     <>
       <TopNav />
-      
+      <main className="pt-16 pb-16">
+        {children}
+      </main>
       <Footer />
       {/* Tambahan padding bawah untuk scroll */}
       <div className="h-6" />
