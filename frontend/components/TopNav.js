@@ -17,6 +17,7 @@ import {
   IoAddCircleOutline,
   IoDocumentTextOutline,
   IoChatbubbleEllipsesOutline,
+  IoCalendarOutline, // ✅ Tambahkan ikon Event
 } from "react-icons/io5";
 
 export default function TopNav() {
@@ -36,16 +37,18 @@ export default function TopNav() {
   const adminWhatsAppNumber = "6281234567890";
   const waMessage = encodeURIComponent("Halo Admin Gen Creator Hub...");
 
+  // ✅ Tambahkan item baru "Event"
   const menuItems = [
     { title: "Home", href: "/home", icon: IoHomeOutline },
     { title: "About", href: "/tentang-kami", icon: IoPersonOutline },
     { title: "Influencer", href: "/pencarian", icon: IoFlashOutline },
     { title: "Package", href: "/package", icon: IoBriefcaseOutline },
+    { title: "Event", href: "/event", icon: IoCalendarOutline }, // 🔥 Menu baru di sini!
     {
       title: "Join Influencer",
       href: "https://docs.google.com/forms/d/e/1FAIpQLSfLt9f0bH_dOhJEJlD7LUuOHZ-ourA6IlZbJCLPuoENzPp99A/viewform",
       icon: IoAddCircleOutline,
-      external: true, // penanda link eksternal
+      external: true,
     },
     { title: "Terms & Conditions", href: "/terms", icon: IoDocumentTextOutline },
     { title: "FAQ", href: "/faq", icon: IoChatbubbleEllipsesOutline },

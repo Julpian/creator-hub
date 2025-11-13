@@ -62,8 +62,8 @@ function SearchPageContent() {
         queryFromUrl || locationFromUrl || genderFromUrl || minAgeFromUrl || maxAgeFromUrl;
 
       const url = hasFilter
-        ? `http://127.0.0.1:8080/api/influencers/search?${params.toString()}`
-        : `http://127.0.0.1:8080/api/influencers?${params.toString()}`;
+        ? `/api/influencers/search?${params.toString()}`
+        : `/api/influencers?${params.toString()}`;
 
       setHeaderTitle(hasFilter ? "Hasil Pencarian" : "Rekomendasi Untuk Anda");
 

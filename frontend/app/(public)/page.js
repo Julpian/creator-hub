@@ -5,8 +5,8 @@ import CategoryIcons from "@/components/CategoryIcons";
 import CtaCard from "@/components/CtaCard";
 import PackageList from "@/components/PackageList";
 import InfluencerCard from "@/components/InfluencerCard";
-import BrandCarousel from "@/components/BrandCarousel";
 import Testimonials from '@/components/Testimonials';
+import BrandCarousel from "@/components/BrandCarousel";
 import PaginationClient from "@/components/PaginationClient";
 import HomeSearchForm from "@/components/HomeSearchForm"; // <-- 1. Impor komponen baru
 import { IoLogoInstagram, IoLogoYoutube } from "react-icons/io5";
