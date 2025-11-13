@@ -12,7 +12,7 @@ export default function EventPage() {
       title: "Influencer Summit 2025",
       date: "17 Desember 2025",
       time: "13.00 - 23.00 WIB",
-      location: "Tasikmalaya Hotel Harmony L5",
+      location: "Tasikmalaya Hotel Harmony",
       image: "/images/event-summit.jpg",
       description:
         "Konferensi besar tahunan untuk para kreator, influencer, dan brand untuk berkolaborasi dan membangun masa depan digital bersama.",
