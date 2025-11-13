@@ -13,7 +13,7 @@ export default function PublicLayout({ children }) {
   return (
     <>
       <TopNav />
-      <main className="pt-16 pb-16">
+      <main className={`flex-grow bg-gray-50 min-h-screen pt-16 ${inter.className}`}>
         {children}
       </main>
       <Footer />
