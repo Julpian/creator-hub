@@ -23,7 +23,7 @@ export default function InfluencerCardSimple({ influencer }) {
         <div className="relative w-full aspect-square overflow-hidden">
           {influencer.imageUrl ? (
             <img
-              src={`http://127.0.0.1:8080${influencer.imageUrl}`}
+              src={influencer.imageUrl}
               alt={influencer.name}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />

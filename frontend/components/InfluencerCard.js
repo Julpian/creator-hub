@@ -129,7 +129,7 @@ export default function InfluencerCard({ influencer }) {
           rel="noopener noreferrer"
           className="flex-1 inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl shadow-md shadow-amber-500 bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm sm:text-base font-semibold hover:scale-[1.03] transition-transform duration-200"
         >
-          Kolaborasi
+          Book Now
         </a>
 
         <Link

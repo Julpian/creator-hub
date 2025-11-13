@@ -37,7 +37,7 @@ export default function Footer() {
             </h3>
             <p className="text-sm leading-6 text-gray-600">
               Ruko Jl. Permata Regency Blok C 15,<br />
-              Tugujaya, Kec. Cihideung, Kab. Tasikmalaya,<br />
+              Empangsari, Kec. Tawang, Kota Tasikmalaya,<br />
               Jawa Barat 46115
             </p>
           </div>
@@ -93,7 +93,7 @@ export default function Footer() {
         {/* Garis bawah dan copyright */}
         <div className="border-t border-gray-200 mt-8 pt-4 text-center text-xs text-gray-500">
           © {new Date().getFullYear()}{" "}
-          <span className="text-gray-900 font-medium">Gen Creator Hub</span>. All rights reserved.
+          <span className="text-gray-900 font-medium">PT Gentra Media Utama</span>. All rights reserved.
         </div>
       </div>
     </footer>
