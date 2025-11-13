@@ -325,11 +325,57 @@ func UpdateInfluencer(c *gin.Context) {
 
 func DeleteInfluencer(c *gin.Context) {
 	var influencer models.Influencer
-	if err := models.DB.Where("id = ?", c.Param("id")).First(&influencer).Error; err != nil {
+	id := c.Param("id")
+
+	// 1. Cari influencer (sudah benar)
+	if err := models.DB.First(&influencer, id).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Data tidak ditemukan"})
 		return
 	}
-	models.DB.Unscoped().Delete(&influencer)
+
+	// 2. Mulai Transaksi (agar aman)
+	tx := models.DB.Begin()
+
+	// 3. Hapus relasi 'many-to-many' di 'influencer_categories'
+	if err := tx.Model(&influencer).Association("Categories").Clear(); err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menghapus relasi kategori"})
+		return
+	}
+
+	// 4. Hapus 'portfolio_images' (relasi 'has-many')
+	var p_images []models.PortfolioImage
+	tx.Where("influencer_id = ?", id).Find(&p_images)
+	for _, img := range p_images {
+		// Hapus file fisik
+		os.Remove(filepath.Join(".", img.ImageURL))
+		// Hapus record dari DB
+		if err := tx.Unscoped().Delete(&img).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menghapus gambar portofolio"})
+			return
+		}
+	}
+
+	// 5. Hapus Influencer utama
+	if err := tx.Unscoped().Delete(&influencer).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal menghapus influencer"})
+		return
+	}
+
+	// 6. Commit Transaksi
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal commit transaksi"})
+		return
+	}
+
+	// 7. Hapus file gambar profil utama (setelah DB sukses)
+	if influencer.ImageURL != "" {
+		os.Remove(filepath.Join(".", influencer.ImageURL))
+	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "Data berhasil dihapus!"})
 }
 
