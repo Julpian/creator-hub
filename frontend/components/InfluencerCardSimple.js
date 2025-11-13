@@ -1,5 +1,6 @@
 // File: components/InfluencerCardSimple.js
-import Link from "next/link";
+"use client";
+import { useRouter } from "next/navigation";
 import {
   IoLogoInstagram,
   IoLogoYoutube,
@@ -15,10 +16,16 @@ const formatNumber = (num) => {
 };
 
 export default function InfluencerCardSimple({ influencer }) {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`/influencer/${influencer.ID}`);
+  };
+
   return (
-    <Link
-      href={`/influencer/${influencer.ID}`}
-      className="block group w-full max-w-[150px] sm:max-w-[180px]"
+    <div
+      onClick={handleClick}
+      className="cursor-pointer block group w-full max-w-[150px] sm:max-w-[180px] select-none"
     >
       <div className="bg-white rounded-lg shadow-sm hover:shadow-md border border-gray-100 overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1">
         
@@ -76,6 +83,6 @@ export default function InfluencerCardSimple({ influencer }) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
