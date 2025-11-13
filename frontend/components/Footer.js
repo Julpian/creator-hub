@@ -26,7 +26,7 @@ export default function Footer() {
               className="object-contain mb-4"
             />
             <p className="text-sm leading-6 text-gray-600">
-              <span className="font-semibold text-gray-900">Gen Creator Hub</span> adalah platform martech yang menyediakan solusi lengkap untuk pemasaran KOL di Instagram, TikTok, dan YouTube — terintegrasi dalam satu sistem cerdas.
+              <span className="font-semibold text-gray-900">Gen Creator Hub</span> Merupakan platform cerdas yang mempermudah kolaborasi antara brand dan influencer secara efisien dan terintegrasi.
             </p>
           </div>
 
