@@ -19,7 +19,7 @@ export default function Footer() {
           {/* Kolom 1: Logo & Deskripsi */}
           <div className="flex flex-col items-center md:items-start">
             <Image
-              src="/GCH.png"
+              src="/GCHub.svg"
               alt="Gen Creator Hub"
               width={60}
               height={60}
@@ -36,9 +36,8 @@ export default function Footer() {
               PT Gentra Media Utama
             </h3>
             <p className="text-sm leading-6 text-gray-600">
-              Ruko Jl. Permata Regency Blok C 15,<br />
-              Empangsari, Kec. Tawang, Kota Tasikmalaya,<br />
-              Jawa Barat 46115
+              Setra Royal Residence C9,<br />
+              Empangsari, Kec. Tawang, Kota Tasikmalaya, 46113
             </p>
           </div>
 

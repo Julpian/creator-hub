@@ -99,14 +99,14 @@ export default async function Home({ searchParams }) {
           <PackageList />
         </section>
 
-        {/* Brand Carousel */}
-        <section>
-          <BrandCarousel />
-        </section>
-
         {/* Testimonials Section */}
         <section>
           <Testimonials />
+        </section>
+
+        {/* Brand Carousel */}
+        <section>
+          <BrandCarousel />
         </section>
 
       {/* Tambahan padding bawah untuk scroll */}

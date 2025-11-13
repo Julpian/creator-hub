@@ -467,7 +467,7 @@ export default function LandingPage() {
               </div>
 
               <p className="text-xs leading-relaxed text-gray-600 max-w-xs">
-                Platform martech yang menghubungkan brand dengan influencer melalui sistem terintegrasi, efisien, dan cerdas.
+                Platform cerdas yang mempermudah kolaborasi antara brand dan influencer secara efisien dan terintegrasi.
               </p>
 
               {/* Sosial media */}
