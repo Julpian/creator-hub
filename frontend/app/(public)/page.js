@@ -90,10 +90,6 @@ export default async function Home({ searchParams }) {
           />
         )}
 
-        {/* CTA & Package List */}
-        <section>
-          <CtaCard />
-        </section>
 
         <section>
           <PackageList />
