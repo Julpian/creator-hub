@@ -13,7 +13,6 @@ import { MdOutlineRecommend } from "react-icons/md";
 
 export default function BottomNav() {
   const pathname = usePathname();
-
   const isActive = (href) => pathname === href;
 
   return (
@@ -21,7 +20,8 @@ export default function BottomNav() {
       className="fixed bottom-0 left-0 z-50 w-full h-20 
       bg-gradient-to-r from-[#1E90FF]/90 via-[#1986DF]/90 to-[#00B4FF]/90 
       backdrop-blur-sm shadow-[0_-2px_10px_rgba(0,0,0,0.1)] 
-      border-t border-white/10 flex items-center justify-around"
+      border-t border-white/10 flex items-center justify-center 
+      gap-x-6 sm:gap-x-10"
     >
       {/* 1️⃣ Home */}
       <NavItem
@@ -39,7 +39,7 @@ export default function BottomNav() {
         active={isActive("/rekomendasi")}
       />
 
-      {/* 3️⃣ EVENT — tombol tengah dengan animasi berdenyut */}
+      {/* 3️⃣ EVENT — tombol tengah menonjol dengan animasi berdenyut */}
       <div className="relative -top-6">
         <motion.div
           animate={{ scale: [1, 1.08, 1] }}
@@ -50,7 +50,7 @@ export default function BottomNav() {
           }}
           className="relative flex items-center justify-center"
         >
-          {/* Lingkaran cahaya luar */}
+          {/* Efek cahaya luar */}
           <motion.div
             className="absolute inset-0 rounded-full bg-blue-400/40 blur-md"
             animate={{ scale: [1, 1.6, 1], opacity: [0.5, 0, 0.5] }}
@@ -101,17 +101,19 @@ function NavItem({ href, icon: Icon, label, active }) {
     >
       <Icon
         size={24}
-        className={`mb-1 transition-colors ${
+        className={`mb-1 transition-colors duration-200 ${
           active ? "text-white" : "text-white/70 group-hover:text-white"
         }`}
       />
       <span
-        className={`text-xs ${
+        className={`text-xs transition-colors duration-200 ${
           active ? "font-semibold text-white" : "text-white/70 group-hover:text-white"
         }`}
       >
         {label}
       </span>
+
+      {/* Garis indikator untuk menu aktif */}
       {active && (
         <div className="absolute bottom-0 w-6 h-0.5 bg-white rounded-full"></div>
       )}
