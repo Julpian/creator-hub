@@ -9,10 +9,10 @@ export default function EventPage() {
   const events = [
     {
       id: 1,
-      title: "Gen Creator Summit 2025",
-      date: "20 Desember 2025",
-      time: "09.00 - 16.00 WIB",
-      location: "Bandung Techno Park",
+      title: "Influencer Summit 2025",
+      date: "17 Desember 2025",
+      time: "13.00 - 23.00 WIB",
+      location: "Tasikmalaya Hotel Harmony L5",
       image: "/images/event-summit.jpg",
       description:
         "Konferensi besar tahunan untuk para kreator, influencer, dan brand untuk berkolaborasi dan membangun masa depan digital bersama.",
