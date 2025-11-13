@@ -62,7 +62,7 @@ export default function LandingPage() {
       try {
         // Ambil 10 influencer yang direkomendasikan
         const res = await fetch(
-          `http://127.0.0.1:8080/api/influencers?recommended=true&limit=10`
+          `/api/influencers?recommended=true&limit=10`
         );
         if (res.ok) {
           const data = await res.json();
