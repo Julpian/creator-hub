@@ -16,7 +16,7 @@ import {
 export default function TentangKamiPage() {
   const [showDesc, setShowDesc] = useState(true);
 
-  const adminWhatsAppNumber = "6281234567890";
+  const adminWhatsAppNumber = "6281111018811";
   const waMessage = encodeURIComponent(
     "Halo Admin Gen Creator Hub, saya ingin bertanya sesuatu."
   );
