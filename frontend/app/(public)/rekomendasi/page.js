@@ -45,7 +45,7 @@ function RekomendasiContent() {
     <motion.button
       whileTap={{ scale: 0.92 }}
       onClick={() => setActiveFilter(filter)}
-      className={`px-4 py-2 rounded-full font-medium text-sm text-center transition-all duration-300
+      className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300
         ${
           activeFilter === filter
             ? "bg-blue-600 text-white shadow-lg scale-105"
@@ -57,16 +57,19 @@ function RekomendasiContent() {
   );
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white via-blue-50 to-gray-100 px-4 pb-10">
-      {/* Container animasi utama */}
+    <main className="min-h-screen bg-gradient-to-b from-white via-blue-50 to-gray-100 px-4 pb-10 pt-4">
+
+      {/* Wrapper utama */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35 }}
+        className="max-w-5xl mx-auto"
       >
-        {/* Kategori — Grid Center */}
+
+        {/* FILTER BUTTONS */}
         <motion.div
-          className="grid grid-cols-2 gap-3 max-w-md mx-auto mb-6"
+          className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-3 mb-8"
           initial="hidden"
           animate="visible"
           variants={{
@@ -80,7 +83,10 @@ function RekomendasiContent() {
           {["tiktok", "instagram", "youtube", "facebook"].map((item) => (
             <motion.div
               key={item}
-              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+              variants={{
+                hidden: { opacity: 0, y: 10 },
+                visible: { opacity: 1, y: 0 },
+              }}
             >
               <FilterButton filter={item}>
                 {item.charAt(0).toUpperCase() + item.slice(1)}
@@ -89,9 +95,9 @@ function RekomendasiContent() {
           ))}
         </motion.div>
 
-        {/* Grid Influencer */}
+        {/* GRID DATA */}
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {[...Array(8)].map((_, i) => (
               <motion.div
                 key={i}
@@ -104,7 +110,7 @@ function RekomendasiContent() {
           </div>
         ) : (
           <motion.div
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
             initial="hidden"
             animate="visible"
             variants={{
@@ -116,7 +122,7 @@ function RekomendasiContent() {
             }}
           >
             {influencers.length > 0 ? (
-              influencers.map((influencer, index) => (
+              influencers.map((influencer) => (
                 <motion.div
                   key={influencer.ID}
                   variants={{
@@ -130,7 +136,7 @@ function RekomendasiContent() {
                 </motion.div>
               ))
             ) : (
-              <p className="col-span-full text-center text-gray-500 py-8">
+              <p className="col-span-full text-center text-gray-500 py-10 text-base sm:text-lg">
                 Tidak ada rekomendasi untuk platform ini.
               </p>
             )}
