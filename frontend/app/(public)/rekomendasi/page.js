@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import Link from "next/link";
+import { motion } from "framer-motion";
 import InfluencerCard from "@/components/InfluencerCard";
 
 const platformCategoryMap = {
@@ -42,7 +42,8 @@ function RekomendasiContent() {
   }, [activeFilter]);
 
   const FilterButton = ({ filter, children }) => (
-    <button
+    <motion.button
+      whileTap={{ scale: 0.92 }}
       onClick={() => setActiveFilter(filter)}
       className={`px-4 py-2 rounded-full font-medium text-sm text-center transition-all duration-300
         ${
@@ -52,52 +53,90 @@ function RekomendasiContent() {
         }`}
     >
       {children}
-    </button>
+    </motion.button>
   );
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white via-blue-50 to-gray-100 px-4 pb-10">
-      {/* Judul halaman */}
-      <h1 className="text-lg font-semibold text-center py-4">
-        Rekomendasi Influencer
-      </h1>
-
-      {/* Kategori — Grid Center */}
-      <div className="grid grid-cols-2 gap-3 max-w-md mx-auto mb-6">
-        <FilterButton filter="tiktok">TikTok</FilterButton>
-        <FilterButton filter="instagram">Instagram</FilterButton>
-        <FilterButton filter="youtube">YouTube</FilterButton>
-        <FilterButton filter="facebook">Facebook</FilterButton>
-      </div>
-
-      {/* Grid Influencer */}
-      {loading ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              className="h-48 rounded-2xl bg-white shadow animate-pulse"
-            ></div>
+      {/* Container animasi utama */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+      >
+        {/* Kategori — Grid Center */}
+        <motion.div
+          className="grid grid-cols-2 gap-3 max-w-md mx-auto mb-6"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.12 },
+            },
+          }}
+        >
+          {["tiktok", "instagram", "youtube", "facebook"].map((item) => (
+            <motion.div
+              key={item}
+              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+            >
+              <FilterButton filter={item}>
+                {item.charAt(0).toUpperCase() + item.slice(1)}
+              </FilterButton>
+            </motion.div>
           ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-          {influencers.length > 0 ? (
-            influencers.map((influencer) => (
-              <div
-                key={influencer.ID}
-                className="transition-transform duration-300 hover:scale-[1.03]"
-              >
-                <InfluencerCard influencer={influencer} />
-              </div>
-            ))
-          ) : (
-            <p className="col-span-full text-center text-gray-500 py-8">
-              Tidak ada rekomendasi untuk platform ini.
-            </p>
-          )}
-        </div>
-      )}
+        </motion.div>
+
+        {/* Grid Influencer */}
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {[...Array(8)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="h-48 rounded-2xl bg-white shadow animate-pulse"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: i * 0.05 }}
+              ></motion.div>
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.1 },
+              },
+            }}
+          >
+            {influencers.length > 0 ? (
+              influencers.map((influencer, index) => (
+                <motion.div
+                  key={influencer.ID}
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.9 },
+                    visible: { opacity: 1, scale: 1 },
+                  }}
+                  transition={{ duration: 0.25 }}
+                  className="transition-transform duration-300 hover:scale-[1.03]"
+                >
+                  <InfluencerCard influencer={influencer} />
+                </motion.div>
+              ))
+            ) : (
+              <p className="col-span-full text-center text-gray-500 py-8">
+                Tidak ada rekomendasi untuk platform ini.
+              </p>
+            )}
+          </motion.div>
+        )}
+      </motion.div>
     </main>
   );
 }
