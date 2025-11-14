@@ -34,7 +34,7 @@ export default function TopNav() {
     }
   };
 
-  const adminWhatsAppNumber = "6281234567890";
+  const adminWhatsAppNumber = "6281111018811";
   const waMessage = encodeURIComponent("Halo Admin Gen Creator Hub...");
 
   // ✅ Tambahkan item baru "Event"
@@ -46,7 +46,7 @@ export default function TopNav() {
     { title: "Event", href: "/event", icon: IoCalendarOutline }, // 🔥 Menu baru di sini!
     {
       title: "Join Influencer",
-      href: "https://docs.google.com/forms/d/e/1FAIpQLSfLt9f0bH_dOhJEJlD7LUuOHZ-ourA6IlZbJCLPuoENzPp99A/viewform",
+      href: "/gabung",
       icon: IoAddCircleOutline,
       external: true,
     },

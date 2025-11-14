@@ -122,7 +122,7 @@ export default function GabungPage() {
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
-          <Link href="/" className="p-2 rounded-full hover:bg-gray-200 transition">
+          <Link href="/home" className="p-2 rounded-full hover:bg-gray-200 transition">
             <IoArrowBack size={22} className="text-gray-700" />
           </Link>
           <h1 className="text-3xl font-bold text-gray-800">Gabung Menjadi Kreator</h1>

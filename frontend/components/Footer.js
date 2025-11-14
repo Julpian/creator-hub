@@ -6,7 +6,7 @@ import { Mail, MessageCircle, Facebook, Instagram, Linkedin, Video } from "lucid
 export default function Footer() {
   const socialMedia = [
     { icon: <Facebook size={20} strokeWidth={1.5} />, href: "https://facebook.com/gencreatorhub" },
-    { icon: <Instagram size={20} strokeWidth={1.5} />, href: "https://instagram.com/gencreatorhub" },
+    { icon: <Instagram size={20} strokeWidth={1.5} />, href: "https://www.instagram.com/gencreatorhub/" },
     { icon: <Linkedin size={20} strokeWidth={1.5} />, href: "https://linkedin.com/company/gencreatorhub" },
     { icon: <Video size={20} strokeWidth={1.5} />, href: "https://tiktok.com/@gencreatorhub" },
   ];
@@ -57,7 +57,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://wa.me/6281234567890"
+                  href="https://wa.me/6281111018811"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center md:justify-start gap-2 hover:text-blue-600 transition-colors"

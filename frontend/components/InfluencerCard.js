@@ -18,7 +18,7 @@ const formatNumber = (num) => {
 };
 
 export default function InfluencerCard({ influencer }) {
-  const adminWhatsAppNumber = "6285705007752";
+  const adminWhatsAppNumber = "6281111018811";
   const waMessage = encodeURIComponent(
     `Halo Admin Gen Creator Hub, saya tertarik untuk bekerjasama dengan ${influencer.name}.`
   );

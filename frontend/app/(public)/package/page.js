@@ -30,7 +30,7 @@ export default function PackagesPage() {
   useEffect(() => {
     async function fetchPackages() {
       try {
-        const res = await fetch("http://127.0.0.1:8080/api/packages", {
+        const res = await fetch("/api/packages", {
           cache: "no-store",
         });
         if (!res.ok) throw new Error("Gagal mengambil data paket");
@@ -70,7 +70,7 @@ export default function PackagesPage() {
               <div className="mb-4">
                 {pkg.imageUrl ? (
                   <img
-                    src={`http://127.0.0.1:8080${pkg.imageUrl}`}
+                    src={pkg.imageUrl}
                     alt={pkg.title}
                     className="w-full h-40 object-cover rounded-lg"
                   />

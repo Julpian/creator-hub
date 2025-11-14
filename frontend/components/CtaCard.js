@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 export default function CtaCard() {
-  const adminWhatsAppNumber = "6281234567890";
+  const adminWhatsAppNumber = "6281111018811";
 
   const messageTanya = encodeURIComponent("Halo Admin Gen Creator Hub, saya ingin bertanya sesuatu.");
 
