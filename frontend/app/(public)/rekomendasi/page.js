@@ -3,7 +3,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { IoArrowBack, IoLogoWhatsapp, IoSend, IoMenu } from "react-icons/io5";
+import { IoArrowBack, IoLogoWhatsapp } from "react-icons/io5";
 import InfluencerCard from "@/components/InfluencerCard";
 
 const platformCategoryMap = {
@@ -26,8 +26,8 @@ function RekomendasiContent() {
   useEffect(() => {
     async function fetchRecommended() {
       setLoading(true);
-      //let url = `http://127.0.0.1:8080/api/influencers?recommended=true&limit=10`;
       let url = `/api/influencers?recommended=true&limit=10`;
+
       const categoryId = platformCategoryMap[activeFilter];
       if (categoryId) url += `&category_id=${categoryId}`;
 
@@ -50,7 +50,7 @@ function RekomendasiContent() {
   const FilterButton = ({ filter, children }) => (
     <button
       onClick={() => setActiveFilter(filter)}
-      className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300
+      className={`px-4 py-2 rounded-full font-medium text-sm whitespace-nowrap transition-all duration-300
         ${
           activeFilter === filter
             ? "bg-blue-600 text-white shadow-lg scale-105"
@@ -64,54 +64,49 @@ function RekomendasiContent() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-white via-blue-50 to-gray-100">
       {/* Header */}
-      <header className="fixed top-0 left-0 z-50 w-full bg-gradient-to-r from-[#1E90FF] via-[#1986DF] to-[#00B4FF] shadow-md text-white backdrop-blur-md">
-        <div className="flex items-center justify-between h-16 px-4 sm:px-8 max-w-5xl mx-auto">
-          <Link
-            href="/home"
-            className="hover:text-blue-200 transition-transform active:scale-95"
-          >
-            <IoArrowBack size={26} />
+      <header className="fixed top-0 left-0 z-50 w-full bg-[#1E90FF] shadow-md text-white">
+        <div className="flex items-center justify-between h-14 px-4 sm:px-6 max-w-5xl mx-auto">
+          <Link href="/home" className="active:scale-95">
+            <IoArrowBack size={24} />
           </Link>
 
-          <h1 className="text-base sm:text-lg font-semibold tracking-wide text-center flex-1">
+          <h1 className="text-sm sm:text-base font-semibold tracking-wide">
             Rekomendasi Influencer
           </h1>
 
-          {/* WhatsApp */}
           <a
             href={`https://wa.me/${adminWhatsAppNumber}?text=${waMessage}`}
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-all"
-            title="Hubungi via WhatsApp"
           >
-            <IoLogoWhatsapp size={22} className="text-white" />
+            <IoLogoWhatsapp size={20} />
           </a>
         </div>
       </header>
 
       {/* Konten */}
-      <div className="pt-5 px-3 sm:px-6 lg:px-10 max-w-5xl mx-auto">
-        {/* Filter */}
-        <div className="flex justify-center items-center gap-3 sm:gap-4 my-4 sm:my-5 flex-nowrap overflow-x-auto scrollbar-hide">
+      <div className="pt-20 px-3 sm:px-6 max-w-5xl mx-auto">
+        {/* Filter Category */}
+        <div className="flex gap-3 overflow-x-auto scrollbar-hide py-2 mb-4 px-1">
           <FilterButton filter="tiktok">TikTok</FilterButton>
           <FilterButton filter="instagram">Instagram</FilterButton>
           <FilterButton filter="youtube">YouTube</FilterButton>
           <FilterButton filter="facebook">Facebook</FilterButton>
         </div>
 
-        {/* Grid Hasil */}
+        {/* Grid Influencer */}
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 pb-16">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pb-16">
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
-                className="h-48 sm:h-56 rounded-2xl bg-white shadow animate-pulse"
+                className="h-48 rounded-2xl bg-white shadow animate-pulse"
               ></div>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 pb-16">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pb-16">
             {influencers.length > 0 ? (
               influencers.map((influencer) => (
                 <div
