@@ -3,7 +3,14 @@
 
 import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { IoArrowBack, IoLogoWhatsapp, IoSend, IoMenu } from "react-icons/io5";
+import {
+  IoArrowBack,
+  IoLogoWhatsapp,
+  IoLogoTiktok,
+  IoLogoInstagram,
+  IoLogoYoutube,
+  IoLogoFacebook,
+} from "react-icons/io5";
 import InfluencerCard from "@/components/InfluencerCard";
 
 const platformCategoryMap = {
@@ -26,7 +33,7 @@ function RekomendasiContent() {
   useEffect(() => {
     async function fetchRecommended() {
       setLoading(true);
-      //let url = `http://127.0.0.1:8080/api/influencers?recommended=true&limit=10`;
+
       let url = `/api/influencers?recommended=true&limit=10`;
       const categoryId = platformCategoryMap[activeFilter];
       if (categoryId) url += `&category_id=${categoryId}`;
@@ -47,23 +54,30 @@ function RekomendasiContent() {
     fetchRecommended();
   }, [activeFilter]);
 
-  const FilterButton = ({ filter, children }) => (
+  const iconMap = {
+    tiktok: <IoLogoTiktok size={22} />,
+    instagram: <IoLogoInstagram size={22} />,
+    youtube: <IoLogoYoutube size={22} />,
+    facebook: <IoLogoFacebook size={22} />,
+  };
+
+  const FilterButton = ({ filter }) => (
     <button
       onClick={() => setActiveFilter(filter)}
-      className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-300
+      className={`p-3 rounded-full border flex items-center justify-center transition-all duration-300
         ${
           activeFilter === filter
-            ? "bg-blue-600 text-white shadow-lg scale-105"
-            : "bg-white text-gray-700 hover:bg-blue-50 shadow-sm"
+            ? "bg-blue-600 text-white shadow-lg scale-105 border-blue-600"
+            : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50"
         }`}
     >
-      {children}
+      {iconMap[filter]}
     </button>
   );
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white via-blue-50 to-gray-100">
-      {/* Header */}
+      {/* HEADER */}
       <header className="fixed top-0 left-0 z-50 w-full bg-gradient-to-r from-[#1E90FF] via-[#1986DF] to-[#00B4FF] shadow-md text-white backdrop-blur-md">
         <div className="flex items-center justify-between h-16 px-4 sm:px-8 max-w-5xl mx-auto">
           <Link
@@ -73,45 +87,41 @@ function RekomendasiContent() {
             <IoArrowBack size={26} />
           </Link>
 
-          <h1 className="text-base sm:text-lg font-semibold tracking-wide text-center flex-1">
+          <h1 className="text-base sm:text-lg font-semibold tracking-wide flex-1 text-center">
             Rekomendasi Influencer
           </h1>
 
-          {/* WhatsApp */}
           <a
             href={`https://wa.me/${adminWhatsAppNumber}?text=${waMessage}`}
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 bg-white/20 rounded-full hover:bg-white/30 transition-all"
-            title="Hubungi via WhatsApp"
           >
             <IoLogoWhatsapp size={22} className="text-white" />
           </a>
         </div>
       </header>
 
-      {/* Konten */}
+      {/* CONTENT */}
       <div className="pt-5 px-3 sm:px-6 lg:px-10 max-w-5xl mx-auto">
-        {/* Filter */}
-        <div className="flex justify-center items-center gap-3 sm:gap-4 my-4 sm:my-5 flex-nowrap overflow-x-auto scrollbar-hide">
-          <FilterButton filter="tiktok">TikTok</FilterButton>
-          <FilterButton filter="instagram">Instagram</FilterButton>
-          <FilterButton filter="youtube">YouTube</FilterButton>
-          <FilterButton filter="facebook">Facebook</FilterButton>
+
+        {/* FILTER ICONS */}
+        <div className="flex justify-center gap-3 sm:gap-5 my-4 sm:my-6 overflow-x-auto scrollbar-hide">
+          <FilterButton filter="tiktok" />
+          <FilterButton filter="instagram" />
+          <FilterButton filter="youtube" />
+          <FilterButton filter="facebook" />
         </div>
 
-        {/* Grid Hasil */}
+        {/* GRID */}
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 pb-16">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 pb-16">
             {[...Array(8)].map((_, i) => (
-              <div
-                key={i}
-                className="h-48 sm:h-56 rounded-2xl bg-white shadow animate-pulse"
-              ></div>
+              <div key={i} className="h-48 sm:h-56 bg-white rounded-2xl shadow animate-pulse"></div>
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 pb-16">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 pb-16">
             {influencers.length > 0 ? (
               influencers.map((influencer) => (
                 <div
