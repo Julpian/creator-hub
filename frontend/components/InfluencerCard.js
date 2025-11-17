@@ -35,16 +35,21 @@ export default function InfluencerCard({ influencer }) {
         </div>
       )}
 
-      {/* FOTO */}
-      <div className="flex flex-col items-center p-4 sm:p-5 relative">
+      {/* FOTO + LINK KE DETAIL */}
+      <Link
+        href={`/influencer/${influencer.ID}`}
+        className="flex flex-col items-center p-4 sm:p-5 relative"
+      >
         {influencer.imageUrl ? (
           <img
             src={influencer.imageUrl}
             alt={influencer.name}
-            className="w-28 h-28 sm:w-36 sm:h-36 object-cover rounded-2xl mb-3 sm:mb-4 transition-transform duration-300 hover:scale-105"
+            className="w-28 h-28 sm:w-36 sm:h-36 object-cover rounded-2xl mb-3 sm:mb-4 
+                      transition-transform duration-300 hover:scale-105 cursor-pointer"
           />
         ) : (
-          <div className="w-28 h-28 sm:w-36 sm:h-36 bg-gray-100 flex items-center justify-center text-gray-400 rounded-2xl mb-3 sm:mb-4">
+          <div className="w-28 h-28 sm:w-36 sm:h-36 bg-gray-100 flex items-center justify-center 
+                          text-gray-400 rounded-2xl mb-3 sm:mb-4 cursor-pointer">
             No Image
           </div>
         )}
@@ -52,22 +57,6 @@ export default function InfluencerCard({ influencer }) {
         {/* NAMA & FOLLOWERS */}
         <h3 className="text-sm sm:text-base font-semibold text-gray-900 text-center flex items-center justify-center gap-1">
           {influencer.name}
-          {influencer.isRecommended && (
-            <span className="ml-1 text-[#8A5CF6]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-3.5 h-3.5 sm:w-4 sm:h-4"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M12 2a10 10 0 1 1-7.07 2.93A10 10 0 0 1 12 2Zm4.3 8.3a1 1 0 0 0-1.42-1.42l-3.89 3.89-1.3-1.3a1 1 0 0 0-1.42 1.42l2 2a1 1 0 0 0 1.42 0l4.61-4.59Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </span>
-          )}
         </h3>
 
         <p className="text-xs text-gray-500 text-center">
@@ -78,13 +67,13 @@ export default function InfluencerCard({ influencer }) {
           <span className="text-base sm:text-lg font-semibold">
             {formatNumber(
               influencer.instagramFollowers ||
-                influencer.youtubeSubscribers ||
-                influencer.tiktokFollowers
+              influencer.youtubeSubscribers ||
+              influencer.tiktokFollowers
             )}
           </span>{" "}
           Followers
         </p>
-      </div>
+      </Link>
 
       {/* GARIS PEMBATAS */}
       <div className="border-t border-gray-100"></div>
