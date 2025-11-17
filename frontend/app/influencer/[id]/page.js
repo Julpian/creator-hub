@@ -9,7 +9,7 @@ export default function DetailInfluencerPage() {
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: "url('/assets/bg-creatorhub.png')", // ganti sesuai tempat kamu simpan
+        backgroundImage: "url('/assets/bg-creatorhub.png')",
       }}
     >
       <div className="max-w-4xl mx-auto px-4 py-6">
@@ -26,11 +26,17 @@ export default function DetailInfluencerPage() {
         {/* Profile Container */}
         <div className="backdrop-blur-xl bg-white/60 rounded-2xl shadow-lg overflow-hidden">
 
-          {/* Header */}
-          <div className="w-full h-48 bg-gradient-to-b from-transparent to-white/60 flex justify-center items-end pb-10 relative">
+          {/* ==== HEADER BACKGROUND DI BELAKANG FOTO (NEW GRADIENT) ==== */}
+          <div
+            className="
+              w-full h-48 
+              flex justify-center items-end pb-10 relative
+              bg-gradient-to-br from-pink-400 via-purple-400 to-indigo-400
+            "
+          >
             <div className="absolute -bottom-12">
               <Image
-                src="/assets/profile.jpg" // ganti sesuai foto kamu
+                src="/assets/profile.jpg"
                 alt="profile"
                 width={130}
                 height={130}
