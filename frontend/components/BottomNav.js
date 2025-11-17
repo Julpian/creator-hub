@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
+
+// Ikon baru yang lebih universal & modern
 import {
   IoHomeOutline,
   IoSearchOutline,
-  IoPeopleOutline,
   IoCalendarOutline,
+  IoPersonCircleOutline,
 } from "react-icons/io5";
-import { MdOutlineRecommend } from "react-icons/md";
+import { MdOutlineExplore } from "react-icons/md";
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -17,30 +19,29 @@ export default function BottomNav() {
 
   return (
     <div
-      className="fixed bottom-0 left-0 z-50 w-full h-20 
-      bg-gradient-to-r from-[#1E90FF]/90 via-[#1986DF]/90 to-[#00B4FF]/90 
-      backdrop-blur-sm shadow-[0_-2px_10px_rgba(0,0,0,0.1)] 
-      border-t border-white/10 flex items-center justify-center 
-      gap-x-6 sm:gap-x-10"
+      className="fixed bottom-0 left-0 w-full h-20 z-50
+      bg-gradient-to-r from-[#1E90FF] via-[#1986DF] to-[#00B4FF]
+      backdrop-blur-md shadow-[0_-3px_15px_rgba(0,0,0,0.25)]
+      border-t border-white/20 flex items-center justify-around px-2"
     >
-      {/* 1️⃣ Home */}
+      {/* 1️⃣ Beranda */}
       <NavItem
         href="/home"
         icon={IoHomeOutline}
-        label="Home"
+        label="Beranda"
         active={isActive("/home")}
       />
 
-      {/* 2️⃣ Rekomendasi */}
+      {/* 2️⃣ Eksplor */}
       <NavItem
         href="/rekomendasi"
-        icon={MdOutlineRecommend}
-        label="Rekomendasi"
+        icon={MdOutlineExplore}
+        label="Eksplor"
         active={isActive("/rekomendasi")}
       />
 
-      {/* 3️⃣ EVENT — tombol tengah menonjol dengan animasi berdenyut */}
-      <div className="relative -top-6">
+      {/* 3️⃣ Acara - tombol tengah dengan efek berdenyut */}
+      <div className="relative -top-7">
         <motion.div
           animate={{ scale: [1, 1.08, 1] }}
           transition={{
@@ -50,10 +51,10 @@ export default function BottomNav() {
           }}
           className="relative flex items-center justify-center"
         >
-          {/* Efek cahaya luar */}
+          {/* Cahaya luar */}
           <motion.div
-            className="absolute inset-0 rounded-full bg-blue-400/40 blur-md"
-            animate={{ scale: [1, 1.6, 1], opacity: [0.5, 0, 0.5] }}
+            className="absolute inset-0 rounded-full bg-blue-300/40 blur-xl"
+            animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
             transition={{
               duration: 2,
               repeat: Infinity,
@@ -64,30 +65,30 @@ export default function BottomNav() {
           {/* Tombol utama */}
           <Link
             href="/event"
-            className="flex flex-col items-center justify-center bg-white rounded-full 
-            shadow-lg w-16 h-16 text-blue-600 hover:bg-blue-50 transition-all 
-            border-4 border-blue-400 relative z-10"
+            className="flex flex-col items-center justify-center 
+            bg-white rounded-full shadow-xl w-16 h-16 text-blue-600
+            hover:bg-blue-50 transition-all border-4 border-blue-400 z-10"
           >
             <IoCalendarOutline size={28} />
-            <span className="text-[11px] font-semibold mt-1">Event</span>
+            <span className="text-[11px] font-semibold mt-1">Acara</span>
           </Link>
         </motion.div>
       </div>
 
-      {/* 4️⃣ Pencarian */}
+      {/* 4️⃣ Cari */}
       <NavItem
         href="/pencarian"
         icon={IoSearchOutline}
-        label="Pencarian"
+        label="Cari"
         active={isActive("/pencarian")}
       />
 
-      {/* 5️⃣ About */}
+      {/* 5️⃣ Profil */}
       <NavItem
-        href="/tentang-kami"
-        icon={IoPeopleOutline}
-        label="About Us"
-        active={isActive("/tentang-kami")}
+        href="/profil"
+        icon={IoPersonCircleOutline}
+        label="Profil"
+        active={isActive("/profil")}
       />
     </div>
   );
@@ -97,25 +98,25 @@ function NavItem({ href, icon: Icon, label, active }) {
   return (
     <Link
       href={href}
-      className="flex flex-col items-center justify-center text-white group relative"
+      className="flex flex-col items-center justify-center text-white w-[70px]"
     >
       <Icon
-        size={24}
-        className={`mb-1 transition-colors duration-200 ${
-          active ? "text-white" : "text-white/70 group-hover:text-white"
+        size={26}
+        className={`transition-colors duration-200 ${
+          active ? "text-white" : "text-white/70"
         }`}
       />
+
       <span
-        className={`text-xs transition-colors duration-200 ${
-          active ? "font-semibold text-white" : "text-white/70 group-hover:text-white"
+        className={`text-[11px] mt-1 transition-all ${
+          active ? "font-semibold text-white" : "text-white/70"
         }`}
       >
         {label}
       </span>
 
-      {/* Garis indikator untuk menu aktif */}
       {active && (
-        <div className="absolute bottom-0 w-6 h-0.5 bg-white rounded-full"></div>
+        <div className="w-5 h-1 bg-white rounded-full mt-1"></div>
       )}
     </Link>
   );
