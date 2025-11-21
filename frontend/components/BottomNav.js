@@ -85,9 +85,9 @@ export default function BottomNav() {
 
       {/* 5️⃣ Profil */}
       <NavItem
-        href="/profil"
+        href="/tentang-kami"
         icon={IoPersonCircleOutline}
-        label="Profil"
+        label="About Us"
         active={isActive("/profil")}
       />
     </div>
