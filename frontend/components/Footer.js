@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Footer() {
-  // Social media PNG/SVG dari folder /public/footer/
   const socialMedia = [
     {
       href: "https://facebook.com/gencreatorhub",
@@ -34,7 +33,7 @@ export default function Footer() {
     <footer className="w-full bg-white border-t border-gray-100 mt-10 py-10 md:py-12">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 text-gray-700 text-sm">
 
-        {/* Kolom 1 */}
+        {/* Kolom 1: Logo & Deskripsi */}
         <div className="flex flex-col items-start space-y-3">
           <Link href="/" className="flex items-center group">
             <Image
@@ -42,13 +41,14 @@ export default function Footer() {
               alt="Gen Creator Hub Logo"
               width={38}
               height={38}
+              className="object-contain"
             />
             <span className="ml-2 text-base font-bold text-gray-900 group-hover:text-orange-600 transition-colors">
               Gen Creator Hub
             </span>
           </Link>
 
-          {/* Partner */}
+          {/* Powered By */}
           <div className="flex items-center space-x-2 mt-1">
             <p className="text-xs text-gray-500">Powered by</p>
             <Image
@@ -64,7 +64,7 @@ export default function Footer() {
             Platform cerdas yang mempermudah kolaborasi antara brand dan influencer secara efisien dan terintegrasi.
           </p>
 
-          {/* Social Media */}
+          {/* Social media icons */}
           <div className="flex space-x-3 mt-2">
             {socialMedia.map((s, i) => (
               <a
@@ -73,21 +73,21 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                className="p-1.5 rounded-full border border-gray-200 hover:border-orange-500 transition"
+                className="p-1.5 rounded-full border border-gray-200 hover:border-orange-500 transition group"
               >
                 <Image
                   src={s.icon}
                   alt={s.label}
                   width={18}
                   height={18}
-                  className="opacity-80 hover:opacity-100"
+                  className="opacity-80 group-hover:opacity-100 transition"
                 />
               </a>
             ))}
           </div>
         </div>
 
-        {/* Kolom 2 */}
+        {/* Kolom 2: Alamat Perusahaan */}
         <div>
           <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
             PT Gentra Media Utama
@@ -98,7 +98,7 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Kolom 3 Contact */}
+        {/* Kolom 3: Kontak */}
         <div>
           <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
             Contact Us
@@ -114,12 +114,15 @@ export default function Footer() {
                 height={16}
                 className="mr-2 opacity-80"
               />
-              <a href="mailto:support@GCH.id" className="hover:text-orange-600 transition-colors">
+              <a
+                href="mailto:support@GCH.id"
+                className="hover:text-orange-600 transition-colors"
+              >
                 support@GCH.id
               </a>
             </li>
 
-            {/* WA */}
+            {/* WhatsApp */}
             <li className="flex items-center">
               <Image
                 src="/footer/whatsapp.png"
@@ -141,21 +144,38 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Kolom 4 */}
+        {/* Kolom 4: Quick Links */}
         <div>
           <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
             Quick Links
           </h3>
           <ul className="space-y-2 text-xs">
-            <li><Link href="/" className="hover:text-orange-600 transition-colors">Home</Link></li>
-            <li><a href="#about" className="hover:text-orange-600 transition-colors">About</a></li>
-            <li><a href="#services" className="hover:text-orange-600 transition-colors">Services</a></li>
-            <li><a href="#contact" className="hover:text-orange-600 transition-colors">Contact</a></li>
+            <li>
+              <Link href="/" className="hover:text-orange-600 transition-colors">
+                Home
+              </Link>
+            </li>
+            <li>
+              <a href="#about" className="hover:text-orange-600 transition-colors">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="#services" className="hover:text-orange-600 transition-colors">
+                Services
+              </a>
+            </li>
+            <li>
+              <a href="#contact" className="hover:text-orange-600 transition-colors">
+                Contact
+              </a>
+            </li>
           </ul>
         </div>
 
       </div>
 
+      {/* Copyright */}
       <div className="border-t border-gray-200 mt-10 pt-4 text-center text-xs text-gray-500">
         © {currentYear} <span className="text-gray-900 font-semibold">PT Gentra Media Utama</span>. All rights reserved.
       </div>
