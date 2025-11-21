@@ -88,7 +88,7 @@ export default function BottomNav() {
         href="/tentang-kami"
         icon={IoPersonCircleOutline}
         label="About Us"
-        active={isActive("/profil")}
+        active={isActive("/tentang-kami")}
       />
     </div>
   );
