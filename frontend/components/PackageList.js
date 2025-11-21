@@ -54,20 +54,20 @@ export default async function PackageList() {
               tierStyles[pkg.tier] || "border-gray-300"
             } p-3 sm:p-4 flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}
           >
-            {/* Gambar Paket */}
-            <div className="mb-3 sm:mb-4">
+            {/* Gambar Paket - Klik ke /packages */}
+            <Link href="/packages" className="mb-3 sm:mb-4 block">
               {pkg.imageUrl ? (
                 <img
                   src={pkg.imageUrl}
                   alt={pkg.title}
-                  className="w-full h-28 sm:h-32 object-cover rounded-lg"
+                  className="w-full h-28 sm:h-32 object-cover rounded-lg cursor-pointer hover:opacity-90 transition"
                 />
               ) : (
-                <div className="w-full h-28 sm:h-32 bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded-lg">
+                <div className="w-full h-28 sm:h-32 bg-gray-100 flex items-center justify-center text-gray-400 text-xs rounded-lg cursor-pointer hover:opacity-90 transition">
                   No Image
                 </div>
               )}
-            </div>
+            </Link>
 
             {/* Informasi Paket */}
             <div className="flex-grow text-center sm:text-left">
