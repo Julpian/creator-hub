@@ -506,7 +506,7 @@ export default function LandingPage() {
                 </li>
                 <li className="flex items-center">
                   <Phone className="text-orange-500 mr-2" size={15} />
-                  <a href="https://wa.me/6281324511998" target="_blank" rel="noopener noreferrer" className="hover:text-orange-600 transition-colors">
+                  <a href="https://wa.me/6281111018811" target="_blank" rel="noopener noreferrer" className="hover:text-orange-600 transition-colors">
                     0813-2451-1998 (WhatsApp)
                   </a>
                 </li>

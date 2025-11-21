@@ -1,99 +1,129 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import { Mail, MessageCircle, Facebook, Instagram, Linkedin, Video } from "lucide-react";
 
 export default function Footer() {
   const socialMedia = [
-    { icon: <Facebook size={20} strokeWidth={1.5} />, href: "https://facebook.com/gencreatorhub" },
-    { icon: <Instagram size={20} strokeWidth={1.5} />, href: "https://www.instagram.com/gencreatorhub/" },
-    { icon: <Linkedin size={20} strokeWidth={1.5} />, href: "https://linkedin.com/company/gencreatorhub" },
-    { icon: <Video size={20} strokeWidth={1.5} />, href: "https://tiktok.com/@gencreatorhub" },
+    { icon: <Facebook size={18} />, href: "https://facebook.com/gencreatorhub" },
+    { icon: <Instagram size={18} />, href: "https://www.instagram.com/gencreatorhub/" },
+    { icon: <Linkedin size={18} />, href: "https://linkedin.com/company/gencreatorhub" },
+    { icon: <Video size={18} />, href: "https://tiktok.com/@gencreatorhub" },
   ];
 
-  return (
-    <footer className="bg-white text-gray-700 w-full border-t border-gray-200">
-      <div className="max-w-lg md:max-w-6xl mx-auto px-5 sm:px-6 py-10 md:py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 text-center md:text-left">
+  const currentYear = new Date().getFullYear();
 
-          {/* Kolom 1: Logo & Deskripsi */}
-          <div className="flex flex-col items-center md:items-start">
+  return (
+    <footer className="w-full bg-white border-t border-gray-100 mt-10 py-10 md:py-12">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 text-gray-700 text-sm">
+        {/* Kolom 1: Logo + Deskripsi */}
+        <div className="flex flex-col items-start space-y-3">
+          <Link href="/" className="flex items-center group">
             <Image
               src="/GCHub.svg"
-              alt="Gen Creator Hub"
-              width={60}
-              height={60}
-              className="object-contain mb-4"
+              alt="Gen Creator Hub Logo"
+              width={38}
+              height={38}
+              className="object-contain"
             />
-            <p className="text-sm leading-6 text-gray-600">
-              <span className="font-semibold text-gray-900">Gen Creator Hub</span> Merupakan platform cerdas yang mempermudah kolaborasi antara brand dan influencer secara efisien dan terintegrasi.
-            </p>
+            <span className="ml-2 text-base font-bold text-gray-900 group-hover:text-orange-600 transition-colors">
+              Gen Creator Hub
+            </span>
+          </Link>
+
+          {/* Logo partner */}
+          <div className="flex items-center space-x-2 mt-1">
+            <p className="text-xs text-gray-500">Powered by</p>
+            <Image
+              src="/gentra.id.png"
+              alt="Gentra.id Logo"
+              width={70}
+              height={25}
+              className="object-contain opacity-80 hover:opacity-100 transition-opacity"
+            />
           </div>
 
-          {/* Kolom 2: Info Perusahaan */}
-          <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-gray-900 font-semibold text-base mb-3">
-              PT Gentra Media Utama
-            </h3>
-            <p className="text-sm leading-6 text-gray-600">
-              Setra Royal Residence C9,<br />
-              Empangsari, Kec. Tawang, Kota Tasikmalaya, 46113
-            </p>
-          </div>
+          <p className="text-xs leading-relaxed text-gray-600 max-w-xs">
+            Platform cerdas yang mempermudah kolaborasi antara brand dan influencer secara efisien dan terintegrasi.
+          </p>
 
-          {/* Kolom 3: Kontak */}
-          <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-gray-900 font-semibold text-base mb-3">
-              Hubungi Kami
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a
-                  href="mailto:support@GCH.id"
-                  className="flex items-center justify-center md:justify-start gap-2 hover:text-blue-600 transition-colors"
-                >
-                  <Mail size={20} strokeWidth={1.5} /> support@GCH.id
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://wa.me/6281111018811"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center md:justify-start gap-2 hover:text-blue-600 transition-colors"
-                >
-                  <MessageCircle size={20} strokeWidth={1.5} /> Chat via WhatsApp
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Kolom 4: Media Sosial */}
-          <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-gray-900 font-semibold text-base mb-3">
-              Temukan Kami di
-            </h4>
-            <div className="flex justify-center md:justify-start gap-3">
-              {socialMedia.map((sosmed, index) => (
-                <a
-                  key={index}
-                  href={sosmed.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-full hover:bg-gray-100 text-gray-600 hover:text-blue-600 transition-all duration-300"
-                >
-                  {sosmed.icon}
-                </a>
-              ))}
-            </div>
+          {/* sosial media */}
+          <div className="flex space-x-3 mt-2">
+            {socialMedia.map((s, i) => (
+              <a
+                key={i}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-1.5 rounded-full border border-gray-200 hover:border-orange-500 hover:text-orange-500 transition-colors"
+              >
+                {s.icon}
+              </a>
+            ))}
           </div>
         </div>
 
-        {/* Garis bawah dan copyright */}
-        <div className="border-t border-gray-200 mt-8 pt-4 text-center text-xs text-gray-500">
-          © {new Date().getFullYear()}{" "}
-          <span className="text-gray-900 font-medium">PT Gentra Media Utama</span>. All rights reserved.
+        {/* Kolom 2: Info Perusahaan */}
+        <div>
+          <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
+            PT Gentra Media Utama
+          </h3>
+          <p className="text-xs leading-relaxed text-gray-600">
+            Setra Royal Residence C9,<br />
+            Empangsari, Kec. Tawang,<br />
+            Kota Tasikmalaya, 46113
+          </p>
         </div>
+
+        {/* Kolom 3: Contact */}
+        <div>
+          <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
+            Contact Us
+          </h3>
+          <ul className="space-y-2 text-xs">
+            <li className="flex items-center">
+              <Mail className="text-orange-500 mr-2" size={15} />
+              <a href="mailto:support@GCH.id" className="hover:text-orange-600 transition-colors">
+                support@GCH.id
+              </a>
+            </li>
+            <li className="flex items-center">
+              <MessageCircle className="text-orange-500 mr-2" size={15} />
+              <a
+                href="https://wa.me/6281111018811"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-orange-600 transition-colors"
+              >
+                Chat via WhatsApp
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Kolom 4: Quick Links */}
+        <div>
+          <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
+            Quick Links
+          </h3>
+          <ul className="space-y-2 text-xs">
+            <li>
+              <Link href="/" className="hover:text-orange-600 transition-colors">
+                Home
+              </Link>
+            </li>
+            <li><a href="#about" className="hover:text-orange-600 transition-colors">About</a></li>
+            <li><a href="#services" className="hover:text-orange-600 transition-colors">Services</a></li>
+            <li><a href="#contact" className="hover:text-orange-600 transition-colors">Contact</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      {/* Garis bawah */}
+      <div className="border-t border-gray-200 mt-10 pt-4 text-center text-xs text-gray-500">
+        © {currentYear} <span className="text-gray-900 font-semibold">PT Gentra Media Utama</span>. All rights reserved.
       </div>
     </footer>
   );
