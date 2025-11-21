@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, MessageCircle, Facebook, Instagram, Linkedin, Video } from "lucide-react";
+import { Mail, MessageCircle, Facebook, Instagram, Linkedin, Music2, Phone } from "lucide-react";
 
 export default function Footer() {
   const socialMedia = [
-    { icon: <Facebook size={18} />, href: "https://facebook.com/gencreatorhub" },
-    { icon: <Instagram size={18} />, href: "https://www.instagram.com/gencreatorhub/" },
-    { icon: <Linkedin size={18} />, href: "https://linkedin.com/company/gencreatorhub" },
-    { icon: <Video size={18} />, href: "https://tiktok.com/@gencreatorhub" },
+    { icon: <Facebook size={18} />, href: "https://facebook.com/gencreatorhub", label: "Facebook" },
+    { icon: <Instagram size={18} />, href: "https://www.instagram.com/gencreatorhub/", label: "Instagram" },
+    { icon: <Linkedin size={18} />, href: "https://linkedin.com/company/gencreatorhub", label: "LinkedIn" },
+    { icon: <Music2 size={18} />, href: "https://tiktok.com/@gencreatorhub", label: "TikTok" }, // TikTok icon fallback
   ];
 
   const currentYear = new Date().getFullYear();
@@ -17,7 +17,8 @@ export default function Footer() {
   return (
     <footer className="w-full bg-white border-t border-gray-100 mt-10 py-10 md:py-12">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 text-gray-700 text-sm">
-        {/* Kolom 1: Logo + Deskripsi */}
+        
+        {/* Kolom 1 */}
         <div className="flex flex-col items-start space-y-3">
           <Link href="/" className="flex items-center group">
             <Image
@@ -48,7 +49,7 @@ export default function Footer() {
             Platform cerdas yang mempermudah kolaborasi antara brand dan influencer secara efisien dan terintegrasi.
           </p>
 
-          {/* sosial media */}
+          {/* Sosial Media */}
           <div className="flex space-x-3 mt-2">
             {socialMedia.map((s, i) => (
               <a
@@ -56,6 +57,7 @@ export default function Footer() {
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={s.label}
                 className="p-1.5 rounded-full border border-gray-200 hover:border-orange-500 hover:text-orange-500 transition-colors"
               >
                 {s.icon}
@@ -64,19 +66,18 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Kolom 2: Info Perusahaan */}
+        {/* Kolom 2 */}
         <div>
           <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
             PT Gentra Media Utama
           </h3>
           <p className="text-xs leading-relaxed text-gray-600">
-            Setra Royal Residence C9,<br />
             Empangsari, Kec. Tawang,<br />
             Kota Tasikmalaya, 46113
           </p>
         </div>
 
-        {/* Kolom 3: Contact */}
+        {/* Kolom 3 Contact */}
         <div>
           <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
             Contact Us
@@ -89,30 +90,26 @@ export default function Footer() {
               </a>
             </li>
             <li className="flex items-center">
-              <MessageCircle className="text-orange-500 mr-2" size={15} />
+              <Phone className="text-orange-500 mr-2" size={15} />
               <a
                 href="https://wa.me/6281111018811"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-orange-600 transition-colors"
               >
-                Chat via WhatsApp
+                WhatsApp Support
               </a>
             </li>
           </ul>
         </div>
 
-        {/* Kolom 4: Quick Links */}
+        {/* Kolom 4 */}
         <div>
           <h3 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
             Quick Links
           </h3>
           <ul className="space-y-2 text-xs">
-            <li>
-              <Link href="/" className="hover:text-orange-600 transition-colors">
-                Home
-              </Link>
-            </li>
+            <li><Link href="/" className="hover:text-orange-600 transition-colors">Home</Link></li>
             <li><a href="#about" className="hover:text-orange-600 transition-colors">About</a></li>
             <li><a href="#services" className="hover:text-orange-600 transition-colors">Services</a></li>
             <li><a href="#contact" className="hover:text-orange-600 transition-colors">Contact</a></li>
@@ -121,7 +118,6 @@ export default function Footer() {
 
       </div>
 
-      {/* Garis bawah */}
       <div className="border-t border-gray-200 mt-10 pt-4 text-center text-xs text-gray-500">
         © {currentYear} <span className="text-gray-900 font-semibold">PT Gentra Media Utama</span>. All rights reserved.
       </div>
