@@ -55,7 +55,7 @@ export default async function PackageList() {
             } p-3 sm:p-4 flex flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-300`}
           >
             {/* Gambar Paket - Klik ke /packages */}
-            <Link href="/packages" className="mb-3 sm:mb-4 block">
+            <Link href={`/package/${pkg.ID}`} className="mb-3 sm:mb-4 block">
               {pkg.imageUrl ? (
                 <img
                   src={pkg.imageUrl}
