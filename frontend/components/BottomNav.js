@@ -36,7 +36,7 @@ export default function BottomNav() {
       <NavItem
         href="/rekomendasi"
         icon={MdOutlineExplore}
-        label="Eksplor"
+        label="Rekomendasi"
         active={isActive("/rekomendasi")}
       />
 
