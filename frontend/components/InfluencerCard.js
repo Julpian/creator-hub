@@ -7,6 +7,7 @@ import {
   IoDocumentTextOutline,
   IoAddOutline,
   IoStar,
+  IoCheckmarkCircle,
 } from "react-icons/io5";
 import { FaTiktok } from "react-icons/fa";
 
@@ -26,7 +27,7 @@ export default function InfluencerCard({ influencer }) {
   return (
     <div className="bg-white rounded-3xl shadow-md hover:shadow-xl border border-gray-100 overflow-hidden 
       w-full transition-all duration-300 hover:-translate-y-1 relative flex flex-col">
-      
+
       {/* BADGE REKOMENDASI */}
       {influencer.isRecommended && (
         <div className="absolute top-2 right-2 bg-yellow-400 text-yellow-900 text-[10px] sm:text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 z-10">
@@ -54,9 +55,12 @@ export default function InfluencerCard({ influencer }) {
           </div>
         )}
 
-        {/* NAMA & FOLLOWERS */}
+        {/* NAMA + CENTANG BIRU */}
         <h3 className="text-sm sm:text-base font-semibold text-gray-900 text-center flex items-center justify-center gap-1">
           {influencer.name}
+          {influencer.isRecommended && (
+            <IoCheckmarkCircle className="text-blue-500" size={14} />
+          )}
         </h3>
 
         <p className="text-xs text-gray-500 text-center">
@@ -67,8 +71,8 @@ export default function InfluencerCard({ influencer }) {
           <span className="text-base sm:text-lg font-semibold">
             {formatNumber(
               influencer.instagramFollowers ||
-              influencer.youtubeSubscribers ||
-              influencer.tiktokFollowers
+                influencer.youtubeSubscribers ||
+                influencer.tiktokFollowers
             )}
           </span>{" "}
           Followers
